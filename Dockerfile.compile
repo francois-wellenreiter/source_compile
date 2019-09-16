@@ -1,0 +1,70 @@
+FROM ubuntu:19.04
+
+LABEL maintainer Francois WELLENREITER wellen@free.fr \
+      description="Optimized for compilation"
+
+USER root
+
+WORKDIR /tmp
+
+RUN apt-get update && apt-get -y dist-upgrade
+
+RUN apt-get -y install libnss-wrapper locales 
+RUN apt-get -y install tar bzip2 zip unzip 
+RUN apt-get -y install ca-certificates wget curl 
+RUN apt-get -y install software-properties-common apt-transport-https
+
+
+RUN wget https://github.com/bazelbuild/bazel/releases/download/0.24.1/bazel-0.24.1-installer-linux-x86_64.sh && \
+   chmod +x bazel-0.24.1-installer-linux-x86_64.sh  && \
+   ./bazel-0.24.1-installer-linux-x86_64.sh && \
+   rm -f bazel-0.24.1-installer-linux-x86_64.sh
+
+RUN apt-get -y install openjdk-8-jdk maven
+
+RUN wget https://dl.bintray.com/sbt/debian/sbt-1.2.1.deb && \
+   dpkg -i ./sbt-1.2.1.deb && \
+   rm -f sbt-1.2.1.deb
+  
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+
+RUN add-apt-repository \
+   "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   nightly" && \
+   apt-get update 
+
+RUN apt-get -y install docker-ce
+
+RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev
+RUN apt-get -y install libelf-dev bc libssl-dev libpixman-1-dev
+RUN apt-get -y install build-essential automake autoconf libtool cmake git bsdmainutils
+RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev 
+RUN apt-get -y install golang
+
+RUN apt-get -y install xsltproc libnl-3-dev
+RUN apt-get -y install libevent-dev
+RUN apt-get -y install gtk-doc-tools
+RUN apt-get -y install linuxbrew-wrapper
+RUN apt-get -y install libxml2-utils
+RUN apt-get -y install qtbase5-dev qtbase5-dev-tools
+RUN apt-get -y install flake8
+RUN apt-get -y install libglib2.0-dev
+
+RUN apt-get -y install python3-pip python-pip python-six
+RUN apt-get -y install python-scipy python3-scipy
+RUN pip3 install --upgrade setuptools
+RUN pip3 install --upgrade cmake
+RUN pip3 install --upgrade cffi
+RUN pip3 install --upgrade typing
+RUN pip3 install --upgrade numpy
+RUN pip3 install --upgrade pyyaml
+
+RUN apt-get -y install htop iotop iftop
+
+RUN apt-get -y autoremove  && apt-get autoclean
+RUN rm -rf /var/cache/apt
+
+VOLUME ["/work"]
+WORKDIR /work
+CMD [ "bash","/root/bin/compile.sh" ]
