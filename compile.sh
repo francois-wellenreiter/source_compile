@@ -39,6 +39,19 @@ youtubedl \
 
 product_list=${*:-$PRODUCT_LIST}
 
+function _deploy_void {
+return
+}
+
+function _clean_void {
+return
+}
+
+function _compile_void {
+return
+}
+
+
 #
 # _deploy repositories
 #
