@@ -34,6 +34,7 @@ pynn \
 bitcoin \
 tlaplus \
 tor \
+veracrypt \
 youtubedl \
 "
 
@@ -231,6 +232,10 @@ git clone https://github.com/tlaplus/tlaplus.git -b master tlaplus
 
 function _deploy_tor {
 git clone https://git.torproject.org/tor.git -b master tor
+}
+
+function _deploy_veracrypt {
+git clone https://github.com/veracrypt/VeraCrypt.git -b master veracrypt
 }
 
 function _deploy_youtubedl {
@@ -433,6 +438,10 @@ mvn clean
 }
 
 function _clean_tor {
+return
+}
+
+function _clean_veracrypt {
 return
 }
 
@@ -693,6 +702,11 @@ make && \
 make install
 }
 
+function _compile_veracrypt {
+cd src
+make -j$PROCS
+}
+
 function _compile_youtubedl {
 return
 }
@@ -708,6 +722,7 @@ return
 function _gather_ {
 REMOTE=`git remote -v | grep origin | grep fetch | awk '{ print $2 }'`
 BRANCH=`git branch | awk '{print $2}'`
+
 if [ a$DO_CLEAN = a1 ]
 then
     git reset --hard HEAD
@@ -729,10 +744,11 @@ fi
 
 function __deploy_and__compile_ {
 
-echo "------------------ $1 $2/$3 -------------------"
+echo "- Starting ----------------- $1 $2/$3 -------------------"
 
 if [ ! -d $1 ]
 then
+	echo "- Deploying ----------------- $1 $2/$3 -------------------"
 	_deploy_$1
 fi
 cd $1
@@ -740,6 +756,7 @@ if [ -z "`git remote 2> /dev/null`" ]
 then
 	cd ..
 	rm -rf $1
+	echo "- Deploying ----------------- $1 $2/$3 -------------------"
 	_deploy_$1
 else
 	cd ..
@@ -748,19 +765,22 @@ fi
 cd $1
 	if [ a$DONT_GATHER != a1 ]
 	then
+		echo "- Gathering ----------------- $1 $2/$3 -------------------"
 		_gather_
 	fi
 	if [ a$DO_CLEAN = a1 ]
 	then
+		echo "- Cleaning ----------------- $1 $2/$3 -------------------"
 		_clean_$1
 	fi
 	if [ a$DONT_COMPILE != a1 ]
 	then
+		echo "- Compiling ----------------- $1 $2/$3 -------------------"
 		_compile_$1
 	fi
 cd ..
 
-echo "++++++++++++++++++ $1 $2/$3 +++++++++++++++++++"
+echo "- Ending ----------------- $1 $2/$3 -------------------"
 }
 
 function _main_ {

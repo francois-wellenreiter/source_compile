@@ -51,6 +51,7 @@ RUN apt-get -y install libxml2-utils
 RUN apt-get -y install qtbase5-dev qtbase5-dev-tools
 RUN apt-get -y install flake8
 RUN apt-get -y install libglib2.0-dev
+RUN apt-get -y install yasm libfuse-dev libwxbase3.0-dev
 
 RUN apt-get -y install python3-pip python-pip python-six
 RUN apt-get -y install python-scipy python3-scipy
@@ -68,4 +69,4 @@ RUN rm -rf /var/cache/apt
 
 VOLUME ["/work"]
 WORKDIR /work
-CMD [ "bash","/user/bin/compile.sh" ]
+CMD [ "bash","/code/compile.sh" ]
