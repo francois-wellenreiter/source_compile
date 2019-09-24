@@ -698,7 +698,7 @@ mvn $MVN_OPTS package -Dmaven.test.skip=true -X
 function _compile_tor {
 sh autogen.sh && \
 ./configure --disable-asciidoc && \
-make && \
+make -j$PROCS && \
 make install
 }
 

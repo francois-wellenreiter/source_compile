@@ -8,7 +8,7 @@ CMDLINE_DOCKER_RUN="$CMDLINE_DOCKER_RUN \
     --rm \
     --privileged
     --ipc=host \
-    -v $HOME/work:/work \
+    -v $PWD:/work \
     -v $HOME:/home \
     -v $TOOLS:/code \
     -v /var/run/docker.sock:/var/run/docker.sock \
