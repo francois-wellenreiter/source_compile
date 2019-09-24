@@ -62,7 +62,7 @@ RUN pip3 install --upgrade typing
 RUN pip3 install --upgrade numpy
 RUN pip3 install --upgrade pyyaml
 
-RUN apt-get -y install htop iotop iftop
+RUN apt-get -y install htop iotop iftop sysstat
 
 RUN apt-get -y autoremove  && apt-get autoclean
 RUN rm -rf /var/cache/apt

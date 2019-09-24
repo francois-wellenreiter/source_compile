@@ -9,11 +9,14 @@ CMDLINE_DOCKER_RUN="$CMDLINE_DOCKER_RUN \
     --privileged
     --ipc=host \
     -v $PWD:/work \
-    -v $HOME:/home \
     -v $TOOLS:/code \
+    -v $HOME:/home \
+    -v $HOME/.m2:/.m2 \
+    -v $HOME/.cache:/.cache \
     -v /var/run/docker.sock:/var/run/docker.sock \
-    --user=`id -u`:`id -g` \
     -e USER=$USER \
+    -e HOME=/home \
+    --user=`id -u`:`id -g` \
     "
 
 if [ a$MEM != a ]
