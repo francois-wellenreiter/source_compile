@@ -4,6 +4,8 @@ TIMEOUT=${TIMEOUT:-10}
 PARALL=${PARALL:-1}
 PROCS=${PROCS:-`nproc`}
 
+SBT_OPTS="$SBT_OPTS -Dsbt.global.base=/home/.sbt"
+SBT_OPTS="$SBT_OPTS -Dsbt.ivy.home=/home/.ivy2"
 MVN_OPTS="$MVN_OPTS --global-settings /code/maven_settings.xml"
 MVN_OPTS="$MVN_OPTS -T $PROCS"
 
@@ -405,7 +407,7 @@ make distclean
 }
 
 function _clean_scala {
-sbt clean
+sbt $SBT_OPTS clean
 }
 
 function _clean_scikit_learn {
@@ -633,7 +635,7 @@ make -j$PROCS
 }
 
 function _compile_scala {
-sbt package
+sbt $SBT_OPTS package
 }
 
 function _compile_scikit_learn {
