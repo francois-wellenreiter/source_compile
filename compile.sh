@@ -4,6 +4,7 @@ TIMEOUT=${TIMEOUT:-10}
 PARALL=${PARALL:-1}
 PROCS=${PROCS:-`nproc`}
 
+MVN_OPTS="$MVN_OPTS --global-settings /code/maven_settings.xml"
 MVN_OPTS="$MVN_OPTS -T $PROCS"
 
 
@@ -267,7 +268,6 @@ cd ..
 
 function _clean_bazel {
 bazel clean
-bazel shutdown
 }
 
 function _clean_bitcoin {
@@ -422,7 +422,6 @@ mvn clean
 
 function _clean_tensorflow {
 bazel clean
-bazel shutdown
 }
 
 function _clean_tensorflow_benchmarks {
@@ -479,7 +478,6 @@ cd ..
 
 function _compile_bazel {
 bazel build //src:bazel
-bazel shutdown
 }
 
 function _compile_bitcoin {
@@ -680,7 +678,6 @@ bazel build --config=opt \
     --copt="-march=broadwell" \
     //tensorflow/tools/pip_package:build_pip_package
 fi
-bazel shutdown
 }
 
 function _compile_tensorflow_benchmarks {
@@ -781,6 +778,10 @@ cd $1
 cd ..
 
 echo "- Ending ----------------- $1 $2/$3 -------------------"
+}
+
+function _cleanup_ {
+bazel shutdown
 }
 
 function _main_ {

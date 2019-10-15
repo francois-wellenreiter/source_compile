@@ -11,8 +11,6 @@ CMDLINE_DOCKER_RUN="$CMDLINE_DOCKER_RUN \
     -v $PWD:/work \
     -v $TOOLS:/code \
     -v $HOME:/home \
-    -v $HOME/.m2:/.m2 \
-    -v $HOME/.cache:/.cache \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -e USER=$USER \
     -e HOME=/home \
