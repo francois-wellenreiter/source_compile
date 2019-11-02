@@ -61,6 +61,7 @@ RUN pip3 install --upgrade cffi
 RUN pip3 install --upgrade typing
 RUN pip3 install --upgrade numpy
 RUN pip3 install --upgrade pyyaml
+RUN pip3 install --upgrade projectq
 
 RUN apt-get -y install htop iotop iftop sysstat
 
