@@ -39,6 +39,7 @@ tlaplus \
 tor \
 veracrypt \
 youtubedl \
+projectq \
 "
 
 product_list=${*:-$PRODUCT_LIST}
@@ -183,6 +184,10 @@ git clone https://github.com/numba/numba.git -b master numba
 
 function _deploy_ompi {
 git clone https://github.com/open-mpi/ompi.git -b master ompi
+}
+
+function _deploy_projectq {
+git clone https://github.com/ProjectQ-Framework/ProjectQ.git -b master projectq
 }
 
 function _deploy_pynn {
@@ -389,6 +394,10 @@ return
 
 function _clean_ompi {
 make distclean
+}
+
+function _clean_projectq {
+return
 }
 
 function _clean_pynn {
@@ -615,6 +624,10 @@ function _compile_ompi {
 ./autogen.pl && \
 ./configure && \
 make -j$PROCS
+}
+
+function _compile_projectq {
+python setup.py build_ext
 }
 
 function _compile_pynn {
