@@ -59,4 +59,6 @@ CMD [ "bash","/code/compile.sh" ]
 ARG DOCKER_BASE_CUDA=${DOCKER_REGISTRY}nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
 FROM ${DOCKER_BASE_CUDA} AS cuda
 
+COPY --from=base / /
+
 ENV _COMPILE_FOR_CUDA_ 1
