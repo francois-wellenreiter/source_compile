@@ -55,6 +55,7 @@ RUN apt-get -y install libglib2.0-dev
 RUN apt-get -y install yasm libfuse-dev libwxbase3.0-dev
 
 RUN apt-get -y install python3-pip python-pip python-six
+RUN apt-get -y install python-numpy python3-numpy
 RUN apt-get -y install python-scipy python3-scipy
 RUN pip3 install --upgrade setuptools
 RUN pip3 install --upgrade scikit-build
@@ -63,6 +64,11 @@ RUN pip3 install --upgrade cffi
 RUN pip3 install --upgrade typing
 RUN pip3 install --upgrade numpy
 RUN pip3 install --upgrade pyyaml
+RUN pip3 install --upgrade networkx
+RUN pip3 install --upgrade future
+RUN pip3 install --upgrade pytest
+RUN pip3 install --upgrade pybind11
+RUN pip3 install --upgrade requests
 
 RUN apt-get -y install htop iotop iftop sysstat
 
