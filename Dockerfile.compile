@@ -1,11 +1,12 @@
-ARG DOCKER_BASE=${DOCKER_REGISTRY}ubuntu:18.04
-FROM ${DOCKER_BASE} AS base
+
+
+FROM ${DOCKER_REGISTRY}ubuntu:18.04 AS base
+
 
 LABEL maintainer Francois WELLENREITER wellen@free.fr \
-      description="Optimized for CUDA compilation"
+      description="Optimized for compilation"
 
 USER root
-WORKDIR /tmp
 
 RUN apt-get update && \
 apt-get -y dist-upgrade && \
@@ -32,16 +33,19 @@ python3-pip \
 python3-numpy python3-scipy  \
 openjdk-8-jdk maven
 
-RUN wget https://github.com/bazelbuild/bazel/releases/download/0.24.1/bazel-0.24.1-installer-linux-x86_64.sh && \
+RUN cd /tmp && \
+wget https://github.com/bazelbuild/bazel/releases/download/0.24.1/bazel-0.24.1-installer-linux-x86_64.sh && \
 chmod +x bazel-0.24.1-installer-linux-x86_64.sh  && \
 ./bazel-0.24.1-installer-linux-x86_64.sh && \
 rm -f bazel-0.24.1-installer-linux-x86_64.sh
 
-RUN wget https://dl.bintray.com/sbt/debian/sbt-1.2.1.deb && \
+RUN cd /tmp && \
+wget https://dl.bintray.com/sbt/debian/sbt-1.2.1.deb && \
 dpkg -i ./sbt-1.2.1.deb && \
 rm -f sbt-1.2.1.deb
 
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+RUN cd /tmp && \
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) nightly" && \
 apt-get update && \
 apt-get -y install docker-ce
@@ -50,15 +54,32 @@ RUN pip3 install --upgrade setuptools \
         scikit-build cmake cffi typing \
         pyyaml networkx future pytest pybind11 requests
 
-RUN apt-get -y autoremove  && apt-get autoclean
+RUN apt-get -y autoremove && \
+apt-get autoclean && \
+rm -rf /var/cache/apt
 
 VOLUME ["/work"]
 WORKDIR /work
 CMD [ "bash","/code/compile.sh" ]
 
-ARG DOCKER_BASE_CUDA=${DOCKER_REGISTRY}nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
-FROM ${DOCKER_BASE_CUDA} AS cuda
 
-COPY --from=base / /
+
+
+
+FROM base AS cuda
+
+LABEL maintainer Francois WELLENREITER wellen@free.fr \
+      description="Optimized for CUDA compilation"
 
 ENV _COMPILE_FOR_CUDA_ 1
+
+RUN cd /tmp && \
+wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1810/x86_64/cuda-repo-ubuntu1810_10.1.168-1_amd64.deb && \
+apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub && \
+add-apt-repository "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/ /" && \
+apt-get update && \
+apt-get -y install cuda
+
+
+
+
