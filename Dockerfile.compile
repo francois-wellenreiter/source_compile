@@ -1,5 +1,5 @@
 ARG DOCKER_BASE=${DOCKER_REGISTRY}ubuntu:18.04
-FROM ${DOCKER_BASE} AS docker_base
+FROM ${DOCKER_BASE} AS base
 
 LABEL maintainer Francois WELLENREITER wellen@free.fr \
       description="Optimized for CUDA compilation"
@@ -57,6 +57,6 @@ WORKDIR /work
 CMD [ "bash","/code/compile.sh" ]
 
 ARG DOCKER_BASE_CUDA=${DOCKER_REGISTRY}nvidia/cuda:10.1-cudnn7-devel-ubuntu18.04
-FROM ${DOCKER_BASE} AS docker_base_cuda
+FROM ${DOCKER_BASE_CUDA} AS cuda
 
 ENV _COMPILE_FOR_CUDA_ 1
