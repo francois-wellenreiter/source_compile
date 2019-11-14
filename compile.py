@@ -20,39 +20,70 @@ PROCS="__PROCS__"
 SBTOPTS="__SBT_OPTS__"
 MVNOPTS="__MVN_OPTS__"
 
-def progress(op_code, cur_count, max_count=None, message='', fn = None):
+
+
+def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""):
     if fn is None:
-        logging.debug( 'Downloading : ( {} )\r'.format(message))
+        logging.debug( 'Downloading {} : ( {} )\r'.format(key, message))
     else:
-        logging.debug( 'Downloading for {}: ( {} )\r'.format(fn.__name__, message))
+        logging.debug( '{} for {}: ( {} )\r'.format(fn.__name__, key, message))
+
+
 
 def clone(k, v, args):
-    logging.info("Cloning " + k)
+    logging.info("Cloning {}".format(k))
+
     if not os.path.exists(os.path.join(args.target, v[DIR])):
-        repo = Repo.clone_from(v[URL], os.path.join(args.target, v[DIR]), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from))
-        repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update))
+        try:
+            repo = Repo.clone_from(v[URL], os.path.join(args.target, v[DIR]), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
+        except Exception as err:
+            logging.warning("Error when cloning {}, {}".format(k ,err))
+        try:
+            repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
+        except Exception as err:
+            logging.warning("Error when updating submodules for {}, {}".format(k ,err))
+
+
 
 def update(k, v, args):
-    logging.info("Updating " + k)
-    repo = Repo(os.path.join(args.target, v[DIR]))
-    repo.remotes.origin.pull(progress = partial(progress, fn = repo.remotes.origin.pull))
-    repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update))
+    logging.info("Updating {}".format(k))
+
+    try:
+        repo = Repo(os.path.join(args.target, v[DIR]))
+    except Exception as err:
+        logging.warning("Error no repository found for {}, {}".format(k ,err))
+
+    try:
+        repo.remotes.origin.pull(progress = partial(progress, fn = repo.remotes.origin.pull, key = k))
+    except Exception as err:
+        logging.warning("Error when pulling {}, {}".format(k ,err))
+
+    try:
+        repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
+    except Exception as err:
+        logging.warning("Error when updating submodules for {}, {}".format(k ,err))
+
+
 
 def clean(k, v, args):
-    logging.info("Cleaning " + k)
+    logging.info("Cleaning {}".format(k))
     os.chdir(os.path.join(args.target, v[DIR]))
     if CLEAN in v:
         for cmd in v[CLEAN]:
-            logging.debug("Executing " + cmd)
+            logging.debug("Executing {}".format(k))
             os.system(cmd)
 
+
+
 def build(k, v, args):
-    logging.info("Building " + k)
+    logging.info("Building {}".format(k))
     os.chdir(os.path.join(args.target, v[DIR]))
     if BUILD in v:
         for cmd in v[BUILD]:
             logging.debug("Executing " + cmd)
             os.system(cmd)
+
+
 
 def worker(data, args):
     for k, v in data.items():
@@ -66,6 +97,8 @@ def worker(data, args):
                 if args.build:
                     build(k, v, args)
 
+
+
 def load_files(dir):
     for dirpath, dnames, fnames in os.walk(dir):
         for f in fnames:
@@ -78,9 +111,13 @@ def load_files(dir):
                         exit(0)
 
 
+
+
 def parent(args):
     with mp.Pool(processes = args.parallelize) as pool:
         pool.map(partial(worker, args = args), load_files(args.dir))
+
+
 
 
 def parse():
@@ -118,8 +155,13 @@ def parse():
     return args
 
 
+
+
 def main():
     parent(parse())
 
 if __name__ == "__main__":
     main()
+
+
+

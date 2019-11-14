@@ -22,5 +22,7 @@ $DOCKER run \
     -e __MVN_OPTS__ \
     -e __SBT_OPTS__ \
     --user=`id -u`:`id -g` \
-    $@
+    $1 \
+    python3 compile.py \
+    ${@:2}
 
