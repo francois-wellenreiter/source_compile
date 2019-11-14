@@ -24,11 +24,12 @@ def clone(k, v, args):
 def update(k, v, args):
     logging.info("Updating " + k)
     repo = Repo(os.path.join(args.target, v[DIR]))
-    repo.pull()
+    repo.remotes.origin.pull()
     repo.submodule_update(recursive = True)
 
 def clean(k, v, args):
     logging.info("Cleaning " + k)
+    os.chdir(os.path.join(args.target, v[DIR]))
     for cmd in v[CLEAN]:
         logging.info("Executing " + cmd)
         print("Executing ", cmd)
@@ -36,6 +37,7 @@ def clean(k, v, args):
 
 def build(k, v, args):
     logging.info("Building " + k)
+    os.chdir(os.path.join(args.target, v[DIR]))
     for cmd in v[BUILD]:
         logging.info("Executing " + cmd)
         print("Executing ", cmd)
