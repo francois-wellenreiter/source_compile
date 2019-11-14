@@ -30,6 +30,7 @@ libglib2.0-dev \
 yasm libfuse-dev libwxbase3.0-dev \
 python-pip python-six \
 python3-pip \
+python3-git \
 python3-numpy python3-scipy  \
 openjdk-8-jdk maven
 
