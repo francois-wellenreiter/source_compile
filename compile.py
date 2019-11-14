@@ -24,13 +24,13 @@ def clone(k, v, args):
     logging.info("Cloning " + k)
     if not os.path.exists(os.path.join(args.target, v[DIR])):
         repo = Repo.clone_from(v[URL], os.path.join(args.target, v[DIR]), branch = v[BRANCH])
-        repo.submodule_update(recursive = True)
+        repo.submodule_update(recursive = True, init = True)
 
 def update(k, v, args):
     logging.info("Updating " + k)
     repo = Repo(os.path.join(args.target, v[DIR]))
     repo.remotes.origin.pull()
-    repo.submodule_update(recursive = True)
+    repo.submodule_update(recursive = True, init = True)
 
 def clean(k, v, args):
     logging.info("Cleaning " + k)
