@@ -33,9 +33,9 @@ def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""
 def clone(k, v, args):
     logging.info("Cloning {}".format(k))
 
-    if not os.path.exists(os.path.join(args.target, v[DIR])):
+    if not os.path.exists(os.path.join(args.directory, v[DIR])):
         try:
-            repo = Repo.clone_from(v[URL], os.path.join(args.target, v[DIR]), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
+            repo = Repo.clone_from(v[URL], os.path.join(args.directory, v[DIR]), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
         except Exception as err:
             logging.warning("Error when cloning {}, {}".format(k ,err))
         try:
@@ -49,7 +49,7 @@ def update(k, v, args):
     logging.info("Updating {}".format(k))
 
     try:
-        repo = Repo(os.path.join(args.target, v[DIR]))
+        repo = Repo(os.path.join(args.directory, v[DIR]))
     except Exception as err:
         logging.warning("Error no repository found for {}, {}".format(k ,err))
 
@@ -67,7 +67,7 @@ def update(k, v, args):
 
 def clean(k, v, args):
     logging.info("Cleaning {}".format(k))
-    os.chdir(os.path.join(args.target, v[DIR]))
+    os.chdir(os.path.join(args.directory, v[DIR]))
     if CLEAN in v:
         for cmd in v[CLEAN]:
             logging.debug("Executing {}".format(k))
@@ -77,7 +77,7 @@ def clean(k, v, args):
 
 def build(k, v, args):
     logging.info("Building {}".format(k))
-    os.chdir(os.path.join(args.target, v[DIR]))
+    os.chdir(os.path.join(args.directory, v[DIR]))
     if BUILD in v:
         for cmd in v[BUILD]:
             logging.debug("Executing " + cmd)
@@ -87,7 +87,7 @@ def build(k, v, args):
 
 def worker(data, args):
     for k, v in data.items():
-        if args.source is None or k in args.source:
+        if args.target is None or k in args.target:
             if v[ENABLED]:
                 clone(k, v ,args)
                 if args.update:
@@ -115,7 +115,7 @@ def load_files(dir):
 
 def parent(args):
     with mp.Pool(processes = args.parallelize) as pool:
-        pool.map(partial(worker, args = args), load_files(args.dir))
+        pool.map(partial(worker, args = args), load_files(args.configuration))
 
 
 
@@ -123,12 +123,12 @@ def parent(args):
 def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action = "store_true")
-    parser.add_argument("-d", "--dir", action = "store", default = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yml"))
-    parser.add_argument("-t", "--target", action = "store", default = os.path.join(os.getenv("HOME"), "src"))
-    parser.add_argument("-s", "--source", action = "store", nargs="+")
-    parser.add_argument("-c", "--clean", action = "store_true")
-    parser.add_argument("-b", "--build", action = "store_true")
-    parser.add_argument("-u", "--update", action = "store_true")
+    parser.add_argument("-c", "--configuration", action = "store", default = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yml"))
+    parser.add_argument("-d", "--directory", action = "store", default = "/src")
+    parser.add_argument("-t", "--target", action = "store", nargs="+")
+    parser.add_argument("-C", "--clean", action = "store_true")
+    parser.add_argument("-B", "--build", action = "store_true")
+    parser.add_argument("-U", "--update", action = "store_true")
     parser.add_argument("-p", "--procs", action = "store", type = int, default = 1)
     parser.add_argument("-P", "--parallelize", action = "store", type = int, default = 1)
     args = parser.parse_args()

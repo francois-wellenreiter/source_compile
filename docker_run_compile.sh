@@ -13,7 +13,7 @@ $DOCKER run \
     -m 2G \
     --privileged \
     --ipc=host \
-    -v $PWD:/work \
+    -v $PWD:/src \
     -v $TOOLS:/code \
     -v $HOME:/home \
     -v /var/run/docker.sock:/var/run/docker.sock \
@@ -23,6 +23,6 @@ $DOCKER run \
     -e __SBT_OPTS__ \
     --user=`id -u`:`id -g` \
     $1 \
-    python3 compile.py \
+    python3 /code/compile.py \
     ${@:2}
 

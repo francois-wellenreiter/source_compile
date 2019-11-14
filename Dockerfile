@@ -59,8 +59,8 @@ RUN apt-get -y autoremove && \
 apt-get autoclean && \
 rm -rf /var/cache/apt
 
-VOLUME ["/work"]
-WORKDIR /work
+VOLUME ["/src"]
+WORKDIR /src
 CMD [ "python3","/code/compile.py" ]
 
 
