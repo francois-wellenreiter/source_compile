@@ -1,0 +1,10 @@
+sage:
+  dir: sage
+  enabled: true
+  url: https://github.com/sagemath/sage.git
+  branch: master
+  build:
+    ./configure
+    make -j$PROCS
+  clean:
+    make distclean 

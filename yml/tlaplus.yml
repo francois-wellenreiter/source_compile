@@ -1,0 +1,9 @@
+tlaplus:
+  dir: tlaplus
+  enabled: true
+  url: https://github.com/tlaplus/tlaplus.git
+  branch: master
+  build:
+    mvn $__MVN_OPTS__ package -Dmaven.test.skip=true -X 
+  clean:
+    mvn clean 

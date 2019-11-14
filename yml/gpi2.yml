@@ -1,0 +1,10 @@
+gpi2:
+  dir: gpi2
+  enabled: true
+  url: https://github.com/cc-hpc-itwm/GPI-2.git
+  branch: next
+  build:
+    make -j$PROCS
+  clean:
+    make distclean    
+

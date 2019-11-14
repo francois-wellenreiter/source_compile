@@ -1,0 +1,7 @@
+mmlspark:
+  dir: mmlspark
+  enabled: true
+  url: https://github.com/Azure/mmlspark.git
+  branch: master
+  build:
+    ./runme

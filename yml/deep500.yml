@@ -1,0 +1,5 @@
+deep500:
+  dir: deep500
+  enabled: true
+  url: https://github.com/deep500/deep500.git
+  branch: master

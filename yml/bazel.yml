@@ -1,0 +1,11 @@
+bazel:
+  dir: bazel
+  enabled: true
+  url: https://github.com/bazelbuild/bazel.git
+  branch: master
+  clean:
+    bazel clean
+    bazel shutdown
+  build:
+    bazel build //src:bazel
+    bazel shutdown

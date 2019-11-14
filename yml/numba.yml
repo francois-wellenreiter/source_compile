@@ -1,0 +1,9 @@
+numba:
+  dir: numba
+  enabled: true
+  url: https://github.com/numba/numba.git
+  branch: master
+  build:
+    python3 ./setup.py build_ext 
+  clean:
+    python3 ./setup.py clean 

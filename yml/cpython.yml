@@ -1,0 +1,10 @@
+cpython:
+  dir: cpython
+  enabled: true
+  url: https://github.com/python/cpython.git
+  branch: master
+  build:
+    ./configure --enable-optimizations && \
+    make -j$PROCS
+  clean:
+    make distclean  

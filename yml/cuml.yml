@@ -1,0 +1,5 @@
+cuml:
+  dir: cuml
+  enabled: true
+  url: https://github.com/rapidsai/cuml.git
+  branch: master

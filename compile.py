@@ -10,11 +10,11 @@ from functools import partial
 from git import Repo
 
 DIR="dir"
+ENABLED="enabled"
 URL="url"
+BRANCH="branch"
 CLEAN="clean"
 BUILD="build"
-BRANCH="branch"
-ENABLED="enabled"
 
 def clone(k, v, args):
     logging.info("Cloning " + k)
@@ -30,18 +30,18 @@ def update(k, v, args):
 def clean(k, v, args):
     logging.info("Cleaning " + k)
     os.chdir(os.path.join(args.target, v[DIR]))
-    for cmd in v[CLEAN]:
-        logging.info("Executing " + cmd)
-        print("Executing ", cmd)
-        os.system(cmd)
+    if CLEAN in v:
+        for cmd in v[CLEAN]:
+            logging.info("Executing " + cmd)
+            os.system(cmd)
 
 def build(k, v, args):
     logging.info("Building " + k)
     os.chdir(os.path.join(args.target, v[DIR]))
-    for cmd in v[BUILD]:
-        logging.info("Executing " + cmd)
-        print("Executing ", cmd)
-        os.system(cmd)
+    if BUILD in v:
+        for cmd in v[BUILD]:
+            logging.info("Executing " + cmd)
+            os.system(cmd)
 
 def worker(data, args):
     for k, v in data.items():
@@ -92,7 +92,9 @@ def parse():
         logging.basicConfig(level=logging.INFO)
 
     if args.parallelize > 0:
-        os.putenv('CORE_NB', str(args.cores))
+        os.putenv("__CORE_NB__", str(args.cores))
+        os.putenv("__MVN_OPTS__", "--global-settings /code/maven_settings.xml -T " + str(args.cores))
+        os.putenv("__SBT_OPTS__", "-Dsbt.global.base=/home/.sbt -Dsbt.ivy.home=/home/.ivy2")
 
     return args
 

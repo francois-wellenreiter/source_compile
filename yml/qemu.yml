@@ -1,0 +1,10 @@
+qemu:
+  dir: qemu
+  enabled: true
+  url: https://git.qemu.org/git/qemu.git
+  branch: master
+  build:
+    ./configure
+    make -j$PROCS
+  clean:
+    make distclean 

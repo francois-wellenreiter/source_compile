@@ -1,0 +1,11 @@
+libfabric:
+  dir: libfabric
+  enabled: true
+  url: https://github.com/ofiwg/libfabric.git
+  branch: master
+  build:
+    ./autogen.sh
+    ./configure
+    make -j$PROCS 
+  clean:
+    make distclean

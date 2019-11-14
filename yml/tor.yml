@@ -1,0 +1,13 @@
+tor:
+  dir: tor
+  enabled: true
+  url: https://git.torproject.org/tor.git
+  branch: master
+  build:
+    sh autogen.sh
+    ./configure --disable-asciidoc
+    make -j$PROCS
+    make install
+  clean:
+    make distclean
+ 

@@ -1,0 +1,5 @@
+tensorflow_benchmarks:
+  dir: tensorflow_benchmarks
+  enabled: true
+  url: https://github.com/tensorflow/benchmarks.git
+  branch: master

@@ -1,0 +1,10 @@
+pytorch:
+  dir: pytorch
+  enabled: true
+  url: https://github.com/pytorch/pytorch.git
+  branch: master
+  build:
+    export MAX_JOBS=$PROCS
+    python3 ./setup.py build_ext
+    unset MAX_JOBS
+

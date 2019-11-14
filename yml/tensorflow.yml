@@ -1,0 +1,36 @@
+tensorflow:
+  dir: tensorflow
+  enabled: true
+  url: https://github.com/tensorflow/tensorflow.git
+  branch: master
+  build:
+    if [ a$_COMPILE_FOR_CUDA_ = a1 ]
+    then
+    PYTHON_BIN_PATH=`which python` USE_DEFAULT_PYTHON_LIB_PATH=1 TF_NEED_MPI=0 \
+    TF_NEED_HDFS=1 TF_NEED_TENSORRT=0 TF_NEED_JEMALLOC=1 TF_NEED_OPENCL_SYCL=0 \
+    TF_NEED_COMPUTECPP=1 TF_NEED_OPENCL=0 TF_CUDA_CLANG=0 TF_DOWNLOAD_CLANG=0 \
+    TF_NEED_GCP=1 TF_NEED_AWS=1 TF_NEED_KAFKA=0 TF_ENABLE_XLA=1 TF_NEED_GDR=1 \
+    TF_NEED_VERBS=0 TF_NEED_CUDA=1 TF_NEED_ROCM=0 CC_OPT_FLAGS="-march=native" \
+    TF_SET_ANDROID_WORKSPACE=0 \
+    ./configure
+    bazel build --config=cuda \
+    --copt="-O3" --copt="-mfma" --copt="-mavx2" \
+    --copt="-march=broadwell" \
+    //tensorflow/tools/pip_package:build_pip_package
+    else
+    PYTHON_BIN_PATH=`which python` USE_DEFAULT_PYTHON_LIB_PATH=1 TF_NEED_MPI=0 \
+    TF_NEED_HDFS=1 TF_NEED_TENSORRT=0 TF_NEED_JEMALLOC=1 TF_NEED_OPENCL_SYCL=0 \
+    TF_NEED_COMPUTECPP=1 TF_NEED_OPENCL=0 TF_CUDA_CLANG=0 TF_DOWNLOAD_CLANG=0 \
+    TF_NEED_GCP=1 TF_NEED_AWS=1 TF_NEED_KAFKA=0 TF_ENABLE_XLA=1 TF_NEED_GDR=1 \
+    TF_NEED_VERBS=0 TF_NEED_CUDA=0 TF_NEED_ROCM=0 CC_OPT_FLAGS="-march=native" \
+    TF_SET_ANDROID_WORKSPACE=0 \
+    ./configure
+    bazel build --config=opt \
+    --copt="-O3" --copt="-mfma" --copt="-mavx2" \
+    --copt="-march=broadwell" \
+    //tensorflow/tools/pip_package:build_pip_package
+    fi
+    bazel shutdown
+  clean:
+    bazel clean
+    bazel shutdown

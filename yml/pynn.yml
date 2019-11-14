@@ -1,0 +1,5 @@
+pynn:
+  dir: pynn
+  enabled: true
+  url: https://github.com/NeuralEnsemble/PyNN.git
+  branch: master

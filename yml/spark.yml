@@ -1,0 +1,10 @@
+spark:
+  dir: spark
+  enabled: true
+  url: https://github.com/apache/spark.git
+  branch: master
+  build:
+    mvn $__MVN_OPTS__ -Dmaven.test.skip=true -Dspark.version=2.3.0 package -X
+  clean:
+    ./build/mvn clean 
+

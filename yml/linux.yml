@@ -1,0 +1,10 @@
+linux:
+  dir: linux
+  enabled: true
+  url: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
+  branch: master
+  build:
+    make defconfig
+    make -j$PROCS
+  clean:
+    make mrproper
