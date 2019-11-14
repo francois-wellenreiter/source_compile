@@ -36,9 +36,9 @@ openjdk-8-jdk maven
 
 RUN cd /tmp && \
 wget https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh && \
-chmod +x bazel-0.24.1-installer-linux-x86_64.sh  && \
-./bazel-0.24.1-installer-linux-x86_64.sh && \
-rm -f bazel-0.24.1-installer-linux-x86_64.sh
+chmod +x bazel-1.1.0-installer-linux-x86_64.sh  && \
+./bazel-1.1.0-installer-linux-x86_64.sh && \
+rm -f bazel-1.1.0-installer-linux-x86_64.sh
 
 RUN cd /tmp && \
 wget https://dl.bintray.com/sbt/debian/sbt-1.2.1.deb && \
