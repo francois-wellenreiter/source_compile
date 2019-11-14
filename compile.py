@@ -46,42 +46,57 @@ def clone(k, v, args):
 
 
 def update(k, v, args):
-    logging.info("Updating {}".format(k))
+    if args.update:
+        logging.info("Updating {}".format(k))
+    
+        try:
+            repo = Repo(os.path.join(args.directory, v[DIR]))
+        except Exception as err:
+            logging.warning("Error no repository found for {}, {}".format(k ,err))
 
-    try:
-        repo = Repo(os.path.join(args.directory, v[DIR]))
-    except Exception as err:
-        logging.warning("Error no repository found for {}, {}".format(k ,err))
-
-    try:
-        repo.remotes.origin.pull(progress = partial(progress, fn = repo.remotes.origin.pull, key = k))
-    except Exception as err:
-        logging.warning("Error when pulling {}, {}".format(k ,err))
-
-    try:
-        repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
-    except Exception as err:
-        logging.warning("Error when updating submodules for {}, {}".format(k ,err))
+        if args.clean:
+            try:
+                repo.head.reset(index=True, working_tree=True)
+            except Exception as err:
+                logging.warning("Error when resetting {}, {}".format(k ,err))
+    
+            try:
+                repo.git.gc()
+            except Exception as err:
+                logging.warning("Error when compressing git repository {}, {}".format(k ,err))
+    
+    
+        try:
+            repo.remotes.origin.pull(progress = partial(progress, fn = repo.remotes.origin.pull, key = k))
+        except Exception as err:
+            logging.warning("Error when pulling {}, {}".format(k ,err))
+    
+        try:
+            repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
+        except Exception as err:
+            logging.warning("Error when updating submodules for {}, {}".format(k ,err))
 
 
 
 def clean(k, v, args):
-    logging.info("Cleaning {}".format(k))
-    os.chdir(os.path.join(args.directory, v[DIR]))
-    if CLEAN in v:
-        for cmd in v[CLEAN]:
-            logging.debug("Executing {}".format(k))
-            os.system(cmd)
+    if args.clean:
+        logging.info("Cleaning {}".format(k))
+        os.chdir(os.path.join(args.directory, v[DIR]))
+        if CLEAN in v:
+            for cmd in v[CLEAN]:
+                logging.debug("Executing {}".format(k))
+                os.system(cmd)
 
 
 
 def build(k, v, args):
-    logging.info("Building {}".format(k))
-    os.chdir(os.path.join(args.directory, v[DIR]))
-    if BUILD in v:
-        for cmd in v[BUILD]:
-            logging.debug("Executing " + cmd)
-            os.system(cmd)
+    if args.build:
+        logging.info("Building {}".format(k))
+        os.chdir(os.path.join(args.directory, v[DIR]))
+        if BUILD in v:
+            for cmd in v[BUILD]:
+                logging.debug("Executing " + cmd)
+                os.system(cmd)
 
 
 
@@ -90,12 +105,9 @@ def worker(data, args):
         if args.target is None or k in args.target:
             if v[ENABLED]:
                 clone(k, v ,args)
-                if args.update:
-                    update(k, v, args)
-                if args.clean:
-                    clean(k, v, args)
-                if args.build:
-                    build(k, v, args)
+                update(k, v, args)
+                clean(k, v, args)
+                build(k, v, args)
 
 
 
