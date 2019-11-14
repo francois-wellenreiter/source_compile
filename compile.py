@@ -16,10 +16,15 @@ BRANCH="branch"
 CLEAN="clean"
 BUILD="build"
 
+PROCS="__PROCS__"
+SBTOPTS="__SBT_OPTS__"
+MVNOPTS="__MVN_OPTS__"
+
 def clone(k, v, args):
     logging.info("Cloning " + k)
     if not os.path.exists(os.path.join(args.target, v[DIR])):
-        Repo.clone_from(v[URL], os.path.join(args.target, v[DIR]), branch = v[BRANCH])
+        repo = Repo.clone_from(v[URL], os.path.join(args.target, v[DIR]), branch = v[BRANCH])
+        repo.submodule_update(recursive = True)
 
 def update(k, v, args):
     logging.info("Updating " + k)
@@ -79,7 +84,7 @@ def parse():
     parser.add_argument("-c", "--clean", action = "store_true")
     parser.add_argument("-b", "--build", action = "store_true")
     parser.add_argument("-u", "--update", action = "store_true")
-    parser.add_argument("-C", "--cores", action = "store", type = int, default = 1)
+    parser.add_argument("-p", "--procs", action = "store", type = int, default = 1)
     parser.add_argument("-P", "--parallelize", action = "store", type = int, default = 1)
     args = parser.parse_args()
 
@@ -91,10 +96,16 @@ def parse():
         logger.setLevel(logging.INFO)
         logging.basicConfig(level=logging.INFO)
 
-    if args.parallelize > 0:
-        os.putenv("__CORE_NB__", str(args.cores))
-        os.putenv("__MVN_OPTS__", "--global-settings /code/maven_settings.xml -T " + str(args.cores))
-        os.putenv("__SBT_OPTS__", "-Dsbt.global.base=/home/.sbt -Dsbt.ivy.home=/home/.ivy2")
+    if args.procs > 0:
+        os.putenv(PROCS, str(args.procs))
+
+        if MVNOPTS in os.environ:
+            os.putenv(MVNOPTS, os.environ[MVNOPTS] + " -T " + str(args.procs))
+        else:
+            os.putenv(MVNOPTS, "-T " + str(args.procs))
+
+        if SBTOPTS in os.environ:
+            os.putenv(SBTOPTS, os.environ[SBTOPTS])
 
     return args
 

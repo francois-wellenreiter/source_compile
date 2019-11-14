@@ -6,7 +6,7 @@ tor:
   build:
     sh autogen.sh
     ./configure --disable-asciidoc
-    make -j$PROCS
+    make -j$__PROCS__
     make install
   clean:
     make distclean

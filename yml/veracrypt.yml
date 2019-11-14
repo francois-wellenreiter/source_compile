@@ -5,7 +5,7 @@ veracrypt:
   branch: master
   build:
     cd src
-    make -j$PROCS
+    make -j$__PROCS__
   clean:
     make distclean
  

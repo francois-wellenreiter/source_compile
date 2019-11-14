@@ -4,6 +4,6 @@ numactl:
   url: https://github.com/numactl/numactl.git
   branch: master
   build:
-    make -j$PROCS
+    make -j$__PROCS__
   clean:
     make distclean 

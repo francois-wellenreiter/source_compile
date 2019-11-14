@@ -6,6 +6,6 @@ libvirt:
   build:
     ./autogen.sh
     ./configure
-    make -j$PROCS 
+    make -j$__PROCS__ 
   clean:
     make distclean

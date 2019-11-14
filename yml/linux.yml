@@ -5,6 +5,6 @@ linux:
   branch: master
   build:
     make defconfig
-    make -j$PROCS
+    make -j$__PROCS__
   clean:
     make mrproper

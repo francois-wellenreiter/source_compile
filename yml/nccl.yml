@@ -4,6 +4,6 @@ nccl:
   url: https://github.com/NVIDIA/nccl.git
   branch: master
   build:
-    make -j$PROCS
+    make -j$__PROCS__
   clean:
     make distclean 

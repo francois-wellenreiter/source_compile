@@ -8,4 +8,4 @@ bitcoin:
   build:
     ./autogen.sh && \
     ./configure --with-incompatible-bdb --disable-wallet && \
-    make -j$PROCS
+    make -j$__PROCS__
