@@ -20,24 +20,30 @@ PROCS="__PROCS__"
 SBTOPTS="__SBT_OPTS__"
 MVNOPTS="__MVN_OPTS__"
 
+def progress(op_code, cur_count, max_count=None, message='', fn = None):
+    if fn is None:
+        logging.debug( 'Downloading : ( {} )\r'.format(message))
+    else:
+        logging.debug( 'Downloading for {}: ( {} )\r'.format(fn.__name__, message))
+
 def clone(k, v, args):
     logging.info("Cloning " + k)
     if not os.path.exists(os.path.join(args.target, v[DIR])):
-        repo = Repo.clone_from(v[URL], os.path.join(args.target, v[DIR]), branch = v[BRANCH])
-        repo.submodule_update(recursive = True, init = True)
+        repo = Repo.clone_from(v[URL], os.path.join(args.target, v[DIR]), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from))
+        repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update))
 
 def update(k, v, args):
     logging.info("Updating " + k)
     repo = Repo(os.path.join(args.target, v[DIR]))
-    repo.remotes.origin.pull()
-    repo.submodule_update(recursive = True, init = True)
+    repo.remotes.origin.pull(progress = partial(progress, fn = repo.remotes.origin.pull))
+    repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update))
 
 def clean(k, v, args):
     logging.info("Cleaning " + k)
     os.chdir(os.path.join(args.target, v[DIR]))
     if CLEAN in v:
         for cmd in v[CLEAN]:
-            logging.info("Executing " + cmd)
+            logging.debug("Executing " + cmd)
             os.system(cmd)
 
 def build(k, v, args):
@@ -45,7 +51,7 @@ def build(k, v, args):
     os.chdir(os.path.join(args.target, v[DIR]))
     if BUILD in v:
         for cmd in v[BUILD]:
-            logging.info("Executing " + cmd)
+            logging.debug("Executing " + cmd)
             os.system(cmd)
 
 def worker(data, args):
