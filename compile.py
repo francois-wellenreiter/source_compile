@@ -24,9 +24,9 @@ MVNOPTS="__MVN_OPTS__"
 
 def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""):
     if fn is None:
-        logging.debug( 'Downloading {} : ( {} )\r'.format(key, message))
+        logging.debug( 'Downloading {} : ( {} / {} )\r'.format(key, cur_count, max_count, message))
     else:
-        logging.debug( '{} for {}: ( {} )\r'.format(fn.__name__, key, message))
+        logging.debug( '{} for {}: ( {} / {} ) {}\r'.format(fn.__name__, key, cur_count, max_count, message))
 
 
 
