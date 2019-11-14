@@ -84,7 +84,7 @@ def clean(k, v, args):
         os.chdir(os.path.join(args.directory, v[DIR]))
         if CLEAN in v:
             for cmd in v[CLEAN]:
-                logging.debug("Executing {}".format(k))
+                logging.debug("Executing clean {}".format(k))
                 os.system(cmd)
 
 
@@ -95,7 +95,7 @@ def build(k, v, args):
         os.chdir(os.path.join(args.directory, v[DIR]))
         if BUILD in v:
             for cmd in v[BUILD]:
-                logging.debug("Executing " + cmd)
+                logging.debug("Executing build {}".format(cmd))
                 os.system(cmd)
 
 
