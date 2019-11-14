@@ -4,8 +4,8 @@ bitcoin:
   url: https://github.com/bitcoin/bitcoin.git
   branch: master
   clean:
-    - make distclean
+  - make distclean
   build:
-    - ./autogen.sh && \
-    - ./configure --with-incompatible-bdb --disable-wallet && \
-    - make -j$__PROCS__
+  - ./autogen.sh && \
+  - ./configure --with-incompatible-bdb --disable-wallet && \
+  - make -j$__PROCS__

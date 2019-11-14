@@ -4,6 +4,6 @@ scikit_learn:
   url: https://github.com/scikit-learn/scikit-learn.git
   branch: master
   build:
-    - python3 ./setup.py build_ext 
+  - python3 ./setup.py build_ext 
   clean:
-    - python3 ./setup.py clean 
+  - python3 ./setup.py clean 

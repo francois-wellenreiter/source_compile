@@ -4,7 +4,7 @@ qemu:
   url: https://git.qemu.org/git/qemu.git
   branch: master
   build:
-    - ./configure
-    - make -j$__PROCS__
+  - ./configure
+  - make -j$__PROCS__
   clean: 
-    - make distclean 
+  - make distclean 

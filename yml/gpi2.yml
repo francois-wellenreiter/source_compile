@@ -4,7 +4,7 @@ gpi2:
   url: https://github.com/cc-hpc-itwm/GPI-2.git
   branch: next
   build:
-    - make -j$__PROCS__
+  - make -j$__PROCS__
   clean:
-    - make distclean    
+  - make distclean    
 

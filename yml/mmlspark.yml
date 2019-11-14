@@ -4,4 +4,4 @@ mmlspark:
   url: https://github.com/Azure/mmlspark.git
   branch: master
   build:
-    - ./runme
+  - ./runme

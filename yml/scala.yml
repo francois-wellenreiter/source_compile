@@ -4,6 +4,6 @@ scala:
   url: https://github.com/scala/scala.git
   branch: 2.13.x
   build:
-    - sbt $__SBT_OPTS__ package 
+  - sbt $__SBT_OPTS__ package 
   clean:
-    - sbt $__SBT_OPTS__ clean 
+  - sbt $__SBT_OPTS__ clean 

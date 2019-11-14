@@ -4,6 +4,6 @@ sparkrdma:
   url: https://github.com/Mellanox/SparkRDMA.git
   branch: master
   build:
-    - ./build/mvn $__MVN_OPTS__ -DskipTests package -X 
+  - ./build/mvn $__MVN_OPTS__ -DskipTests package -X 
   clean:
-    - mvn clean 
+  - mvn clean 
