@@ -4,7 +4,7 @@ cpython:
   url: https://github.com/python/cpython.git
   branch: master
   build:
-    ./configure --enable-optimizations && \
-    make -j$__PROCS__
+    - ./configure --enable-optimizations && \
+    - make -j$__PROCS__
   clean:
-    make distclean  
+    - make distclean  

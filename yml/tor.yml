@@ -4,10 +4,10 @@ tor:
   url: https://git.torproject.org/tor.git
   branch: master
   build:
-    sh autogen.sh
-    ./configure --disable-asciidoc
-    make -j$__PROCS__
-    make install
+    - sh autogen.sh
+    - ./configure --disable-asciidoc
+    - make -j$__PROCS__
+    - make install
   clean:
-    make distclean
+    - make distclean
  

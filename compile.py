@@ -50,14 +50,15 @@ def build(k, v, args):
 
 def worker(data, args):
     for k, v in data.items():
-        if v[ENABLED]:
-            clone(k, v ,args)
-            if args.update:
-                update(k, v, args)
-            if args.clean:
-                clean(k, v, args)
-            if args.build:
-                build(k, v, args)
+        if args.source is None or k in args.source:
+            if v[ENABLED]:
+                clone(k, v ,args)
+                if args.update:
+                    update(k, v, args)
+                if args.clean:
+                    clean(k, v, args)
+                if args.build:
+                    build(k, v, args)
 
 def load_files(dir):
     for dirpath, dnames, fnames in os.walk(dir):
@@ -81,6 +82,7 @@ def parse():
     parser.add_argument("-v", "--verbose", action = "store_true")
     parser.add_argument("-d", "--dir", action = "store", default = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yml"))
     parser.add_argument("-t", "--target", action = "store", default = os.path.join(os.getenv("HOME"), "src"))
+    parser.add_argument("-s", "--source", action = "store", nargs="+")
     parser.add_argument("-c", "--clean", action = "store_true")
     parser.add_argument("-b", "--build", action = "store_true")
     parser.add_argument("-u", "--update", action = "store_true")

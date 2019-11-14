@@ -4,8 +4,8 @@ bazel:
   url: https://github.com/bazelbuild/bazel.git
   branch: master
   clean:
-    bazel clean
-    bazel shutdown
+    - bazel clean
+    - bazel shutdown
   build:
-    bazel build //src:bazel
-    bazel shutdown
+    - bazel build //src:bazel
+    - bazel shutdown
