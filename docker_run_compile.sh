@@ -2,13 +2,16 @@
 
 DOCKER=${DOCKER:-"/usr/bin/docker"}
 
-TOOLS=`dirname $0`
+TOOLS=${TOOLS:-$( dirname $( realpath $0 ))}
 
-CMDLINE_DOCKER_RUN="$CMDLINE_DOCKER_RUN \
+export __MVN_OPTS__="--global-settings /code/maven_settings.xml" 
+export __SBT_OPTS__="-Dsbt.global.base=/home/.sbt -Dsbt.ivy.home=/home/.ivy2"
+
+$DOCKER run \
     -it \
     --rm \
     -m 2G \
-    --privileged
+    --privileged \
     --ipc=host \
     -v $PWD:/work \
     -v $TOOLS:/code \
@@ -16,9 +19,8 @@ CMDLINE_DOCKER_RUN="$CMDLINE_DOCKER_RUN \
     -v /var/run/docker.sock:/var/run/docker.sock \
     -e USER=$USER \
     -e HOME=/home \
-    -e __MVN_OPTS__="--global-settings /code/maven_settings.xml" \
-    -e __SBT_OPTS__="-Dsbt.global.base=/home/.sbt -Dsbt.ivy.home=/home/.ivy2" \
+    -e __MVN_OPTS__ \
+    -e __SBT_OPTS__ \
     --user=`id -u`:`id -g` \
-    "
+    $@
 
-$DOCKER run -it $CMDLINE_DOCKER_RUN $@

@@ -61,7 +61,7 @@ rm -rf /var/cache/apt
 
 VOLUME ["/work"]
 WORKDIR /work
-CMD [ "bash","/code/compile.py" ]
+CMD [ "python3","/code/compile.py" ]
 
 
 
