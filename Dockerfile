@@ -41,9 +41,9 @@ chmod +x bazel-1.1.0-installer-linux-x86_64.sh  && \
 rm -f bazel-1.1.0-installer-linux-x86_64.sh
 
 RUN cd /tmp && \
-wget https://dl.bintray.com/sbt/debian/sbt-1.2.1.deb && \
-dpkg -i ./sbt-1.2.1.deb && \
-rm -f sbt-1.2.1.deb
+wget https://dl.bintray.com/sbt/debian/sbt-1.3.3.deb && \
+dpkg -i ./sbt-1.3.3.deb && \
+rm -f sbt-1.3.3.deb
 
 RUN cd /tmp && \
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
@@ -59,10 +59,13 @@ RUN apt-get -y autoremove && \
 apt-get autoclean && \
 rm -rf /var/cache/apt
 
+ENV __MVN_OPTS__="--global-settings /code/maven_settings.xml" 
+ENV __SBT_OPTS__="-Dsbt.global.base=/home/.sbt -Dsbt.ivy.home=/home/.ivy2"
+
 VOLUME ["/src"]
 WORKDIR /src
-CMD [ "python3","/code/compile.py" ]
 
+CMD [ "python3","/code/compile.py", "-U", "-B", "-C" ]
 
 
 

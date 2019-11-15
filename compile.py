@@ -32,7 +32,6 @@ def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""
 
 def clone(k, v, args):
     logging.info("Cloning {}".format(k))
-
     if not os.path.exists(os.path.join(args.directory, v[DIR])):
         try:
             repo = Repo.clone_from(v[URL], os.path.join(args.directory, v[DIR]), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
@@ -41,13 +40,14 @@ def clone(k, v, args):
         try:
             repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
         except Exception as err:
-            logging.warning("Error when updating submodules for {}, {}".format(k ,err))
+            logging.debug("Error when updating submodules for {}, {}".format(k ,err))
 
 
 
 def update(k, v, args):
     if args.update:
         logging.info("Updating {}".format(k))
+        os.chdir(os.path.join(args.directory, v[DIR]))
     
         try:
             repo = Repo(os.path.join(args.directory, v[DIR]))
@@ -74,7 +74,7 @@ def update(k, v, args):
         try:
             repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
         except Exception as err:
-            logging.warning("Error when updating submodules for {}, {}".format(k ,err))
+            logging.debug("Error when updating submodules for {}, {}".format(k ,err))
 
 
 
@@ -126,8 +126,14 @@ def load_files(dir):
 
 
 def parent(args):
-    with mp.Pool(processes = args.parallelize) as pool:
-        pool.map(partial(worker, args = args), load_files(args.configuration))
+    if args.list:
+        for d in load_files(args.configuration):
+            for k, v in d.items():
+                print("{}\t({}) - {}".format(k, "enabled" if ENABLED in v and v[ENABLED] else "disabled", v[URL]))
+
+    else:
+        with mp.Pool(processes = args.parallelize) as pool:
+            pool.map(partial(worker, args = args), load_files(args.configuration))
 
 
 
@@ -136,13 +142,14 @@ def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action = "store_true")
     parser.add_argument("-c", "--configuration", action = "store", default = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yml"))
-    parser.add_argument("-d", "--directory", action = "store", default = "/src")
+    parser.add_argument("-d", "--directory", action = "store", default = os.getcwd())
     parser.add_argument("-t", "--target", action = "store", nargs="+")
     parser.add_argument("-C", "--clean", action = "store_true")
     parser.add_argument("-B", "--build", action = "store_true")
     parser.add_argument("-U", "--update", action = "store_true")
     parser.add_argument("-p", "--procs", action = "store", type = int, default = 1)
     parser.add_argument("-P", "--parallelize", action = "store", type = int, default = 1)
+    parser.add_argument("-L", "--list", action = "store_true")
     args = parser.parse_args()
 
     logger = mp.log_to_stderr()
@@ -150,19 +157,16 @@ def parse():
         logger.setLevel(logging.DEBUG)
         logging.basicConfig(level=logging.DEBUG)
     else:
-        logger.setLevel(logging.INFO)
-        logging.basicConfig(level=logging.INFO)
+        logger.setLevel(logging.WARNING)
+        logging.basicConfig(level=logging.WARNING)
 
     if args.procs > 0:
-        os.putenv(PROCS, str(args.procs))
+        os.environ[PROCS] = str(args.procs)
 
         if MVNOPTS in os.environ:
-            os.putenv(MVNOPTS, os.environ[MVNOPTS] + " -T " + str(args.procs))
+            os.environ[MVNOPTS] = os.environ[MVNOPTS] + " -T " + str(args.procs)
         else:
-            os.putenv(MVNOPTS, "-T " + str(args.procs))
-
-        if SBTOPTS in os.environ:
-            os.putenv(SBTOPTS, os.environ[SBTOPTS])
+            os.environ[MVNOPTS] = "-T " + str(args.procs)
 
     return args
 
