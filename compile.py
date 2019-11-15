@@ -119,7 +119,7 @@ def load_files(dir):
                     try:
                         yield yaml.safe_load(h)
                     except yaml.YAMLError as exc:
-                        print("Error ", exc, "while loading ", f)
+                        logging.info("Error {} while loading {}".format(exc, f))
                         exit(0)
 
 
@@ -129,7 +129,7 @@ def parent(args):
     if args.list:
         for d in load_files(args.configuration):
             for k, v in d.items():
-                print("{}\t({}) - {}".format(k, "enabled" if ENABLED in v and v[ENABLED] else "disabled", v[URL]))
+                logging.debug("{}\t({}) - {}".format(k, "enabled" if ENABLED in v and v[ENABLED] else "disabled", v[URL]))
 
     else:
         with mp.Pool(processes = args.parallelize) as pool:
@@ -158,7 +158,7 @@ def parse():
         logging.basicConfig(level=logging.DEBUG)
     else:
         logger.setLevel(logging.WARNING)
-        logging.basicConfig(level=logging.WARNING)
+        logging.basicConfig(level=logging.INFO)
 
     if args.procs > 0:
         os.environ[PROCS] = str(args.procs)

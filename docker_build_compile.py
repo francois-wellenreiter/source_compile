@@ -16,10 +16,10 @@ BASE="base"
 DOCKER="_DOCKER_"
 
 def parent(args):
-    logging.info("building image : {}-{}".format(args.image, BASE))
+    logging.info("Building image : {}-{}".format(args.image, BASE))
     os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__))))
     os.system(args.docker + " build . -f Dockerfile -t " + args.image + "-" + BASE + " --target " + BASE)
-    logging.info("building image : {}-{}".format(args.image, CUDA))
+    logging.info("Building image : {}-{}".format(args.image, CUDA))
     os.system(args.docker + " build . -f Dockerfile -t " + args.image + "-" + CUDA + " --target " + CUDA)
 
 
