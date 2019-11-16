@@ -10,10 +10,7 @@ from functools import partial
 from git import Repo
 
 
-IMAGE="compile:latest"
-CUDA="cuda"
-BASE="base"
-DOCKER="_DOCKER_"
+IMAGE="compile:latest-base"
 
 def parent(args, params):
     logging.info("Running image : {}".format(args.image))
