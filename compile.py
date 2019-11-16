@@ -45,58 +45,55 @@ def clone(k, v, args):
 
 
 def update(k, v, args):
-    if args.update:
-        logging.info("Updating {}".format(k))
-        os.chdir(os.path.join(args.directory, v[DIR]))
+    logging.info("Updating {}".format(k))
+    os.chdir(os.path.join(args.directory, v[DIR]))
     
-        try:
-            repo = Repo(os.path.join(args.directory, v[DIR]))
-        except Exception as err:
-            logging.warning("Error no repository found for {}, {}".format(k ,err))
+    try:
+        repo = Repo(os.path.join(args.directory, v[DIR]))
+    except Exception as err:
+        logging.warning("Error no repository found for {}, {}".format(k ,err))
 
-        if args.clean:
-            try:
-                repo.head.reset(index=True, working_tree=True)
-            except Exception as err:
-                logging.warning("Error when resetting {}, {}".format(k ,err))
-    
-            try:
-                repo.git.gc()
-            except Exception as err:
-                logging.warning("Error when compressing git repository {}, {}".format(k ,err))
-    
-    
+    if args.clean:
         try:
-            repo.remotes.origin.pull(progress = partial(progress, fn = repo.remotes.origin.pull, key = k))
+            repo.head.reset(index=True, working_tree=True)
         except Exception as err:
-            logging.warning("Error when pulling {}, {}".format(k ,err))
-    
+            logging.warning("Error when resetting {}, {}".format(k ,err))
+
         try:
-            repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
+            repo.git.gc()
         except Exception as err:
-            logging.debug("Error when updating submodules for {}, {}".format(k ,err))
+            logging.warning("Error when compressing git repository {}, {}".format(k ,err))
+
+
+    try:
+        repo.remotes.origin.pull(progress = partial(progress, fn = repo.remotes.origin.pull, key = k))
+    except Exception as err:
+        logging.warning("Error when pulling {}, {}".format(k ,err))
+
+    try:
+        repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
+    except Exception as err:
+        logging.debug("Error when updating submodules for {}, {}".format(k ,err))
 
 
 
 def clean(k, v, args):
-    if args.clean:
-        logging.info("Cleaning {}".format(k))
-        os.chdir(os.path.join(args.directory, v[DIR]))
-        if CLEAN in v:
-            for cmd in v[CLEAN]:
-                logging.debug("Executing clean {}".format(k))
-                os.system(cmd)
+    logging.info("Cleaning {}".format(k))
+    os.chdir(os.path.join(args.directory, v[DIR]))
+    if CLEAN in v:
+        for cmd in v[CLEAN]:
+            logging.debug("Executing clean {}".format(k))
+            os.system(cmd)
 
 
 
 def build(k, v, args):
-    if args.build:
-        logging.info("Building {}".format(k))
-        os.chdir(os.path.join(args.directory, v[DIR]))
-        if BUILD in v:
-            for cmd in v[BUILD]:
-                logging.debug("Executing build {}".format(cmd))
-                os.system(cmd)
+    logging.info("Building {}".format(k))
+    os.chdir(os.path.join(args.directory, v[DIR]))
+    if BUILD in v:
+        for cmd in v[BUILD]:
+            logging.debug("Executing build {}".format(cmd))
+            os.system(cmd)
 
 
 
@@ -105,9 +102,14 @@ def worker(data, args):
         if args.target is None or k in args.target:
             if v[ENABLED]:
                 clone(k, v ,args)
-                update(k, v, args)
-                clean(k, v, args)
-                build(k, v, args)
+                if args.update:
+                    update(k, v, args)
+                if args.clean:
+                    clean(k, v, args)
+                if args.build:
+                    build(k, v, args)
+            return True
+    return False
 
 
 
@@ -123,17 +125,22 @@ def load_files(dir):
                         exit(0)
 
 
+def print_list(args):
+    for d in load_files(args.configuration):
+        for k, v in d.items():
+            logging.info("{}\t({}) - {}".format(k, "enabled" if ENABLED in v and v[ENABLED] else "disabled", v[URL]))
 
 
 def parent(args):
     if args.list:
-        for d in load_files(args.configuration):
-            for k, v in d.items():
-                logging.debug("{}\t({}) - {}".format(k, "enabled" if ENABLED in v and v[ENABLED] else "disabled", v[URL]))
-
+        print_list(args)
     else:
+        res = list()
         with mp.Pool(processes = args.parallelize) as pool:
-            pool.map(partial(worker, args = args), load_files(args.configuration))
+            res = pool.map(partial(worker, args = args), load_files(args.configuration))
+        if True not in res:
+            logging.warning("One of the targets was not in the following list")
+            print_list(args)
 
 
 
