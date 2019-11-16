@@ -18,9 +18,11 @@ DOCKER="_DOCKER_"
 def parent(args):
     logging.info("Building image : {}-{}".format(args.image, BASE))
     os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__))))
+    logging.debug("{} build . --rm -f Dockerfile -t {}-{} --target {})".format(args.docker, args.image, BASE, BASE))
     os.system(args.docker + " build . --rm -f Dockerfile -t " + args.image + "-" + BASE + " --target " + BASE)
     if args.cuda:
         logging.info("Building image : {}-{}".format(args.image, CUDA))
+        logging.debug("{} build . --rm -f Dockerfile -t {}-{} --target {})".format(args.docker, args.image, CUDA, CUDA))
         os.system(args.docker + " build . --rm -f Dockerfile -t " + args.image + "-" + CUDA + " --target " + CUDA)
 
 

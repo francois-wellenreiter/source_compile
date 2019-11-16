@@ -14,6 +14,19 @@ IMAGE="compile:latest-base"
 
 def parent(args, params):
     logging.info("Running image : {}".format(args.image))
+    logging.debug("{} run -it --rm --privileged" 
+        " --user={}:{}"
+        " -v /var/run/docker.sock:/var/run/docker.sock"
+        " -v {}:/src"
+        " -v {}:/code"
+        " -v {}:/home"
+        " -e HOME=/home"
+        " -e USER={}"
+        " {} python3 /code/compile.py{} {}"
+        .format(args.docker, str(os.getuid()), str(os.getgid()), os.getcwd(), 
+        os.path.join(os.path.dirname(os.path.abspath(__file__))), os.environ["HOME"], 
+        os.getlogin(), args.image, 
+        " -v" if args.verbose else "", ' '.join(map(str, params))))
     os.system(args.docker + " run -it --rm --privileged" +
         " --user=" + str(os.getuid()) + ":" + str(os.getgid()) +
         " -v /var/run/docker.sock:/var/run/docker.sock" +
@@ -24,6 +37,7 @@ def parent(args, params):
         " -e USER=" + os.getlogin() +
         " " + args.image + 
         " python3 /code/compile.py" +
+        (" -v" if args.verbose else "") +
         " " + ' '.join(map(str, params)))
 
 def parse():

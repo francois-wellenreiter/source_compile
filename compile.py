@@ -7,6 +7,7 @@ import multiprocessing as mp
 import logging
 import os, sys
 from functools import partial
+from functools import reduce
 from git import Repo
 
 DIR="dir"
@@ -108,8 +109,6 @@ def worker(data, args):
                     clean(k, v, args)
                 if args.build:
                     build(k, v, args)
-            return True
-    return False
 
 
 
@@ -128,21 +127,15 @@ def load_files(dir):
 def print_list(args):
     for d in load_files(args.configuration):
         for k, v in d.items():
-            logging.info("{}\t({}) - {}".format(k, "enabled" if ENABLED in v and v[ENABLED] else "disabled", v[URL]))
+            logging.warning("{}\t({}) - {}".format(k, "enabled" if ENABLED in v and v[ENABLED] else "disabled", v[URL]))
 
 
 def parent(args):
     if args.list:
         print_list(args)
     else:
-        res = list()
         with mp.Pool(processes = args.parallelize) as pool:
             res = pool.map(partial(worker, args = args), load_files(args.configuration))
-        if True not in res:
-            logging.warning("One of the targets was not in the following list")
-            print_list(args)
-
-
 
 
 def parse():
