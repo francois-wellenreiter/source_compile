@@ -7,7 +7,6 @@ import multiprocessing as mp
 import logging
 import os, sys
 from functools import partial
-from functools import reduce
 from git import Repo
 
 DIR="dir"
