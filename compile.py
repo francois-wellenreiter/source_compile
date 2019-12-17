@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 import yaml
-import re
 import argparse
 import multiprocessing as mp
 import logging
