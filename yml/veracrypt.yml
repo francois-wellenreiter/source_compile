@@ -4,8 +4,7 @@ veracrypt:
   url: https://github.com/veracrypt/VeraCrypt.git
   branch: master
   build:
-  - cd src
-  - make -j$__PROCS__
+  - cd src ; make -j$__PROCS__ ; cd ..
   clean:
-  - make distclean
+  - cd src ; make distclean ; cd ..
  

@@ -4,10 +4,6 @@ go:
   url: https://github.com/golang/go.git
   branch: master
   build:
-  - cd src
-  - ./make.bash --no-clean
-  - cd ..
+  - cd src ; ./make.bash --no-clean ; cd ..
   clean:
-  - cd src
-  - go clean
-  - cd ..
+  - cd src ; go clean ; cd ..
