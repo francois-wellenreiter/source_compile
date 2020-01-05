@@ -8,7 +8,6 @@ import os, sys
 from functools import partial
 from git import Repo
 
-DIR="dir"
 ENABLED="enabled"
 URL="url"
 BRANCH="branch"
@@ -31,9 +30,9 @@ def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""
 
 def clone(k, v, args):
     logging.info("Cloning {}".format(k))
-    if not os.path.exists(os.path.join(args.directory, v[DIR])):
+    if not os.path.exists(os.path.join(args.directory, k)):
         try:
-            repo = Repo.clone_from(v[URL], os.path.join(args.directory, v[DIR]), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
+            repo = Repo.clone_from(v[URL], os.path.join(args.directory, k), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
         except Exception as err:
             logging.warning("Error when cloning {}, {}".format(k ,err))
         try:
@@ -45,10 +44,10 @@ def clone(k, v, args):
 
 def update(k, v, args):
     logging.info("Updating {}".format(k))
-    os.chdir(os.path.join(args.directory, v[DIR]))
+    os.chdir(os.path.join(args.directory, k))
     
     try:
-        repo = Repo(os.path.join(args.directory, v[DIR]))
+        repo = Repo(os.path.join(args.directory, k))
     except Exception as err:
         logging.warning("Error no repository found for {}, {}".format(k ,err))
 
@@ -78,7 +77,7 @@ def update(k, v, args):
 
 def clean(k, v, args):
     logging.info("Cleaning {}".format(k))
-    os.chdir(os.path.join(args.directory, v[DIR]))
+    os.chdir(os.path.join(args.directory, k))
     if CLEAN in v:
         for cmd in v[CLEAN]:
             logging.debug("Executing clean {}".format(k))
@@ -88,7 +87,7 @@ def clean(k, v, args):
 
 def build(k, v, args):
     logging.info("Building {}".format(k))
-    os.chdir(os.path.join(args.directory, v[DIR]))
+    os.chdir(os.path.join(args.directory, k))
     if BUILD in v:
         for cmd in v[BUILD]:
             logging.debug("Executing build {}".format(cmd))

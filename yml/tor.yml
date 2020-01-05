@@ -1,5 +1,4 @@
 tor:
-  dir: tor
   enabled: true
   url: https://git.torproject.org/tor.git
   branch: master

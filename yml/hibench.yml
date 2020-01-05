@@ -1,5 +1,4 @@
 hibench:
-  dir: hibench
   enabled: true
   url: https://github.com/intel-hadoop/HiBench.git
   branch: master

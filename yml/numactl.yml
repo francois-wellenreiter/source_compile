@@ -1,5 +1,4 @@
 numactl:
-  dir: numactl
   enabled: true
   url: https://github.com/numactl/numactl.git
   branch: master

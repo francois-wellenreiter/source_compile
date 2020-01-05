@@ -1,5 +1,4 @@
 numba:
-  dir: numba
   enabled: true
   url: https://github.com/numba/numba.git
   branch: master

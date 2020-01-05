@@ -1,5 +1,4 @@
 julia:
-  dir: julia
   enabled: true
   url: https://github.com/JuliaLang/julia.git
   branch: master

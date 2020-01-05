@@ -1,5 +1,4 @@
 tlaplus:
-  dir: tlaplus
   enabled: true
   url: https://github.com/tlaplus/tlaplus.git
   branch: master

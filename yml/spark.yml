@@ -1,5 +1,4 @@
 spark:
-  dir: spark
   enabled: true
   url: https://github.com/apache/spark.git
   branch: master

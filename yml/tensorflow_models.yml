@@ -1,5 +1,4 @@
 tensorflow_models:
-  dir: tensorflow_models
   enabled: true
   url: https://github.com/tensorflow/models.git
   branch: master

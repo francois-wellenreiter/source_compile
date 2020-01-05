@@ -1,5 +1,4 @@
 pytorch:
-  dir: pytorch
   enabled: true
   url: https://github.com/pytorch/pytorch.git
   branch: master

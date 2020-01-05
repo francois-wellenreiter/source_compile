@@ -1,5 +1,4 @@
 go:
-  dir: go
   enabled: true
   url: https://github.com/golang/go.git
   branch: master

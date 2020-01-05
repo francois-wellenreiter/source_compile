@@ -1,5 +1,4 @@
 mxnet:
-  dir: mxnet
   enabled: true
   url: https://github.com/apache/incubator-mxnet
   branch: master

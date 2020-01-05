@@ -1,5 +1,4 @@
 arrow:
-  dir: arrow
   enabled: true
   url: https://github.com/apache/arrow.git
   branch: master

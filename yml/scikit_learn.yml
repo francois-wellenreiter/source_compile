@@ -1,5 +1,4 @@
 scikit_learn:
-  dir: scikit_learn
   enabled: true
   url: https://github.com/scikit-learn/scikit-learn.git
   branch: master

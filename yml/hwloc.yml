@@ -1,5 +1,4 @@
 hwloc:
-  dir: hwloc
   enabled: true
   url: https://github.com/open-mpi/hwloc.git
   branch: master

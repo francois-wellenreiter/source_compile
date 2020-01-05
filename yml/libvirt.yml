@@ -1,5 +1,4 @@
 libvirt:
-  dir: libvirt
   enabled: true
   url: https://github.com/libvirt/libvirt.git
   branch: master

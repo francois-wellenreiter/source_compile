@@ -1,5 +1,4 @@
 mlperf_training_policies:
-  dir: mlperf_training_policies
   enabled: true
   url: https://github.com/mlperf/training_policies.git
   branch: master

@@ -1,5 +1,4 @@
 graphcore:
-  dir: graphcore_examples
   enabled: true
   url: https://github.com/graphcore/examples.git
   branch: master

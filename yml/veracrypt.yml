@@ -1,5 +1,4 @@
 veracrypt:
-  dir: veracrypt
   enabled: true
   url: https://github.com/veracrypt/VeraCrypt.git
   branch: master

@@ -1,5 +1,4 @@
 docker_stacks:
-  dir: docker_stacks
   enabled: true
   url: https://github.com/jupyter/docker-stacks.git
   branch: master

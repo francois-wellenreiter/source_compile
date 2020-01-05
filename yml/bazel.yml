@@ -1,5 +1,4 @@
 bazel:
-  dir: bazel
   enabled: true
   url: https://github.com/bazelbuild/bazel.git
   branch: master

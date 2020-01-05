@@ -1,5 +1,4 @@
 horovod:
-  dir: horovod
   enabled: true
   url: https://github.com/horovod/horovod.git
   branch: master

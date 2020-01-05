@@ -1,5 +1,4 @@
 scala:
-  dir: scala
   enabled: true
   url: https://github.com/scala/scala.git
   branch: 2.13.x

@@ -1,5 +1,4 @@
 projectq:
-  dir: projectq
   enabled: true
   url: https://github.com/ProjectQ-Framework/ProjectQ.git
   branch: master

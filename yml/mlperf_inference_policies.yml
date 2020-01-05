@@ -1,5 +1,4 @@
 mlperf_inference_policies:
-  dir: mlperf_inference_policies
   enabled: true
   url: https://github.com/mlperf/inference_policies.git
   branch: master

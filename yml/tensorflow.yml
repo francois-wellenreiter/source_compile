@@ -1,5 +1,4 @@
 tensorflow:
-  dir: tensorflow
   enabled: true
   url: https://github.com/tensorflow/tensorflow.git
   branch: master

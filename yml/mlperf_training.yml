@@ -1,5 +1,4 @@
 mlperf_training:
-  dir: mlperf_training
   enabled: true
   url: https://github.com/mlperf/training.git
   branch: master

@@ -1,5 +1,4 @@
 bitcoin:
-  dir: bitcoin
   enabled: true
   url: https://github.com/bitcoin/bitcoin.git
   branch: master

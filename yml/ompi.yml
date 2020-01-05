@@ -1,5 +1,4 @@
 ompi:
-  dir: ompi
   enabled: true
   url: https://github.com/open-mpi/ompi.git
   branch: master

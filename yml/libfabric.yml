@@ -1,5 +1,4 @@
 libfabric:
-  dir: libfabric
   enabled: true
   url: https://github.com/ofiwg/libfabric.git
   branch: master

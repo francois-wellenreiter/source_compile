@@ -1,5 +1,4 @@
 cpython:
-  dir: cpython
   enabled: true
   url: https://github.com/python/cpython.git
   branch: master
