@@ -32,7 +32,8 @@ python-pip python-six \
 python3-pip \
 python3-git \
 python3-numpy python3-scipy  \
-openjdk-8-jdk maven
+openjdk-8-jdk maven \
+libmpfr-dev libmpc-dev libgmp-dev
 
 RUN cd /tmp && \
 wget https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh && \
