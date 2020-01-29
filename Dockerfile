@@ -8,32 +8,27 @@ LABEL maintainer Francois WELLENREITER wellen@free.fr \
 
 USER root
 
-RUN apt-get update && \
-apt-get -y dist-upgrade && \
-apt-get -y install libnss-wrapper locales \
-tar bzip2 zip unzip ca-certificates wget curl \
-software-properties-common apt-transport-https \
-pkg-config g++ zlib1g-dev bison flex libgnutls28-dev \
-libelf-dev bc libssl-dev libpixman-1-dev \
-htop iotop iftop sysstat \
-build-essential automake autoconf libtool cmake git bsdmainutils \
-clang-tidy clang-format libboost-all-dev libboost-dev \
-golang \
-xsltproc libnl-3-dev \
-libevent-dev \
-gtk-doc-tools \
-linuxbrew-wrapper \
-libxml2-utils \
-qtbase5-dev qtbase5-dev-tools \
-flake8 \
-libglib2.0-dev \
-yasm libfuse-dev libwxbase3.0-dev \
-python-pip python-six \
-python3-pip \
-python3-git \
-python3-numpy python3-scipy  \
-openjdk-8-jdk maven \
-libmpfr-dev libmpc-dev libgmp-dev
+RUN apt-get update
+RUN apt-get -y dist-upgrade
+RUN apt-get -y install libnss-wrapper locales
+RUN apt-get -y install tar bzip2 zip unzip ca-certificates wget curl
+RUN apt-get -y install software-properties-common apt-transport-https
+RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev
+RUN apt-get -y install libelf-dev bc libssl-dev libpixman-1-dev
+RUN apt-get -y install htop iotop iftop sysstat
+RUN apt-get -y install build-essential automake autoconf libtool cmake git bsdmainutils
+RUN apt-get -y install libmpfr-dev libmpc-dev libgmp-dev
+RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev
+RUN apt-get -y install xsltproc libnl-3-dev libevent-dev
+RUN apt-get -y install gtk-doc-tools linuxbrew-wrapper libxml2-utils
+RUN apt-get -y install qtbase5-dev qtbase5-dev-tools flake8
+RUN apt-get -y install libglib2.0-dev
+RUN apt-get -y install yasm libfuse-dev libwxbase3.0-dev
+RUN apt-get -y install python-pip python-six
+RUN apt-get -y install python3-pip python3-git
+RUN apt-get -y install python3-numpy python3-scipy
+RUN apt-get -y install openjdk-8-jdk maven
+RUN apt-get -y install golang
 
 RUN cd /tmp && \
 wget https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh && \
