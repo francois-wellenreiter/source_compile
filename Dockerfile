@@ -1,12 +1,13 @@
 
 
-FROM ${DOCKER_REGISTRY}ubuntu:18.04 AS base
+FROM ${DOCKER_REGISTRY}ubuntu:19.10 AS base
 
 
 LABEL maintainer Francois WELLENREITER wellen@free.fr \
       description="Optimized for compilation"
 
 USER root
+WORKDIR /tmp
 
 RUN apt-get update
 RUN apt-get -y dist-upgrade
@@ -30,30 +31,29 @@ RUN apt-get -y install python3-numpy python3-scipy
 RUN apt-get -y install openjdk-8-jdk maven
 RUN apt-get -y install golang
 
-RUN cd /tmp && \
-wget https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh && \
-chmod +x bazel-1.1.0-installer-linux-x86_64.sh  && \
-./bazel-1.1.0-installer-linux-x86_64.sh && \
-rm -f bazel-1.1.0-installer-linux-x86_64.sh
+RUN wget https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh
+RUN chmod +x bazel-1.1.0-installer-linux-x86_64.sh
+RUN ./bazel-1.1.0-installer-linux-x86_64.sh
+RUN rm -f bazel-1.1.0-installer-linux-x86_64.sh
 
-RUN cd /tmp && \
-wget https://dl.bintray.com/sbt/debian/sbt-1.3.3.deb && \
-dpkg -i ./sbt-1.3.3.deb && \
-rm -f sbt-1.3.3.deb
+RUN wget https://dl.bintray.com/sbt/debian/sbt-1.3.3.deb
+RUN dpkg -i ./sbt-1.3.3.deb
+RUN rm -f sbt-1.3.3.deb
 
-RUN cd /tmp && \
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
-add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) nightly" && \
-apt-get update && \
-apt-get -y install docker-ce
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - 
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) nightly"
+RUN apt-get update
+RUN apt-get -y install docker-ce
 
-RUN pip3 install --upgrade setuptools \
-        scikit-build cmake cffi typing \
-        pyyaml networkx future pytest pybind11 requests
+RUN pip3 install --upgrade setuptools cmake cffi typing
+RUN pip3 install --upgrade scikit-build
+RUN pip3 install --upgrade pyyaml networkx future pytest pybind11 requests
 
-RUN apt-get -y autoremove && \
-apt-get autoclean && \
-rm -rf /var/cache/apt
+FROM base AS libc
+
+RUN apt-get -y autoremove
+RUN apt-get autoclean
+RUN rm -rf /var/cache/apt
 
 ENV __MVN_OPTS__="--global-settings /code/maven_settings.xml" 
 ENV __SBT_OPTS__="-Dsbt.global.base=/home/.sbt -Dsbt.ivy.home=/home/.ivy2"
@@ -73,13 +73,21 @@ LABEL maintainer Francois WELLENREITER wellen@free.fr \
 
 ENV _COMPILE_FOR_CUDA_ 1
 
-RUN cd /tmp && \
-wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1810/x86_64/cuda-repo-ubuntu1810_10.1.168-1_amd64.deb && \
-apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub && \
-add-apt-repository "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/ /" && \
-apt-get update && \
-apt-get -y install cuda
+RUN wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1810/x86_64/cuda-repo-ubuntu1810_10.1.168-1_amd64.deb
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/7fa2af80.pub
+RUN add-apt-repository "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1804/x86_64/ /"
+RUN apt-get update
+
+RUN apt-get -y install cuda
+
+RUN apt-get -y autoremove
+RUN apt-get autoclean
+RUN rm -rf /var/cache/apt
 
 
+VOLUME ["/src"]
+WORKDIR /src
+
+CMD [ "python3","/code/compile.py", "-U", "-B", "-C" ]
 
 

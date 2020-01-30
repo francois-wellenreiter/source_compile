@@ -7,14 +7,14 @@ import os, sys
 
 IMAGE="compile:latest"
 CUDA="cuda"
-BASE="base"
+LIBC="libc"
 DOCKER="_DOCKER_"
 
 def parent(args):
-    logging.info("Building image : {}-{}".format(args.image, BASE))
+    logging.info("Building image : {}-{}".format(args.image, LIBC))
     os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__))))
-    logging.debug("{} build . --rm -f Dockerfile -t {}-{} --target {})".format(args.docker, args.image, BASE, BASE))
-    os.system(args.docker + " build . --rm -f Dockerfile -t " + args.image + "-" + BASE + " --target " + BASE)
+    logging.debug("{} build . --rm -f Dockerfile -t {}-{} --target {})".format(args.docker, args.image, LIBC, LIBC))
+    os.system(args.docker + " build . --rm -f Dockerfile -t " + args.image + "-" + LIBC + " --target " + LIBC)
     if args.cuda:
         logging.info("Building image : {}-{}".format(args.image, CUDA))
         logging.debug("{} build . --rm -f Dockerfile -t {}-{} --target {})".format(args.docker, args.image, CUDA, CUDA))
