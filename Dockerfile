@@ -11,25 +11,37 @@ WORKDIR /tmp
 
 RUN apt-get update
 RUN apt-get -y dist-upgrade
+
+RUN apt-get -y install htop iotop iftop sysstat
+
 RUN apt-get -y install libnss-wrapper locales
 RUN apt-get -y install tar bzip2 zip unzip ca-certificates wget curl
 RUN apt-get -y install software-properties-common apt-transport-https
+
 RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev
 RUN apt-get -y install libelf-dev bc libssl-dev libpixman-1-dev
-RUN apt-get -y install htop iotop iftop sysstat
 RUN apt-get -y install build-essential automake autoconf libtool cmake git bsdmainutils
-RUN apt-get -y install libmpfr-dev libmpc-dev libgmp-dev
+
 RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev
+RUN apt-get -y install libmpfr-dev libmpc-dev libgmp-dev
 RUN apt-get -y install xsltproc libnl-3-dev libevent-dev
+
 RUN apt-get -y install gtk-doc-tools linuxbrew-wrapper libxml2-utils
 RUN apt-get -y install qtbase5-dev qtbase5-dev-tools flake8
+
 RUN apt-get -y install libglib2.0-dev
 RUN apt-get -y install yasm libfuse-dev libwxbase3.0-dev
+
 RUN apt-get -y install python-pip python-six
 RUN apt-get -y install python3-pip python3-git
 RUN apt-get -y install python3-numpy python3-scipy
-RUN apt-get -y install maven
+
 RUN apt-get -y install golang
+
+RUN apt-get -y install maven
+ENV __MVN_OPTS__="--global-settings /code/maven_settings.xml" 
+ENV __SBT_OPTS__="-Dsbt.global.base=/home/.sbt -Dsbt.ivy.home=/home/.ivy2"
+
 
 RUN wget https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh
 RUN chmod +x bazel-1.1.0-installer-linux-x86_64.sh
@@ -53,10 +65,7 @@ FROM base AS libc
 
 RUN apt-get -y autoremove
 RUN apt-get autoclean
-RUN rm -rf /var/cache/apt
-
-ENV __MVN_OPTS__="--global-settings /code/maven_settings.xml" 
-ENV __SBT_OPTS__="-Dsbt.global.base=/home/.sbt -Dsbt.ivy.home=/home/.ivy2"
+RUN rm -rf /var/cache/apt /var/lib/apt
 
 VOLUME ["/src"]
 WORKDIR /src
@@ -82,7 +91,7 @@ RUN apt-get -y install cuda
 
 RUN apt-get -y autoremove
 RUN apt-get autoclean
-RUN rm -rf /var/cache/apt
+RUN rm -rf /var/cache/apt /var/lib/apt
 
 
 VOLUME ["/src"]
