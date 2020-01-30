@@ -11,7 +11,6 @@ IMAGE="compile:latest-libc"
 def parent(args, params):
     logging.info("Running image : {}".format(args.image))
     logging.debug("{} run -it --rm --privileged" 
-        " --user={}:{}"
         " -v /var/run/docker.sock:/var/run/docker.sock"
         " -v {}:/src"
         " -v {}:/code"
@@ -24,7 +23,6 @@ def parent(args, params):
         os.getlogin(), args.image, 
         " -v" if args.verbose else "", ' '.join(map(str, params))))
     os.system(args.docker + " run -it --rm --privileged" +
-        " --user=" + str(os.getuid()) + ":" + str(os.getgid()) +
         " -v /var/run/docker.sock:/var/run/docker.sock" +
         " -v " + os.getcwd() + ":/src" +
         " -v " + os.path.join(os.path.dirname(os.path.abspath(__file__))) + ":/code" +
