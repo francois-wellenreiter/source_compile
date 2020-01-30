@@ -1,4 +1,0 @@
-cuml:
-  enabled: false
-  url: https://github.com/rapidsai/cuml.git
-  branch: master
