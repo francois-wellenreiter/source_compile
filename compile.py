@@ -34,7 +34,7 @@ def clone(k, v, args):
         try:
             repo = Repo.clone_from(v[URL], os.path.join(args.directory, k), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
         except Exception as err:
-            logging.warning("Error when cloning {}, {}".format(k ,err))
+            logging.error("Error when cloning {}, {}".format(k ,err))
         try:
             repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
         except Exception as err:
@@ -45,28 +45,28 @@ def clone(k, v, args):
 def update(k, v, args):
     logging.info("Updating {}".format(k))
     os.chdir(os.path.join(args.directory, k))
-    
+
     try:
         repo = Repo(os.path.join(args.directory, k))
     except Exception as err:
-        logging.warning("Error no repository found for {}, {}".format(k ,err))
+        logging.error("Error no repository found for {}, {}".format(k ,err))
 
     if args.clean:
         try:
             repo.head.reset(index=True, working_tree=True)
         except Exception as err:
-            logging.warning("Error when resetting {}, {}".format(k ,err))
+            logging.error("Error when resetting {}, {}".format(k ,err))
 
         try:
             repo.git.gc()
         except Exception as err:
-            logging.warning("Error when compressing git repository {}, {}".format(k ,err))
+            logging.error("Error when compressing git repository {}, {}".format(k ,err))
 
 
     try:
         repo.remotes.origin.pull(progress = partial(progress, fn = repo.remotes.origin.pull, key = k))
     except Exception as err:
-        logging.warning("Error when pulling {}, {}".format(k ,err))
+        logging.error("Error when pulling {}, {}".format(k ,err))
 
     try:
         repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
@@ -99,6 +99,7 @@ def worker(data, args):
     for k, v in data.items():
         if args.target is None or k in args.target:
             if v[ENABLED]:
+                print("Managing {}".format(k))
                 clone(k, v ,args)
                 if args.update:
                     update(k, v, args)
@@ -122,9 +123,12 @@ def load_files(dir):
 
 
 def print_list(args):
+    sd = dict()
     for d in load_files(args.configuration):
-        for k, v in d.items():
-            logging.warning("{}\t({}) - {}".format(k, "enabled" if ENABLED in v and v[ENABLED] else "disabled", v[URL]))
+        sd.update(d)
+
+    for k, v in sorted(sd.items()):
+        print("{} {}\t{}".format("+" if ENABLED in v and v[ENABLED] else "X", k, v[URL]))
 
 
 def parent(args):
@@ -138,6 +142,7 @@ def parent(args):
 def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action = "store_true")
+    parser.add_argument("-l", "--loglevel", action = "store", type = int, default = logging.ERROR)
     parser.add_argument("-c", "--configuration", action = "store", default = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yml"))
     parser.add_argument("-d", "--directory", action = "store", default = os.getcwd())
     parser.add_argument("-t", "--target", action = "store", nargs="+")
@@ -154,8 +159,8 @@ def parse():
         logger.setLevel(logging.DEBUG)
         logging.basicConfig(level=logging.DEBUG)
     else:
-        logger.setLevel(logging.WARNING)
-        logging.basicConfig(level=logging.INFO)
+        logger.setLevel(args.loglevel)
+        logging.basicConfig(level=args.loglevel)
 
     if args.procs > 0:
         os.environ[PROCS] = str(args.procs)
