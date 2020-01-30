@@ -1,5 +1,5 @@
 sparkrdma:
-  enabled: true
+  enabled: false
   url: https://github.com/Mellanox/SparkRDMA.git
   branch: master
   build:

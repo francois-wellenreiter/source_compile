@@ -1,5 +1,5 @@
 scala:
-  enabled: true
+  enabled: false
   url: https://github.com/scala/scala.git
   branch: 2.13.x
   build:

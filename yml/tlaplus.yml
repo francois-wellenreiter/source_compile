@@ -1,5 +1,5 @@
 tlaplus:
-  enabled: true
+  enabled: false
   url: https://github.com/tlaplus/tlaplus.git
   branch: master
   build:

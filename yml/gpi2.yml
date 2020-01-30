@@ -1,5 +1,5 @@
 gpi2:
-  enabled: true
+  enabled: false
   url: https://github.com/cc-hpc-itwm/GPI-2.git
   branch: next
   build:

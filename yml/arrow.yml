@@ -1,5 +1,5 @@
 arrow:
-  enabled: true
+  enabled: false
   url: https://github.com/apache/arrow.git
   branch: master
   clean:

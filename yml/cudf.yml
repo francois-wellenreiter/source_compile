@@ -1,4 +1,4 @@
 cudf:
-  enabled: true
+  enabled: false
   url: https://github.com/rapidsai/cudf.git
   branch: master

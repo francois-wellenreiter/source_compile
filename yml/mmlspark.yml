@@ -1,5 +1,5 @@
 mmlspark:
-  enabled: true
+  enabled: false
   url: https://github.com/Azure/mmlspark.git
   branch: master
   build:

@@ -1,4 +1,0 @@
-mlperf_community:
-  enabled: true
-  url: https://github.com/mlperf/community.git
-  branch: master

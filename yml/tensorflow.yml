@@ -1,3 +1,13 @@
+tensorflow_benchmarks:
+  enabled: true
+  url: https://github.com/tensorflow/benchmarks.git
+  branch: master
+
+tensorflow_models:
+  enabled: true
+  url: https://github.com/tensorflow/models.git
+  branch: master
+
 tensorflow:
   enabled: true
   url: https://github.com/tensorflow/tensorflow.git

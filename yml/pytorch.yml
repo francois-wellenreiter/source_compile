@@ -1,5 +1,5 @@
 pytorch:
-  enabled: true
+  enabled: false
   url: https://github.com/pytorch/pytorch.git
   branch: master
   build:

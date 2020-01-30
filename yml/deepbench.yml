@@ -1,4 +1,4 @@
 deepbench:
-  enabled: true
+  enabled: false
   url: https://github.com/baidu-research/DeepBench.git
   branch: master

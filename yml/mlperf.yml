@@ -1,0 +1,29 @@
+mlperf_community:
+  enabled: true
+  url: https://github.com/mlperf/community.git
+  branch: master
+
+mlperf_inference_policies:
+  enabled: true
+  url: https://github.com/mlperf/inference_policies.git
+  branch: master
+
+mlperf_inference:
+  enabled: true
+  url: https://github.com/mlperf/inference.git
+  branch: master
+
+mlperf_training_policies:
+  enabled: true
+  url: https://github.com/mlperf/training_policies.git
+  branch: master
+
+mlperf_training_results_v0_6:
+  enabled: true
+  url: https://github.com/mlperf/training_results_v0.6.git
+  branch: master
+
+mlperf_training:
+  enabled: true
+  url: https://github.com/mlperf/training.git
+  branch: master

@@ -1,4 +1,0 @@
-mlperf_inference:
-  enabled: true
-  url: https://github.com/mlperf/inference.git
-  branch: master
