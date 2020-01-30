@@ -28,7 +28,7 @@ RUN apt-get -y install yasm libfuse-dev libwxbase3.0-dev
 RUN apt-get -y install python-pip python-six
 RUN apt-get -y install python3-pip python3-git
 RUN apt-get -y install python3-numpy python3-scipy
-RUN apt-get -y install openjdk-8-jdk maven
+RUN apt-get -y install maven
 RUN apt-get -y install golang
 
 RUN wget https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh
