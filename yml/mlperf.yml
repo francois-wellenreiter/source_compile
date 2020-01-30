@@ -13,6 +13,11 @@ mlperf_inference:
   url: https://github.com/mlperf/inference.git
   branch: master
 
+mlperf_inference_results_v0_5:
+  enabled: true
+  url: https://github.com/mlperf/inference_results_v0.5.git
+  branch: master
+
 mlperf_training_policies:
   enabled: true
   url: https://github.com/mlperf/training_policies.git
