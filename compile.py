@@ -36,7 +36,7 @@ def clone(k, v, args):
         except Exception as err:
             logging.error("Error when cloning {}, {}".format(k ,err))
         try:
-            repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
+            repo.submodule_update(recursive = True, init = True)
         except Exception as err:
             logging.debug("Error when updating submodules for {}, {}".format(k ,err))
 
@@ -69,7 +69,7 @@ def update(k, v, args):
         logging.error("Error when pulling {}, {}".format(k ,err))
 
     try:
-        repo.submodule_update(recursive = True, init = True, progress = partial(progress, fn = repo.submodule_update, key = k))
+        repo.submodule_update(recursive = True, init = True)
     except Exception as err:
         logging.debug("Error when updating submodules for {}, {}".format(k ,err))
 
