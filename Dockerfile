@@ -41,7 +41,7 @@ RUN dpkg -i ./sbt-1.3.3.deb
 RUN rm -f sbt-1.3.3.deb
 
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - 
-RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) nightly"
+RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) test"
 RUN apt-get update
 RUN apt-get -y install docker-ce
 
