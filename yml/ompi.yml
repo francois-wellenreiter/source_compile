@@ -3,8 +3,6 @@ ompi:
   url: https://github.com/open-mpi/ompi.git
   branch: master
   build:
-  - ./autogen.pl
-  - ./configure
-  - make -j$__PROCS__
+  - ./autogen.pl ; ./configure ; make -j$__PROCS__
   clean:
   - make distclean 
