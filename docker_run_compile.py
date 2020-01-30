@@ -6,7 +6,7 @@ import logging
 import os, sys
 
 
-IMAGE="compile:latest-base"
+IMAGE="compile:latest-libc"
 
 def parent(args, params):
     logging.info("Running image : {}".format(args.image))
