@@ -1,0 +1,51 @@
+llvm:
+  enabled: true
+  url: https://github.com/llvm/llvm-project.git
+  branch: master
+  build:
+  - mkdir build && cd build && cmake -G Ninja ../llvm && make -j$__PROCS__ && cd ..
+
+gcc:
+  enabled: true
+  url: https://github.com/gcc-mirror/gcc.git
+  branch: master
+  build:
+  - ./configure && make -j$__PROCS__
+  clean:
+  - make distclean
+
+go:
+  enabled: false
+  url: https://github.com/golang/go.git
+  branch: master
+  build:
+  - cd src && ./make.bash --no-clean && cd ..
+  clean:
+  - cd src && go clean && cd ..
+
+julia:
+  enabled: false
+  url: https://github.com/JuliaLang/julia.git
+  branch: master
+  build:
+  - make -j$__PROCS__ 
+  clean:
+  - make distclean
+
+cpython:
+  enabled: true
+  url: https://github.com/python/cpython.git
+  branch: master
+  build:
+  - ./configure --enable-optimizations && make -j$__PROCS__
+  clean:
+  - make distclean
+  
+scala:
+  enabled: false
+  url: https://github.com/scala/scala.git
+  branch: 2.13.x
+  build:
+  - sbt $__SBT_OPTS__ package 
+  clean:
+  - sbt $__SBT_OPTS__ clean 

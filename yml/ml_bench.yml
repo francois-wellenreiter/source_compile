@@ -1,10 +1,10 @@
 mlperf_community:
-  enabled: true
+  enabled: false
   url: https://github.com/mlperf/community.git
   branch: master
 
 mlperf_inference_policies:
-  enabled: true
+  enabled: false
   url: https://github.com/mlperf/inference_policies.git
   branch: master
 
@@ -19,7 +19,7 @@ mlperf_inference_results_v0_5:
   branch: master
 
 mlperf_training_policies:
-  enabled: true
+  enabled: false
   url: https://github.com/mlperf/training_policies.git
   branch: master
 
@@ -31,4 +31,19 @@ mlperf_training_results_v0_6:
 mlperf_training:
   enabled: true
   url: https://github.com/mlperf/training.git
+  branch: master
+
+graphcore_examples:
+  enabled: true
+  url: https://github.com/graphcore/examples.git
+  branch: master
+
+deep500:
+  enabled: false
+  url: https://github.com/deep500/deep500.git
+  branch: master
+
+deepbench:
+  enabled: false
+  url: https://github.com/baidu-research/DeepBench.git
   branch: master

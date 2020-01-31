@@ -1,0 +1,75 @@
+bitcoin:
+  enabled: false
+  url: https://github.com/bitcoin/bitcoin.git
+  branch: master
+  clean:
+  - make distclean
+  build:
+  - ./autogen.sh && ./configure --with-incompatible-bdb --disable-wallet && make -j$__PROCS__
+
+veracrypt:
+  enabled: false
+  url: https://github.com/veracrypt/VeraCrypt.git
+  branch: master
+  build:
+  - cd src && make -j$__PROCS__ && cd ..
+  clean:
+  - cd src && make distclean && cd ..
+
+youtubedl:
+  enabled: false
+  url: https://github.com/rg3/youtube-dl.git
+  branch: master
+  build:
+  - python3 ./setup.py install
+
+docker_stacks:
+  enabled: false
+  url: https://github.com/jupyter/docker-stacks.git
+  branch: master
+
+busybox:
+  enabled: false
+  url: https://git.busybox.net/busybox
+  branch: master
+
+tor:
+  enabled: false
+  url: https://git.torproject.org/tor.git
+  branch: master
+  build:
+  - sh autogen.sh && ./configure --disable-asciidoc && make -j$__PROCS__ && make install
+  clean:
+  - make distclean
+
+projectq:
+  enabled: false
+  url: https://github.com/ProjectQ-Framework/ProjectQ.git
+  branch: master
+  build:
+  - python3 ./setup.py build_ext 
+  clean:
+  - python3 ./setup.py clean 
+
+pynn:
+  enabled: false
+  url: https://github.com/NeuralEnsemble/PyNN.git
+  branch: master
+
+tlaplus:
+  enabled: false
+  url: https://github.com/tlaplus/tlaplus.git
+  branch: master
+  build:
+  - mvn $__MVN_OPTS__ package -Dmaven.test.skip=true -X 
+  clean:
+  - mvn clean 
+
+sage:
+  enabled: false
+  url: https://github.com/sagemath/sage.git
+  branch: master
+  build:
+  - ./configure && make -j$__PROCS__
+  clean:
+  - make distclean 

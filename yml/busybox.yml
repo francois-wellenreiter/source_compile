@@ -1,4 +1,0 @@
-busybox:
-  enabled: true
-  url: https://git.busybox.net/busybox
-  branch: master

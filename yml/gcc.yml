@@ -1,9 +1,0 @@
-gcc:
-  enabled: true
-  url: https://github.com/gcc-mirror/gcc.git
-  branch: master
-  build:
-  - ./configure
-  - make -j$__PROCS__
-  clean:
-  - make distclean 

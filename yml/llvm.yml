@@ -1,6 +1,0 @@
-llvm:
-  enabled: true
-  url: https://github.com/llvm/llvm-project.git
-  branch: master
-  build:
-  - mkdir build ; cd build ; cmake -G Ninja ../llvm ; make -j$__PROCS__

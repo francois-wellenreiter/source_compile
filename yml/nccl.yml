@@ -1,8 +1,0 @@
-nccl:
-  enabled: true
-  url: https://github.com/NVIDIA/nccl.git
-  branch: master
-  build:
-  - make -j$__PROCS__
-  clean:
-  - make distclean 

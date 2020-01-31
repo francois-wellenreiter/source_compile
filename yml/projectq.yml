@@ -1,8 +1,0 @@
-projectq:
-  enabled: true
-  url: https://github.com/ProjectQ-Framework/ProjectQ.git
-  branch: master
-  build:
-  - python3 ./setup.py build_ext 
-  clean:
-  - python3 ./setup.py clean 

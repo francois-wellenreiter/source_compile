@@ -1,6 +1,0 @@
-youtubedl:
-  enabled: true
-  url: https://github.com/rg3/youtube-dl.git
-  branch: master
-  build:
-  - python3 ./setup.py install

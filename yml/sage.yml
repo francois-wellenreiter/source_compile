@@ -1,9 +1,0 @@
-sage:
-  enabled: true
-  url: https://github.com/sagemath/sage.git
-  branch: master
-  build:
-  - ./configure
-  - make -j$__PROCS__
-  clean:
-  - make distclean 

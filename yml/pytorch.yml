@@ -1,9 +1,0 @@
-pytorch:
-  enabled: false
-  url: https://github.com/pytorch/pytorch.git
-  branch: master
-  build:
-  - export MAX_JOBS=$__PROCS__
-  - python3 ./setup.py build_ext
-  - unset MAX_JOBS
-

@@ -1,0 +1,44 @@
+gpi2:
+  enabled: false
+  url: https://github.com/cc-hpc-itwm/GPI-2.git
+  branch: next
+  build:
+  - make -j$__PROCS__
+  clean:
+  - make distclean
+
+hwloc:
+  enabled: false
+  url: https://github.com/open-mpi/hwloc.git
+  branch: master
+  build:
+  - ./autogen.sh && ./configure && make -j$__PROCS__
+  clean:
+  - make distclean  
+
+libfabric:
+  enabled: false
+  url: https://github.com/ofiwg/libfabric.git
+  branch: master
+  build:
+  - ./autogen.sh && ./configure && make -j$__PROCS__
+  clean:
+  - make distclean
+
+numactl:
+  enabled: false
+  url: https://github.com/numactl/numactl.git
+  branch: master
+  build:
+  - make -j$__PROCS__
+  clean:
+  - make distclean 
+
+ompi:
+  enabled: true
+  url: https://github.com/open-mpi/ompi.git
+  branch: master
+  build:
+  - ./autogen.pl && ./configure && make -j$__PROCS__
+  clean:
+  - make distclean 

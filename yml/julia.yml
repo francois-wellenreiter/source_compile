@@ -1,8 +1,0 @@
-julia:
-  enabled: true
-  url: https://github.com/JuliaLang/julia.git
-  branch: master
-  build:
-  - make -j$__PROCS__ 
-  clean:
-  - make distclean 

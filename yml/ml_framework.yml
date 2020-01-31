@@ -1,0 +1,143 @@
+bazel:
+  enabled: false
+  url: https://github.com/bazelbuild/bazel.git
+  branch: master
+  clean:
+  - bazel clean && bazel shutdown
+  build:
+  - bazel build //src:bazel && bazel shutdown
+
+tensorflow_benchmarks:
+  enabled: false
+  url: https://github.com/tensorflow/benchmarks.git
+  branch: master
+
+tensorflow_models:
+  enabled: true
+  url: https://github.com/tensorflow/models.git
+  branch: master
+
+tensorflow:
+  enabled: true
+  url: https://github.com/tensorflow/tensorflow.git
+  branch: master
+  build: 
+  - if [ a$_COMPILE_FOR_CUDA_ = a1 ] ; then PYTHON_BIN_PATH=`which python` USE_DEFAULT_PYTHON_LIB_PATH=1 TF_NEED_MPI=0 TF_NEED_HDFS=1 TF_NEED_TENSORRT=0 TF_NEED_JEMALLOC=1 TF_NEED_OPENCL_SYCL=0 TF_NEED_COMPUTECPP=1 TF_NEED_OPENCL=0 TF_CUDA_CLANG=0 TF_DOWNLOAD_CLANG=0 TF_NEED_GCP=1 TF_NEED_AWS=1 TF_NEED_KAFKA=0 TF_ENABLE_XLA=1 TF_NEED_GDR=1 TF_NEED_VERBS=0 TF_NEED_CUDA=1 TF_NEED_ROCM=0 CC_OPT_FLAGS="-march=native" TF_SET_ANDROID_WORKSPACE=0 ./configure && bazel build --config=cuda --copt="-O3" --copt="-mfma" --copt="-mavx2" --copt="-march=broadwell" //tensorflow/tools/pip_package:build_pip_package ; else PYTHON_BIN_PATH=`which python` USE_DEFAULT_PYTHON_LIB_PATH=1 TF_NEED_MPI=0 TF_NEED_HDFS=1 TF_NEED_TENSORRT=0 TF_NEED_JEMALLOC=1 TF_NEED_OPENCL_SYCL=0 TF_NEED_COMPUTECPP=1 TF_NEED_OPENCL=0 TF_CUDA_CLANG=0 TF_DOWNLOAD_CLANG=0 TF_NEED_GCP=1 TF_NEED_AWS=1 TF_NEED_KAFKA=0 TF_ENABLE_XLA=1 TF_NEED_GDR=1 TF_NEED_VERBS=0 TF_NEED_CUDA=0 TF_NEED_ROCM=0 CC_OPT_FLAGS="-march=native" TF_SET_ANDROID_WORKSPACE=0 ./configure && bazel build --config=opt --copt="-O3" --copt="-mfma" --copt="-mavx2" --copt="-march=broadwell" //tensorflow/tools/pip_package:build_pip_package ; fi
+  - bazel shutdown
+  clean:
+  - bazel clean
+  - bazel shutdown
+
+horovod:
+  enabled: false
+  url: https://github.com/horovod/horovod.git
+  branch: master
+  build:
+  - python3 ./setup.py build_ext  
+  clean:
+  - python3 ./setup.py clean  
+
+nccl:
+  enabled: false
+  url: https://github.com/NVIDIA/nccl.git
+  branch: master
+  build:
+  - make -j$__PROCS__
+  clean:
+  - make distclean 
+
+spark:
+  enabled: false
+  url: https://github.com/apache/spark.git
+  branch: master
+  build:
+  - mvn $__MVN_OPTS__ -Dmaven.test.skip=true -Dspark.version=2.3.0 package -X
+  clean:
+  - ./build/mvn clean 
+
+pytorch:
+  enabled: false
+  url: https://github.com/pytorch/pytorch.git
+  branch: master
+  build:
+  - python3 ./setup.py build_ext
+
+mxnet:
+  enabled: false
+  url: https://github.com/apache/incubator-mxnet
+  branch: master
+  build:
+  - make -j$__PROCS__
+  clean:
+  - make clean 
+
+arrow:
+  enabled: false
+  url: https://github.com/apache/arrow.git
+  branch: master
+  clean:
+  - cd c_glib && make distclean && cd ..
+  - cd cpp && make distclean && cd ..
+  - cd python && make distclean && cd ..
+  - cd go/arrow && make distclean && cd ../..
+  - cd java && mvn $MVN_OPTS clean && cd ..
+  build:
+  - cd c_glib && brew bundle && ./autogen.sh && ./configure && make -j$__PROCS__ && cd ..
+  - cd cpp && cmake . && make -j$__PROCS__ && cd ..
+  - cd python && cmake . && make -j$__PROCS__ && cd ..
+  - cd go/arrow && make -j$__PROCS__ && cd ../..
+  - cd java && mvn $__MVN_OPTS__ package -Dmaven.test.skip=true -X && cd ..
+
+numba:
+  enabled: false
+  url: https://github.com/numba/numba.git
+  branch: master
+  build:
+  - python3 ./setup.py build_ext 
+  clean:
+  - python3 ./setup.py clean 
+
+cudf:
+  enabled: false
+  url: https://github.com/rapidsai/cudf.git
+  branch: master
+
+cuml:
+  enabled: false
+  url: https://github.com/rapidsai/cuml.git
+  branch: master
+
+mmlspark:
+  enabled: false
+  url: https://github.com/Azure/mmlspark.git
+  branch: master
+  build:
+  - ./runme
+
+sparkrdma:
+  enabled: false
+  url: https://github.com/Mellanox/SparkRDMA.git
+  branch: master
+  build:
+  - ./build/mvn $__MVN_OPTS__ -DskipTests package -X 
+  clean:
+  - mvn clean 
+
+scikit_learn:
+  enabled: false
+  url: https://github.com/scikit-learn/scikit-learn.git
+  branch: master
+  build:
+  - python3 ./setup.py build_ext 
+  clean:
+  - python3 ./setup.py clean 
+
+hibench:
+  enabled: false
+  url: https://github.com/intel-hadoop/HiBench.git
+  branch: master
+  build:
+  - mvn $__MVN_OPTS__ package -Dmaven.test.skip=true -X
+  clean:
+  - mvn clean
+
