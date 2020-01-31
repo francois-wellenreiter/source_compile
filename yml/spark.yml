@@ -60,7 +60,7 @@ spark:
   - ./build/mvn clean 
 
 hibench:
-  enabled: true
+  enabled: false
   url: https://github.com/intel-hadoop/HiBench.git
   branch: master
   build:
