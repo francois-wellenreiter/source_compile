@@ -17,7 +17,7 @@ qemu:
   - make distclean 
 
 libvirt:
-  enabled: true
+  enabled: false
   url: https://github.com/libvirt/libvirt.git
   branch: master
   build:
