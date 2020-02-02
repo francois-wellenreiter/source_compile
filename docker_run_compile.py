@@ -8,7 +8,7 @@ import os, sys
 
 IMAGE="compile:latest-libc"
 
-def parent(args):
+def parent(args, params):
     logging.info("Running image : {}".format(args.image))
     logging.debug("{} run -it --rm --privileged"
         " -v /var/run/docker.sock:/var/run/docker.sock"
@@ -19,7 +19,7 @@ def parent(args):
         .format(args.docker, os.getcwd(),
         os.path.join(os.path.dirname(os.path.abspath(__file__))),
         args.image,
-        ' '.join(map(str, args.params[1:]))))
+        ' '.join(map(str, params[1:] if params[0] == "--" else params))))
     try:
         os.system(args.docker + " run -it --rm --privileged"
           " -v /var/run/docker.sock:/var/run/docker.sock"
@@ -30,7 +30,7 @@ def parent(args):
           " python3 /code/compile.py" +
           " -l " + str(args.loglevel) +
           (" -v" if args.verbose else "") +
-          " " + ' '.join(map(str, args.params[1:])))
+          " " + ' '.join(map(str, params[1:] if params[0] == "--" else params)))
     except Exception as err:
         logging.error("calling {} failed, err {}", args.docker, err)
 
@@ -40,19 +40,18 @@ def parse():
     parser.add_argument("-d", "--docker", action = "store", type = str, default = "/usr/bin/docker")
     parser.add_argument("-i", "--image", action = "store", type = str, default = IMAGE)
     parser.add_argument("-l", "--loglevel", action = "store", type = int, default = logging.ERROR)
-    parser.add_argument("params", nargs=argparse.REMAINDER)
-    args = parser.parse_args()
+    args, params = parser.parse_known_args()
 
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
     else:
         logging.basicConfig(level=args.loglevel)
 
-    return args
+    return args, params
 
 def main():
-    args = parse()
-    parent(args)
+    args, params = parse()
+    parent(args, params)
 
 
 if __name__ == "__main__":
