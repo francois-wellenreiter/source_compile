@@ -38,7 +38,6 @@ def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action = "store_true")
     parser.add_argument("-c", "--cuda", action = "store_true")
-    parser.add_argument("-d", "--docker", action = "store", type = str, default = "/usr/bin/docker")
     parser.add_argument("-i", "--image", action = "store", type = str, default = IMAGE)
     args = parser.parse_args()
 
