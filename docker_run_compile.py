@@ -11,7 +11,6 @@ IMAGE="compile:latest-libc"
 PYTHON="python3"
 BASE_CMD="/code/compile.py"
 DOCKER_SOCK="unix://var/run/docker.sock"
-SOCK="/var/run/docker.sock"
 SRC="/src"
 CODE="/code"
 ROOT="/root"
@@ -29,7 +28,6 @@ def parent(args):
                 *args.params[1:]
                 ],
             mounts = [ 
-                docker.types.Mount(source = SOCK, target = SOCK, type = "bind"),
                 docker.types.Mount(source = TMP_ROOT, target = ROOT, type = "bind"),
                 docker.types.Mount(source = os.getcwd(), target = SRC, type = "bind"),
                 docker.types.Mount(source = os.path.join(os.path.dirname(os.path.abspath(__file__))), target = CODE, type = "bind"),
