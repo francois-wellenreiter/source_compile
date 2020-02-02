@@ -1,12 +1,13 @@
 #!/usr/bin/python3
 
-import yaml
-import argparse
-import multiprocessing as mp
-import logging
-import os, sys
 from functools import partial
+import multiprocessing as mp
+import os, sys
+import argparse
+import yaml
 from git import Repo
+import logging
+from datetime import datetime
 
 ENABLED="enabled"
 URL="url"
@@ -99,7 +100,7 @@ def worker(data, args):
     for k, v in data.items():
         if args.target is None or k in args.target:
             if v[ENABLED]:
-                print("Managing {}".format(k))
+                print("Managing {} on {}".format(k, datetime.now()))
                 clone(k, v ,args)
                 if args.update:
                     update(k, v, args)
@@ -107,6 +108,7 @@ def worker(data, args):
                     clean(k, v, args)
                 if args.build:
                     build(k, v, args)
+                print("Managed {} on {}".format(k, datetime.now()))
 
 
 

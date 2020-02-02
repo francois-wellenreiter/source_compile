@@ -1,24 +1,37 @@
 #!/usr/bin/python3
 
+import os, sys
 import argparse
 import logging
-import os, sys
+import docker
+from datetime import datetime
 
 
 IMAGE="compile:latest"
 CUDA="cuda"
 LIBC="libc"
 DOCKER="_DOCKER_"
+DOCKERFILE="Dockerfile"
 
 def parent(args):
-    logging.info("Building image : {}-{}".format(args.image, LIBC))
-    os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__))))
-    logging.debug("{} build . --rm -f Dockerfile -t {}-{} --target {})".format(args.docker, args.image, LIBC, LIBC))
-    os.system(args.docker + " build . --rm -f Dockerfile -t " + args.image + "-" + LIBC + " --target " + LIBC)
+    cli = docker.from_env()
+
+    print("Building image : {}-{} on {}".format(args.image, LIBC, datetime.now()))
+    bld = cli.images.build(path = os.path.join(os.path.dirname(os.path.abspath(__file__))),
+        tag = args.image + "-" + LIBC,
+        rm = True,
+        dockerfile = DOCKERFILE,
+        target = LIBC)
+    print("Built image : {}-{} on {}".format(args.image, LIBC, datetime.now()))
+
     if args.cuda:
-        logging.info("Building image : {}-{}".format(args.image, CUDA))
-        logging.debug("{} build . --rm -f Dockerfile -t {}-{} --target {})".format(args.docker, args.image, CUDA, CUDA))
-        os.system(args.docker + " build . --rm -f Dockerfile -t " + args.image + "-" + CUDA + " --target " + CUDA)
+        print("Building image : {}-{} on {}".format(args.image, CUDA, datetime.now()))
+        bld = cli.images.build(path = os.path.join(os.path.dirname(os.path.abspath(__file__))),
+            tag = args.image + "-" + CUDA,
+            rm = True,
+            dockerfile = DOCKERFILE,
+            target = CUDA)
+        print("Built image : {}-{} on {}".format(args.image, CUDA, datetime.now()))
 
 
 def parse():

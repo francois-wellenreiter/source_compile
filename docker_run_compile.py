@@ -1,57 +1,69 @@
 #!/usr/bin/python3
 
-import argparse
-import multiprocessing as mp
-import logging
 import os, sys
+import docker
+import argparse
+import logging
+from datetime import datetime
 
 
 IMAGE="compile:latest-libc"
+PYTHON="python3"
+BASE_CMD="/code/compile.py"
+DOCKER_SOCK="unix://var/run/docker.sock"
+SOCK="/var/run/docker.sock"
+SRC="/src"
+CODE="/code"
+ROOT="/root"
+TMP_ROOT="/tmp/root"
 
-def parent(args, params):
-    logging.info("Running image : {}".format(args.image))
-    logging.debug("{} run -it --rm --privileged"
-        " -v /var/run/docker.sock:/var/run/docker.sock"
-        " -v {}:/src"
-        " -v {}:/code"
-        " -v /tmp/root:/root"
-        " {} python3 /code/compile.py {}"
-        .format(args.docker, os.getcwd(),
-        os.path.join(os.path.dirname(os.path.abspath(__file__))),
-        args.image,
-        ' '.join(map(str, params[1:] if params[0] == "--" else params))))
+def parent(args):
+    logging.info("Running image : {} on {}".format(args.image, datetime.now()))
+
     try:
-        os.system(args.docker + " run -it --rm --privileged"
-          " -v /var/run/docker.sock:/var/run/docker.sock"
-          " -v " + os.getcwd() + ":/src"
-          " -v " + os.path.join(os.path.dirname(os.path.abspath(__file__))) + ":/code"
-          " -v /tmp/root:/root"
-          " " + args.image +
-          " python3 /code/compile.py" +
-          " -l " + str(args.loglevel) +
-          (" -v" if args.verbose else "") +
-          " " + ' '.join(map(str, params[1:] if params[0] == "--" else params)))
+        cli = docker.from_env()
+        cont = cli.containers.run(image = args.image,
+            command = [
+                PYTHON,
+                BASE_CMD,
+                *args.params[1:]
+                ],
+            mounts = [ 
+                docker.types.Mount(source = SOCK, target = SOCK, type = "bind"),
+                docker.types.Mount(source = TMP_ROOT, target = ROOT, type = "bind"),
+                docker.types.Mount(source = os.getcwd(), target = SRC, type = "bind"),
+                docker.types.Mount(source = os.path.join(os.path.dirname(os.path.abspath(__file__))), target = CODE, type = "bind"),
+            ],
+            working_dir = SRC,
+            auto_remove = True,
+            detach = True)
+
     except Exception as err:
-        logging.error("calling {} failed, err {}", args.docker, err)
+        logging.error("calling {} failed, err {}", args.image, err)
+
+    for line in cont.logs(stream=True):
+        print(line.strip())
+
+    logging.info("Ran image : {} on {}".format(args.image, datetime.now()))
 
 def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action = "store_true")
-    parser.add_argument("-d", "--docker", action = "store", type = str, default = "/usr/bin/docker")
     parser.add_argument("-i", "--image", action = "store", type = str, default = IMAGE)
     parser.add_argument("-l", "--loglevel", action = "store", type = int, default = logging.ERROR)
-    args, params = parser.parse_known_args()
+    parser.add_argument("params", nargs = argparse.REMAINDER)
+    args = parser.parse_args()
 
     if args.verbose:
         logging.basicConfig(level=logging.DEBUG)
     else:
         logging.basicConfig(level=args.loglevel)
 
-    return args, params
+    return args
 
 def main():
-    args, params = parse()
-    parent(args, params)
+    args = parse()
+    parent(args)
 
 
 if __name__ == "__main__":
