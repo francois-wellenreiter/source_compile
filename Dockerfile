@@ -52,11 +52,6 @@ RUN wget https://dl.bintray.com/sbt/debian/sbt-1.3.3.deb
 RUN dpkg -i ./sbt-1.3.3.deb
 RUN rm -f sbt-1.3.3.deb
 
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - 
-RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) test"
-RUN apt-get update
-RUN apt-get -y install docker-ce
-
 RUN pip3 install --upgrade setuptools cmake cffi typing
 RUN pip3 install --upgrade scikit-build
 RUN pip3 install --upgrade pyyaml networkx future pytest pybind11 requests

@@ -23,11 +23,6 @@ youtubedl:
   build:
   - python3 ./setup.py install
 
-docker_stacks:
-  enabled: false
-  url: https://github.com/jupyter/docker-stacks.git
-  branch: master
-
 busybox:
   enabled: false
   url: https://git.busybox.net/busybox
