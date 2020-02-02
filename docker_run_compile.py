@@ -17,11 +17,11 @@ ROOT="/root"
 TMP_ROOT="/tmp/root"
 
 def parent(args):
-    logging.info("Running image : {} on {}".format(args.image, datetime.now()))
+    print("Running image : {} on {}".format(args.image, datetime.now()))
 
     try:
         cli = docker.from_env()
-        cont = cli.containers.run(image = args.image,
+        for line in cli.containers.run(image = args.image,
             command = [
                 PYTHON,
                 BASE_CMD,
@@ -33,16 +33,13 @@ def parent(args):
                 docker.types.Mount(source = os.path.join(os.path.dirname(os.path.abspath(__file__))), target = CODE, type = "bind"),
             ],
             working_dir = SRC,
-            auto_remove = True,
-            detach = True)
+            auto_remove = True):
+            logging.info("{}".format(line))
 
     except Exception as err:
         logging.error("calling {} failed, err {}", args.image, err)
 
-    for line in cont.logs(stream=True):
-        print(line.strip())
-
-    logging.info("Ran image : {} on {}".format(args.image, datetime.now()))
+    print("Ran image : {} on {}".format(args.image, datetime.now()))
 
 def parse():
     parser = argparse.ArgumentParser()
