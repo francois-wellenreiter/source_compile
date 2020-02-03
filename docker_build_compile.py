@@ -15,41 +15,32 @@ DOCKERFILE="Dockerfile"
 STREAM="stream"
 AUX="aux"
 ID="ID"
+URL="unix:/var/run/docker.sock"
 
 def parent(args):
-    cli = docker.from_env()
+    cli = docker.APIClient(base_url=URL)
 
     logging.warning("Building image : {}-{} on {}".format(args.image, LIBC, datetime.now()))
-    i, log = cli.images.build(path = os.path.join(os.path.dirname(os.path.abspath(__file__))),
+    log = cli.build(path = os.path.join(os.path.dirname(os.path.abspath(__file__))),
         tag = args.image + "-" + LIBC,
         rm = True,
         dockerfile = DOCKERFILE,
         nocache = args.refresh,
         target = LIBC)
     for line in log:
-        if STREAM in line:
-            logging.warning("{}".format(line[STREAM]))
-        elif AUX in line:
-            logging.warning("{}".format(line[AUX][ID]))
-        else:
-            logging.warning("{}".format(line))
+        logging.debug("{}".format(line))
     logging.warning("Built image : {}-{} on {}".format(args.image, LIBC, datetime.now()))
 
     if args.cuda:
         logging.warning("Building image : {}-{} on {}".format(args.image, CUDA, datetime.now()))
-        i, log = cli.images.build(path = os.path.join(os.path.dirname(os.path.abspath(__file__))),
+        log = cli.build(path = os.path.join(os.path.dirname(os.path.abspath(__file__))),
             tag = args.image + "-" + CUDA,
             rm = True,
             dockerfile = DOCKERFILE,
             nocache = args.refresh,
             target = CUDA)
         for line in log:
-            if STREAM in line:
-                logging.warning("{}".format(line[STREAM]))
-            elif AUX in line:
-                logging.warning("{}".format(line[AUX][ID]))
-            else:
-                logging.warning("{}".format(line))
+            logging.debug("{}".format(line))
         logging.warning("Built image : {}-{} on {}".format(args.image, CUDA, datetime.now()))
 
 
