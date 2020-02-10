@@ -26,7 +26,7 @@ def parent(args):
             BASE_CMD,
             *args.params[1:]
         ],
-        mounts = [ 
+        mounts = [
             docker.types.Mount(source = TMP_ROOT, target = ROOT, type = "bind"),
             docker.types.Mount(source = os.getcwd(), target = SRC, type = "bind"),
             docker.types.Mount(source = os.path.join(os.path.dirname(os.path.abspath(__file__))), target = CODE, type = "bind"),

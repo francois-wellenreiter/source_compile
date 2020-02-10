@@ -14,6 +14,7 @@ URL="url"
 BRANCH="branch"
 CLEAN="clean"
 BUILD="build"
+FORCE="force"
 
 PROCS="__PROCS__"
 SBTOPTS="__SBT_OPTS__"
@@ -36,6 +37,7 @@ def clone(k, v, args):
             repo = Repo.clone_from(v[URL], os.path.join(args.directory, k), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
         except Exception as err:
             logging.error("Error when cloning {}, {}".format(k ,err))
+            return
         try:
             repo.submodule_update(recursive = True, init = True)
         except Exception as err:
@@ -45,12 +47,12 @@ def clone(k, v, args):
 
 def update(k, v, args):
     logging.info("Updating {}".format(k))
-    os.chdir(os.path.join(args.directory, k))
 
     try:
         repo = Repo(os.path.join(args.directory, k))
     except Exception as err:
         logging.error("Error no repository found for {}, {}".format(k ,err))
+        return
 
     if args.clean:
         try:
@@ -99,7 +101,7 @@ def build(k, v, args):
 def worker(data, args):
     for k, v in data.items():
         if args.target is None or k in args.target:
-            if v[ENABLED]:
+            if v[ENABLED] or args.force:
                 print("Managing {} on {}".format(k, datetime.now()))
                 clone(k, v ,args)
                 if args.update:
@@ -148,6 +150,7 @@ def parse():
     parser.add_argument("-c", "--configuration", action = "store", default = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yml"))
     parser.add_argument("-d", "--directory", action = "store", default = os.getcwd())
     parser.add_argument("-t", "--target", action = "store", nargs="+")
+    parser.add_argument("-f", "--force", action = "store_true")
     parser.add_argument("-C", "--clean", action = "store_true")
     parser.add_argument("-B", "--build", action = "store_true")
     parser.add_argument("-U", "--update", action = "store_true")
