@@ -16,7 +16,6 @@ STREAM="stream"
 AUX="aux"
 ID="ID"
 URL="unix:/var/run/docker.sock"
-HTTP_PROXY="HTTP_PROXY"
 
 def parent(args):
     cli = docker.APIClient(base_url=URL)
