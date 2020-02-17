@@ -33,6 +33,7 @@ def parent(args):
             ],
         working_dir = SRC,
         detach = True,
+        use_config_proxy  = True,
         auto_remove = True)
 
     for line in cont.logs(stream = True):
