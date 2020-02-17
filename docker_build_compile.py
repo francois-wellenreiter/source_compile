@@ -10,7 +10,6 @@ from datetime import datetime
 IMAGE="compile:latest"
 CUDA="cuda"
 LIBC="libc"
-DOCKER="_DOCKER_"
 DOCKERFILE="Dockerfile"
 STREAM="stream"
 AUX="aux"
