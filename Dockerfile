@@ -1,5 +1,4 @@
 
-
 FROM ${DOCKER_REGISTRY}ubuntu:19.10 AS base
 
 

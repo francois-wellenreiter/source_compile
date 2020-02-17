@@ -16,6 +16,7 @@ STREAM="stream"
 AUX="aux"
 ID="ID"
 URL="unix:/var/run/docker.sock"
+HTTP_PROXY="HTTP_PROXY"
 
 def parent(args):
     cli = docker.APIClient(base_url=URL)
@@ -26,7 +27,8 @@ def parent(args):
         rm = True,
         dockerfile = DOCKERFILE,
         nocache = args.refresh,
-        target = LIBC)
+        target = LIBC,
+        use_config_proxy = True)
     for line in log:
         logging.debug("{}".format(line))
     logging.warning("Built image : {}-{} on {}".format(args.image, LIBC, datetime.now()))
@@ -38,7 +40,8 @@ def parent(args):
             rm = True,
             dockerfile = DOCKERFILE,
             nocache = args.refresh,
-            target = CUDA)
+            target = CUDA,
+            use_config_proxy = True)
         for line in log:
             logging.debug("{}".format(line))
         logging.warning("Built image : {}-{} on {}".format(args.image, CUDA, datetime.now()))
@@ -57,6 +60,7 @@ def parse():
         logging.basicConfig(level=logging.DEBUG)
     else:
         logging.basicConfig(level=args.loglevel)
+
     return args
 
 def main():
