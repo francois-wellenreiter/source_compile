@@ -51,8 +51,8 @@ RUN wget https://dl.bintray.com/sbt/debian/sbt-1.3.3.deb
 RUN dpkg -i ./sbt-1.3.3.deb
 RUN rm -f sbt-1.3.3.deb
 
-RUN pip3 install --upgrade setuptools cmake cffi typing
 RUN pip3 install --upgrade scikit-build
+RUN pip3 install --upgrade setuptools cmake cffi typing
 RUN pip3 install --upgrade pyyaml networkx future pytest pybind11 requests
 
 FROM base AS libc
