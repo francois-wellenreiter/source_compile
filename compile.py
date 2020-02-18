@@ -89,7 +89,7 @@ def clean(k, v, args):
     os.chdir(os.path.join(args.directory, k))
     if CLEAN in v:
         for cmd in v[CLEAN]:
-            logging.debug("Executing {}".format(clean), extra = d)
+            logging.debug("Executing {}".format(cmd), extra = d)
             os.system(cmd)
 
 
@@ -100,7 +100,7 @@ def build(k, v, args):
     os.chdir(os.path.join(args.directory, k))
     if BUILD in v:
         for cmd in v[BUILD]:
-            logging.debug("Executing {}".format(clean), extra = d)
+            logging.debug("Executing {}".format(cmd), extra = d)
             os.system(cmd)
 
 
@@ -139,7 +139,7 @@ def print_list(args):
         sd.update(d)
 
     for k, v in sorted(sd.items()):
-        print("{}{}\t{}".format("+-> " if ENABLED in v and v[ENABLED] else "|\t\t\t", k, v[URL]))
+        print("{}\t{}\t{}".format("+->" if ENABLED in v and v[ENABLED] else "|\t\t\t", k, v[URL]))
 
 
 def parent(args):
@@ -167,6 +167,7 @@ def parse():
     args = parser.parse_args()
 
     logger = mp.log_to_stderr()
+
     if args.verbose:
         logger.setLevel(logging.DEBUG)
         logging.basicConfig(level=logging.DEBUG, format = FORMAT)
