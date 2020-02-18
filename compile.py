@@ -9,6 +9,7 @@ from git import Repo
 import logging
 from datetime import datetime
 
+FORMAT = '%(asctime)-15s %(product)s - %(message)s'
 ENABLED="enabled"
 URL="url"
 BRANCH="branch"
@@ -23,86 +24,92 @@ MVNOPTS="__MVN_OPTS__"
 
 
 def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""):
+    d = { "product": key }
     if fn is None:
-        logging.debug( 'Downloading {} : ( {} / {} )\r'.format(key, cur_count, max_count, message))
+        logging.debug( 'Downloading : ( {} / {} )\r'.format(cur_count, max_count, message), extra = d)
     else:
-        logging.debug( '{} for {}: ( {} / {} ) {}\r'.format(fn.__name__, key, cur_count, max_count, message))
+        logging.debug( '{} : ( {} / {} ) {}\r'.format(fn.__name__, cur_count, max_count, message), extra = d)
 
 
 
 def clone(k, v, args):
-    logging.info("Cloning {}".format(k))
+    d = { "product": k}
+    logging.info("Cloning", extra = d)
     if not os.path.exists(os.path.join(args.directory, k)):
         try:
             repo = Repo.clone_from(v[URL], os.path.join(args.directory, k), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
         except Exception as err:
-            logging.error("Error when cloning {}, {}".format(k ,err))
+            logging.error("Error when cloning {}".format(err), extra = d)
             return
         try:
             repo.submodule_update(recursive = True, init = True)
         except Exception as err:
-            logging.debug("Error when updating submodules for {}, {}".format(k ,err))
+            logging.debug("Error when updating submodules {}".format(err), extra = d)
 
 
 
 def update(k, v, args):
-    logging.info("Updating {}".format(k))
+    d = { "product": k}
+    logging.info("Updating", extra = d)
 
     try:
         repo = Repo(os.path.join(args.directory, k))
     except Exception as err:
-        logging.error("Error no repository found for {}, {}".format(k ,err))
+        logging.error("Error no repository found {}".format(err), extra = d)
         return
 
     if args.clean:
         try:
             repo.head.reset(index=True, working_tree=True)
         except Exception as err:
-            logging.error("Error when resetting {}, {}".format(k ,err))
+            logging.error("Error when resetting {}".format(err), extra = d)
 
         try:
             repo.git.gc()
         except Exception as err:
-            logging.error("Error when compressing git repository {}, {}".format(k ,err))
+            logging.error("Error when compressing git repository {}".format(err), extra = d)
 
 
     try:
         repo.remotes.origin.pull(progress = partial(progress, fn = repo.remotes.origin.pull, key = k))
     except Exception as err:
-        logging.error("Error when pulling {}, {}".format(k ,err))
+        logging.error("Error when pulling {}".format(err), extra = d)
 
     try:
         repo.submodule_update(recursive = True, init = True)
     except Exception as err:
-        logging.debug("Error when updating submodules for {}, {}".format(k ,err))
+        logging.debug("Error when updating submodules {}".format(err), extra = d)
 
 
 
 def clean(k, v, args):
-    logging.info("Cleaning {}".format(k))
+    d = { "product": k}
+    logging.info("Cleaning", extra = d)
+
     os.chdir(os.path.join(args.directory, k))
     if CLEAN in v:
         for cmd in v[CLEAN]:
-            logging.debug("Executing clean {}".format(k))
+            logging.debug("Executing {}".format(clean), extra = d)
             os.system(cmd)
-
 
 
 def build(k, v, args):
-    logging.info("Building {}".format(k))
+    d = { "product": k}
+    logging.info("Building", extra = d)
+
     os.chdir(os.path.join(args.directory, k))
     if BUILD in v:
         for cmd in v[BUILD]:
-            logging.debug("Executing build {}".format(cmd))
+            logging.debug("Executing {}".format(clean), extra = d)
             os.system(cmd)
-
 
 
 def worker(data, args):
     for k, v in data.items():
+        d = { "product": k}
         if args.target is None or k in args.target:
             if v[ENABLED] or args.force:
-                print("Managing {} on {}".format(k, datetime.now()))
+                logging.info("Managing", extra = d)
                 clone(k, v ,args)
                 if args.update:
                     update(k, v, args)
@@ -110,7 +117,7 @@ def worker(data, args):
                     clean(k, v, args)
                 if args.build:
                     build(k, v, args)
-                print("Managed {} on {}".format(k, datetime.now()))
+                logging.info("Managed", extra = d)
 
 
 
@@ -146,7 +153,7 @@ def parent(args):
 def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action = "store_true")
-    parser.add_argument("-l", "--loglevel", action = "store", type = int, default = logging.ERROR)
+    parser.add_argument("-l", "--loglevel", action = "store", type = int, default = logging.INFO)
     parser.add_argument("-c", "--configuration", action = "store", default = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yml"))
     parser.add_argument("-d", "--directory", action = "store", default = os.getcwd())
     parser.add_argument("-t", "--target", action = "store", nargs="+")
@@ -162,10 +169,10 @@ def parse():
     logger = mp.log_to_stderr()
     if args.verbose:
         logger.setLevel(logging.DEBUG)
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.DEBUG, format = FORMAT)
     else:
         logger.setLevel(args.loglevel)
-        logging.basicConfig(level=args.loglevel)
+        logging.basicConfig(level=args.loglevel, format = FORMAT)
 
     if args.procs > 0:
         os.environ[PROCS] = str(args.procs)
