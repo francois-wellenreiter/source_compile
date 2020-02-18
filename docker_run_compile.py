@@ -19,6 +19,9 @@ TMP_ROOT="/tmp/root"
 def parent(args):
     logging.warning("Running image : {} on {}".format(args.image, datetime.now()))
 
+    if not os.path.isdir(TMP_ROOT):
+       os.mkdir(TMP_ROOT)
+
     cli = docker.from_env()
     cont = cli.containers.run(image = args.image,
         command = [
