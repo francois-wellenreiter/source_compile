@@ -132,7 +132,7 @@ def print_list(args):
         sd.update(d)
 
     for k, v in sorted(sd.items()):
-        print("{} {}\t{}".format("+" if ENABLED in v and v[ENABLED] else "X", k, v[URL]))
+        print("{}{}\t{}".format("+-> " if ENABLED in v and v[ENABLED] else "|\t\t\t", k, v[URL]))
 
 
 def parent(args):
