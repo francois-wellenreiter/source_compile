@@ -7,7 +7,6 @@ import argparse
 import yaml
 from git import Repo
 import logging
-from datetime import datetime
 
 FORMAT = '%(asctime)-15s %(product)s - %(message)s'
 ENABLED="enabled"

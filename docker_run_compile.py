@@ -4,8 +4,6 @@ import os, sys
 import docker
 import argparse
 import logging
-from datetime import datetime
-
 
 IMAGE="compile:latest-libc"
 PYTHON="python3"
@@ -15,9 +13,10 @@ SRC="/src"
 CODE="/code"
 ROOT="/root"
 TMP_ROOT="/tmp/root"
+FORMAT = '%(asctime)-15s - %(message)s'
 
 def parent(args):
-    logging.warning("Running image : {} on {}".format(args.image, datetime.now()))
+    logging.warning("Running image : {}".format(args.image))
 
     if not os.path.isdir(TMP_ROOT):
        os.mkdir(TMP_ROOT)
@@ -42,7 +41,7 @@ def parent(args):
     for line in cont.logs(stream = True):
         logging.warning("{}".format(line.strip()))
 
-    logging.warning("Ran image : {} on {}".format(args.image, datetime.now()))
+    logging.warning("Ran image : {}".format(args.image))
 
 def parse():
     parser = argparse.ArgumentParser()
@@ -53,9 +52,9 @@ def parse():
     args = parser.parse_args()
 
     if args.verbose:
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.DEBUG, format = FORMAT)
     else:
-        logging.basicConfig(level=args.loglevel)
+        logging.basicConfig(level=args.loglevel, format = FORMAT)
 
     return args
 

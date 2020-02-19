@@ -4,8 +4,6 @@ import os, sys, io
 import argparse
 import logging
 import docker
-from datetime import datetime
-
 
 IMAGE="compile:latest"
 CUDA="cuda"
@@ -15,11 +13,12 @@ STREAM="stream"
 AUX="aux"
 ID="ID"
 URL="unix:/var/run/docker.sock"
+FORMAT = '%(asctime)-15s - %(message)s'
 
 def parent(args):
     cli = docker.APIClient(base_url=URL)
 
-    logging.warning("Building image : {}-{} on {}".format(args.image, LIBC, datetime.now()))
+    logging.warning("Building image : {}-{}".format(args.image, LIBC))
     log = cli.build(path = os.path.join(os.path.dirname(os.path.abspath(__file__))),
         tag = args.image + "-" + LIBC,
         rm = True,
@@ -29,10 +28,10 @@ def parent(args):
         use_config_proxy = True)
     for line in log:
         logging.debug("{}".format(line))
-    logging.warning("Built image : {}-{} on {}".format(args.image, LIBC, datetime.now()))
+    logging.warning("Built image : {}-{}".format(args.image, LIBC))
 
     if args.cuda:
-        logging.warning("Building image : {}-{} on {}".format(args.image, CUDA, datetime.now()))
+        logging.warning("Building image : {}-{}".format(args.image, CUDA))
         log = cli.build(path = os.path.join(os.path.dirname(os.path.abspath(__file__))),
             tag = args.image + "-" + CUDA,
             rm = True,
@@ -42,7 +41,7 @@ def parent(args):
             use_config_proxy = True)
         for line in log:
             logging.debug("{}".format(line))
-        logging.warning("Built image : {}-{} on {}".format(args.image, CUDA, datetime.now()))
+        logging.warning("Built image : {}-{}".format(args.image, CUDA))
 
 
 def parse():
@@ -55,9 +54,9 @@ def parse():
     args = parser.parse_args()
 
     if args.verbose:
-        logging.basicConfig(level=logging.DEBUG)
+        logging.basicConfig(level=logging.DEBUG, format = FORMAT)
     else:
-        logging.basicConfig(level=args.loglevel)
+        logging.basicConfig(level=args.loglevel, format = FORMAT)
 
     return args
 
