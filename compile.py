@@ -21,7 +21,6 @@ SBTOPTS="__SBT_OPTS__"
 MVNOPTS="__MVN_OPTS__"
 
 
-
 def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""):
     d = { "product": key }
     if fn is None:
