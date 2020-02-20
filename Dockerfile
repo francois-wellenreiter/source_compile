@@ -1,5 +1,5 @@
 
-FROM ${DOCKER_REGISTRY}ubuntu:18.10 AS base
+FROM ${DOCKER_REGISTRY}ubuntu:20.04 AS base
 
 
 LABEL maintainer Francois WELLENREITER wellen@free.fr \
@@ -76,8 +76,8 @@ LABEL maintainer Francois WELLENREITER wellen@free.fr \
 
 ENV _COMPILE_FOR_CUDA_ 1
 
-RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu1810/x86_64/7fa2af80.pub
-RUN add-apt-repository "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu1810/x86_64/ /"
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
+RUN add-apt-repository "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/ /"
 RUN apt-get update
 
 RUN apt-get -y install cuda
