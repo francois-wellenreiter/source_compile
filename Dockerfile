@@ -25,7 +25,7 @@ RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev
 RUN apt-get -y install libmpfr-dev libmpc-dev libgmp-dev
 RUN apt-get -y install xsltproc libnl-3-dev libevent-dev
 
-RUN apt-get -y install gtk-doc-tools linuxbrew-wrapper libxml2-utils
+RUN apt-get -y install gtk-doc-tools libxml2-utils
 RUN apt-get -y install qtbase5-dev qtbase5-dev-tools flake8
 
 RUN apt-get -y install libglib2.0-dev
