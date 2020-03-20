@@ -37,19 +37,18 @@ RUN apt-get -y install python3-numpy python3-scipy
 
 RUN apt-get -y install golang
 
-RUN apt-get -y install maven
 ENV __MVN_OPTS__="--global-settings /code/maven_settings.xml" 
+RUN apt-get -y install maven
+
 ENV __SBT_OPTS__="-Dsbt.global.base=/home/.sbt -Dsbt.ivy.home=/home/.ivy2"
+RUN wget https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh && \
+  chmod +x bazel-1.1.0-installer-linux-x86_64.sh && \
+  ./bazel-1.1.0-installer-linux-x86_64.sh && \
+  rm -f bazel-1.1.0-installer-linux-x86_64.sh
 
-
-RUN wget https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh
-RUN chmod +x bazel-1.1.0-installer-linux-x86_64.sh
-RUN ./bazel-1.1.0-installer-linux-x86_64.sh
-RUN rm -f bazel-1.1.0-installer-linux-x86_64.sh
-
-RUN wget https://dl.bintray.com/sbt/debian/sbt-1.3.3.deb
-RUN dpkg -i ./sbt-1.3.3.deb
-RUN rm -f sbt-1.3.3.deb
+RUN wget https://dl.bintray.com/sbt/debian/sbt-1.3.3.deb && \
+  dpkg -i ./sbt-1.3.3.deb && \
+  rm -f sbt-1.3.3.deb
 
 RUN pip3 install --upgrade scikit-build
 RUN pip3 install --upgrade setuptools cmake cffi typing
@@ -76,11 +75,10 @@ LABEL maintainer Francois WELLENREITER wellen@free.fr \
 
 ENV _COMPILE_FOR_CUDA_ 1
 
-RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub
-RUN add-apt-repository "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/ /"
-RUN apt-get update
-
-RUN apt-get -y install cuda
+RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub && \
+  add-apt-repository "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/ /" && \
+  apt-get update && \
+  apt-get -y install cuda
 
 RUN apt-get -y autoremove
 RUN apt-get autoclean
