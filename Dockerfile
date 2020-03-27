@@ -31,7 +31,6 @@ RUN apt-get -y install qtbase5-dev qtbase5-dev-tools flake8
 RUN apt-get -y install libglib2.0-dev
 RUN apt-get -y install yasm libfuse-dev libwxbase3.0-dev
 
-RUN apt-get -y install python-pip python-six
 RUN apt-get -y install python3-pip python3-git
 RUN apt-get -y install python3-numpy python3-scipy
 
