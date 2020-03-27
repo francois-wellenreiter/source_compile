@@ -15,7 +15,7 @@ gcc:
   - make distclean
 
 go:
-  enabled: false
+  enabled: true
   url: https://github.com/golang/go.git
   branch: master
   build:
@@ -24,7 +24,7 @@ go:
   - cd src && go clean && cd ..
 
 julia:
-  enabled: false
+  enabled: true
   url: https://github.com/JuliaLang/julia.git
   branch: master
   build:
@@ -42,7 +42,7 @@ cpython:
   - make distclean
   
 scala:
-  enabled: false
+  enabled: true
   url: https://github.com/scala/scala.git
   branch: 2.13.x
   build:
