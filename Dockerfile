@@ -39,7 +39,7 @@ RUN apt-get -y install golang
 ENV __MVN_OPTS__="--global-settings /code/maven_settings.xml" 
 RUN apt-get -y install maven
 
-ENV __SBT_OPTS__="-Dsbt.global.base=/home/.sbt -Dsbt.ivy.home=/home/.ivy2"
+ENV __SBT_OPTS__="-Dsbt.global.base=/root/.sbt -Dsbt.ivy.home=/root/.ivy2"
 RUN wget https://github.com/bazelbuild/bazel/releases/download/1.1.0/bazel-1.1.0-installer-linux-x86_64.sh && \
   chmod +x bazel-1.1.0-installer-linux-x86_64.sh && \
   ./bazel-1.1.0-installer-linux-x86_64.sh && \
