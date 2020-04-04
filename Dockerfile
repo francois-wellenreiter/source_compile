@@ -40,10 +40,10 @@ ENV __MVN_OPTS__="--global-settings /code/maven_settings.xml"
 RUN apt-get -y install maven
 
 ENV __SBT_OPTS__="-Dsbt.global.base=/root/.sbt -Dsbt.ivy.home=/root/.ivy2"
-RUN wget https://github.com/bazelbuild/bazel/releases/download/2.2.0/bazel-2.2.0-installer-linux-x86_64.sh && \
-  chmod +x bazel-2.2.0-installer-linux-x86_64.sh && \
-  ./bazel-2.2.0-installer-linux-x86_64.sh && \
-  rm -f bazel-2.2.0-installer-linux-x86_64.sh
+RUN wget https://github.com/bazelbuild/bazel/releases/download/2.0.0/bazel-2.0.0-installer-linux-x86_64.sh && \
+  chmod +x bazel-2.0.0-installer-linux-x86_64.sh && \
+  ./bazel-2.0.0-installer-linux-x86_64.sh && \
+  rm -f bazel-2.0.0-installer-linux-x86_64.sh
 
 RUN wget https://dl.bintray.com/sbt/debian/sbt-1.3.3.deb && \
   dpkg -i ./sbt-1.3.3.deb && \
