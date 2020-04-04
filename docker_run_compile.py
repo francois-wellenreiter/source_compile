@@ -6,8 +6,7 @@ import argparse
 import logging
 
 IMAGE="compile:latest-libc"
-PYTHON="python3"
-BASE_CMD="/code/compile.py"
+BASE_CMD=[ "python3", "/code/compile.py" ]
 DOCKER_SOCK="unix://var/run/docker.sock"
 SRC="/src"
 CODE="/code"
@@ -24,8 +23,7 @@ def parent(args):
     cli = docker.from_env()
     cont = cli.containers.run(image = args.image,
         command = [
-            PYTHON,
-            BASE_CMD,
+            *args.command,
             *args.params[1:]
         ],
         mounts = [
@@ -47,6 +45,7 @@ def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action = "store_true")
     parser.add_argument("-i", "--image", action = "store", type = str, default = IMAGE)
+    parser.add_argument("-c", "--command", action = "store", type = str, nargs='+', default = BASE_CMD)
     parser.add_argument("-l", "--loglevel", action = "store", type = int, default = logging.WARNING)
     parser.add_argument("params", nargs = argparse.REMAINDER)
     args = parser.parse_args()
