@@ -7,7 +7,6 @@ import logging
 
 IMAGE="compile:latest-libc"
 BASE_CMD=[ "python3", "/code/compile.py" ]
-DOCKER_SOCK="unix://var/run/docker.sock"
 SRC="/src"
 CODE="/code"
 ROOT="/root"
@@ -33,7 +32,6 @@ def parent(args):
             ],
         working_dir = SRC,
         detach = True,
-        use_config_proxy  = True,
         auto_remove = True)
 
     for line in cont.logs(stream = True):
