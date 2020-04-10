@@ -7,11 +7,6 @@ bazel:
   build:
   - bazel build //src:bazel && bazel shutdown
 
-tensorflow_benchmarks:
-  enabled: false
-  url: https://github.com/tensorflow/benchmarks.git
-  branch: master
-
 tensorflow_models:
   enabled: true
   url: https://github.com/tensorflow/models.git
