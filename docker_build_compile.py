@@ -12,11 +12,10 @@ DOCKERFILE="Dockerfile"
 STREAM="stream"
 AUX="aux"
 ID="ID"
-URL="unix:/var/run/docker.sock"
 FORMAT = '%(asctime)-15s - %(message)s'
 
 def parent(args):
-    cli = docker.APIClient(base_url=URL)
+    cli = docker.APIClient()
 
     logging.warning("Building image : {}-{}".format(args.image, LIBC))
     log = cli.build(path = os.path.join(os.path.dirname(os.path.abspath(__file__))),
@@ -24,8 +23,7 @@ def parent(args):
         rm = True,
         dockerfile = DOCKERFILE,
         nocache = args.refresh,
-        target = LIBC,
-        use_config_proxy = True)
+        target = LIBC)
     for line in log:
         logging.debug("{}".format(line))
     logging.warning("Built image : {}-{}".format(args.image, LIBC))
@@ -37,8 +35,7 @@ def parent(args):
             rm = True,
             dockerfile = DOCKERFILE,
             nocache = args.refresh,
-            target = CUDA,
-            use_config_proxy = True)
+            target = CUDA)
         for line in log:
             logging.debug("{}".format(line))
         logging.warning("Built image : {}-{}".format(args.image, CUDA))
