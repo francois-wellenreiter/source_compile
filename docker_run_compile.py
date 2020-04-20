@@ -26,33 +26,33 @@ def parent(args):
             *args.command,
             *args.params[1:]
         ],
+        working_dir = SRC,
         volumes = [ ROOT, SRC, CODE ],
         host_config = cli.create_host_config(
           auto_remove = True,
           binds={
-            ROOT: {
-              'bind': TMP_ROOT,
+            TMP_ROOT: {
+              'bind': ROOT,
               'mode': 'rw',
             },
-            SRC: {
-              'bind': os.getcwd(),
+            os.getcwd(): {
+              'bind': SRC,
               'mode': 'rw',
             },
-            CODE: {
-              'bind': os.path.join(os.path.dirname(os.path.abspath(__file__))),
+            os.path.join(os.path.dirname(os.path.abspath(__file__))): {
+              'bind': CODE,
               'mode': 'rw',
             }
           } 
         ),
-        working_dir = SRC,
         detach = False,
         stdin_open = True,
-        tty = True)
+    )
 
     cli.start(container=cont.get('Id'))
-    for line in cli.logs(container=cont.get('Id'), stream = True, stdout =
-True, stderr = True):
-      print(line)
+    for line in cli.logs(container=cont.get('Id'), stream = True, stdout = True,
+stderr = True, follow = True, timestamps = False, tail = "all"):
+      logging.warning("{}".format(line))
    
     logging.warning("Ran image : {}".format(args.image))
 
