@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
 import os, sys
-import docker
 import argparse
 import logging
+import docker
+from docker.types import LogConfig
 
 IMAGE="compile:latest-libc"
 BASE_CMD=[ "python3", "/code/compile.py" ]
@@ -19,24 +20,40 @@ def parent(args):
     if not os.path.isdir(TMP_ROOT):
        os.mkdir(TMP_ROOT)
 
-    cli = docker.from_env()
-    cont = cli.containers.run(image = args.image,
+    cli = docker.APIClient()
+    cont = cli.create_container(image = args.image,
         command = [
             *args.command,
             *args.params[1:]
         ],
-        mounts = [
-            docker.types.Mount(source = TMP_ROOT, target = ROOT, type = "bind"),
-            docker.types.Mount(source = os.getcwd(), target = SRC, type = "bind"),
-            docker.types.Mount(source = os.path.join(os.path.dirname(os.path.abspath(__file__))), target = CODE, type = "bind"),
-            ],
         working_dir = SRC,
-        detach = True,
-        auto_remove = True)
+        volumes = [ ROOT, SRC, CODE ],
+        host_config = cli.create_host_config(
+          auto_remove = True,
+          binds={
+            TMP_ROOT: {
+              'bind': ROOT,
+              'mode': 'rw',
+            },
+            os.getcwd(): {
+              'bind': SRC,
+              'mode': 'rw',
+            },
+            os.path.join(os.path.dirname(os.path.abspath(__file__))): {
+              'bind': CODE,
+              'mode': 'rw',
+            }
+          } 
+        ),
+        detach = False,
+        stdin_open = True,
+    )
 
-    for line in cont.logs(stream = True):
-        logging.warning("{}".format(line.strip()))
-
+    cli.start(container=cont.get('Id'))
+    for line in cli.logs(container=cont.get('Id'), stream = True, stdout = True,
+stderr = True, follow = True, timestamps = False, tail = "all"):
+      logging.warning("{}".format(line))
+   
     logging.warning("Ran image : {}".format(args.image))
 
 def parse():

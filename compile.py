@@ -33,29 +33,27 @@ def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""
 def clone(k, v, args):
     d = { "product": k}
     logging.info("Cloning", extra = d)
-    if not os.path.exists(os.path.join(args.directory, k)):
-        try:
-            repo = Repo.clone_from(v[URL], os.path.join(args.directory, k), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
-        except Exception as err:
-            logging.error("Error when cloning {}".format(err), extra = d)
-            return
-        try:
-            repo.submodule_update(recursive = True, init = True)
-        except Exception as err:
-            logging.debug("Error when updating submodules {}".format(err), extra = d)
+    try:
+        repo = Repo.clone_from(v[URL], os.path.join(args.directory, k), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
+    except Exception as err:
+        logging.error("Error when cloning {}".format(err), extra = d)
+        return
+    try:
+        repo.submodule_update(recursive = True, init = True)
+    except Exception as err:
+        logging.debug("No submodules to update {}".format(err), extra = d)
+    logging.info("Cloned", extra = d)
 
 
 
 def update(k, v, args):
     d = { "product": k}
     logging.info("Updating", extra = d)
-
     try:
         repo = Repo(os.path.join(args.directory, k))
     except Exception as err:
         logging.error("Error no repository found {}".format(err), extra = d)
         return
-
     if args.clean:
         try:
             repo.head.reset(index=True, working_tree=True)
@@ -66,40 +64,38 @@ def update(k, v, args):
             repo.git.gc()
         except Exception as err:
             logging.error("Error when compressing git repository {}".format(err), extra = d)
-
-
     try:
         repo.remotes.origin.pull(progress = partial(progress, fn = repo.remotes.origin.pull, key = k))
     except Exception as err:
         logging.error("Error when pulling {}".format(err), extra = d)
-
     try:
         repo.submodule_update(recursive = True, init = True)
     except Exception as err:
-        logging.debug("Error when updating submodules {}".format(err), extra = d)
+        logging.debug("No submodules to update {}".format(err), extra = d)
+    logging.info("Updated", extra = d)
 
 
 
 def clean(k, v, args):
     d = { "product": k}
     logging.info("Cleaning", extra = d)
-
     os.chdir(os.path.join(args.directory, k))
     if CLEAN in v:
         for cmd in v[CLEAN]:
             logging.debug("Executing {}".format(cmd), extra = d)
             os.system(cmd)
+    logging.info("Cleaned", extra = d)
 
 
 def build(k, v, args):
     d = { "product": k}
     logging.info("Building", extra = d)
-
     os.chdir(os.path.join(args.directory, k))
     if BUILD in v:
         for cmd in v[BUILD]:
             logging.debug("Executing {}".format(cmd), extra = d)
             os.system(cmd)
+    logging.info("Built", extra = d)
 
 
 def worker(data, args):
@@ -108,7 +104,8 @@ def worker(data, args):
         if args.target is None or k in args.target:
             if v[ENABLED] or args.force:
                 logging.info("Managing", extra = d)
-                clone(k, v ,args)
+                if not os.path.exists(os.path.join(args.directory, k)):
+                    clone(k, v ,args)
                 if args.update:
                     update(k, v, args)
                 if args.clean:
