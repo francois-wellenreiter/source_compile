@@ -13,6 +13,7 @@ CODE="/code"
 ROOT="/root"
 TMP_ROOT="/tmp/root"
 FORMAT = '%(asctime)-15s - %(message)s'
+NAME = "compile" + os.getcwd().replace('/', '_')
 
 def parent(args):
     logging.warning("Running image : {}".format(args.image))
@@ -26,6 +27,7 @@ def parent(args):
             *args.command,
             *args.params[1:]
         ],
+        name = NAME,
         working_dir = SRC,
         volumes = [ ROOT, SRC, CODE ],
         host_config = cli.create_host_config(
@@ -43,17 +45,17 @@ def parent(args):
               'bind': CODE,
               'mode': 'rw',
             }
-          } 
+          }
         ),
         detach = False,
         stdin_open = True,
     )
 
-    cli.start(container=cont.get('Id'))
-    for line in cli.logs(container=cont.get('Id'), stream = True, stdout = True,
+    cli.start(container=NAME)
+    for line in cli.logs(NAME, stream = True, stdout = True,
 stderr = True, follow = True, timestamps = False, tail = "all"):
       logging.warning("{}".format(line))
-   
+
     logging.warning("Ran image : {}".format(args.image))
 
 def parse():
