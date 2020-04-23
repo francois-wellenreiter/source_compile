@@ -6,7 +6,7 @@ llvm:
   - mkdir build && cd build && cmake -G Ninja ../llvm && make -j$__PROCS__ && cd ..
 
 gcc:
-  enabled: true
+  enabled: false
   url: https://github.com/gcc-mirror/gcc.git
   branch: master
   build:
@@ -15,7 +15,7 @@ gcc:
   - make distclean
 
 go:
-  enabled: true
+  enabled: false
   url: https://github.com/golang/go.git
   branch: master
   build:
@@ -24,7 +24,7 @@ go:
   - cd src && go clean && cd ..
 
 julia:
-  enabled: true
+  enabled: false
   url: https://github.com/JuliaLang/julia.git
   branch: master
   build:
@@ -33,7 +33,7 @@ julia:
   - make distclean
 
 cpython:
-  enabled: true
+  enabled: false
   url: https://github.com/python/cpython.git
   branch: master
   build:
@@ -42,7 +42,7 @@ cpython:
   - make distclean
   
 scala:
-  enabled: true
+  enabled: false
   url: https://github.com/scala/scala.git
   branch: 2.13.x
   build:
