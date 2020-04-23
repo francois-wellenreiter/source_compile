@@ -1,5 +1,5 @@
 llvm:
-  enabled: true
+  enabled: false
   url: https://github.com/llvm/llvm-project.git
   branch: master
   build:

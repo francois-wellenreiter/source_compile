@@ -13,7 +13,6 @@ URL="url"
 BRANCH="branch"
 CLEAN="clean"
 BUILD="build"
-FORCE="force"
 
 PROCS="__PROCS__"
 SBTOPTS="__SBT_OPTS__"

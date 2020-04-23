@@ -35,7 +35,7 @@ numactl:
   - make distclean 
 
 ompi:
-  enabled: true
+  enabled: false
   url: https://github.com/open-mpi/ompi.git
   branch: master
   build:
