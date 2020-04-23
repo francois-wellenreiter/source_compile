@@ -14,6 +14,8 @@ BRANCH="branch"
 CLEAN="clean"
 BUILD="build"
 
+ORIGIN="origin"
+
 PROCS="__PROCS__"
 SBTOPTS="__SBT_OPTS__"
 MVNOPTS="__MVN_OPTS__"
@@ -46,6 +48,9 @@ def update(k, v, args):
     logging.info("{} - Updating".format(k))
     try:
         repo = Repo(os.path.join(args.directory, k))
+        origin = repo.remotes[ORIGIN]
+        origin.fetch(progress = partial(progress, fn = origin.fetch, key = k))
+        repo.heads.master.set_tracking_branch(origin.refs.master)
     except Exception as err:
         logging.error("{} - Error no repository found {}".format(k, err))
         return
