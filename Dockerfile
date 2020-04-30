@@ -38,7 +38,7 @@ RUN apt-get -y install golang
 
 RUN apt-get -y install maven
 
-RUN apt-get -y install ruby-dev libpq-dev libpcap-dev libsqlite3-dev postgresql ruby-bundler ruby-dev
+RUN apt-get -y install ruby-dev libpq-dev libpcap-dev libsqlite3-dev postgresql ruby-bundler
 
 RUN wget https://github.com/bazelbuild/bazel/releases/download/2.0.0/bazel-2.0.0-installer-linux-x86_64.sh && \
   chmod +x bazel-2.0.0-installer-linux-x86_64.sh && \
