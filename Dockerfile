@@ -19,7 +19,7 @@ RUN apt-get -y install software-properties-common apt-transport-https
 
 RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev
 RUN apt-get -y install libelf-dev bc libssl-dev libpixman-1-dev
-RUN apt-get -y install build-essential automake autoconf libtool cmake git bsdmainutils
+RUN apt-get -y install build-essential automake autoconf libtool cmake git bsdmainutils patch liblzma-dev
 
 RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev
 RUN apt-get -y install libmpfr-dev libmpc-dev libgmp-dev
@@ -37,6 +37,8 @@ RUN apt-get -y install python3-numpy python3-scipy
 RUN apt-get -y install golang
 
 RUN apt-get -y install maven
+
+RUN apt-get -y install ruby-dev libpq-dev libpcap-dev libsqlite3-dev postgresql ruby-bundler ruby-dev
 
 RUN wget https://github.com/bazelbuild/bazel/releases/download/2.0.0/bazel-2.0.0-installer-linux-x86_64.sh && \
   chmod +x bazel-2.0.0-installer-linux-x86_64.sh && \
