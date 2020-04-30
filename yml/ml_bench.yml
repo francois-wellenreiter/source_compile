@@ -3,16 +3,6 @@ tensorflow_benchmarks:
   url: https://github.com/tensorflow/benchmarks.git
   branch: master
 
-mlperf_community:
-  enabled: false
-  url: https://github.com/mlperf/community.git
-  branch: master
-
-mlperf_inference_policies:
-  enabled: false
-  url: https://github.com/mlperf/inference_policies.git
-  branch: master
-
 mlperf_inference:
   enabled: true
   url: https://github.com/mlperf/inference.git
@@ -23,11 +13,6 @@ mlperf_inference_results_v0_5:
   url: https://github.com/mlperf/inference_results_v0.5.git
   branch: master
 
-mlperf_training_policies:
-  enabled: false
-  url: https://github.com/mlperf/training_policies.git
-  branch: master
-
 mlperf_training_results_v0_6:
   enabled: true
   url: https://github.com/mlperf/training_results_v0.6.git
@@ -36,20 +21,5 @@ mlperf_training_results_v0_6:
 mlperf_training:
   enabled: true
   url: https://github.com/mlperf/training.git
-  branch: master
-
-graphcore_examples:
-  enabled: true
-  url: https://github.com/graphcore/examples.git
-  branch: master
-
-deep500:
-  enabled: false
-  url: https://github.com/deep500/deep500.git
-  branch: master
-
-deepbench:
-  enabled: false
-  url: https://github.com/baidu-research/DeepBench.git
   branch: master
 

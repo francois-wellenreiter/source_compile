@@ -1,12 +1,3 @@
-bazel:
-  enabled: false
-  url: https://github.com/bazelbuild/bazel.git
-  branch: master
-  clean:
-  - bazel clean && bazel shutdown
-  build:
-  - bazel build //src:bazel && bazel shutdown
-
 tensorflow_models:
   enabled: true
   url: https://github.com/tensorflow/models.git
@@ -42,83 +33,6 @@ nccl:
   clean:
   - make distclean 
 
-spark:
-  enabled: false
-  url: https://github.com/apache/spark.git
-  branch: master
-  build:
-  - mvn $__MVN_OPTS__ -Dmaven.test.skip=true -Dspark.version=2.3.0 package -X
-  clean:
-  - ./build/mvn clean 
-
-pytorch:
-  enabled: false
-  url: https://github.com/pytorch/pytorch.git
-  branch: master
-  build:
-  - python3 ./setup.py build_ext
-
-mxnet:
-  enabled: false
-  url: https://github.com/apache/incubator-mxnet
-  branch: master
-  build:
-  - make -j$__PROCS__
-  clean:
-  - make clean 
-
-arrow:
-  enabled: false
-  url: https://github.com/apache/arrow.git
-  branch: master
-  clean:
-  - cd c_glib && make distclean && cd ..
-  - cd cpp && make distclean && cd ..
-  - cd python && make distclean && cd ..
-  - cd go/arrow && make distclean && cd ../..
-  - cd java && mvn $MVN_OPTS clean && cd ..
-  build:
-  - cd c_glib && brew bundle && ./autogen.sh && ./configure && make -j$__PROCS__ && cd ..
-  - cd cpp && cmake . && make -j$__PROCS__ && cd ..
-  - cd python && cmake . && make -j$__PROCS__ && cd ..
-  - cd go/arrow && make -j$__PROCS__ && cd ../..
-  - cd java && mvn $__MVN_OPTS__ package -Dmaven.test.skip=true -X && cd ..
-
-numba:
-  enabled: false
-  url: https://github.com/numba/numba.git
-  branch: master
-  build:
-  - python3 ./setup.py build_ext 
-  clean:
-  - python3 ./setup.py clean 
-
-cudf:
-  enabled: false
-  url: https://github.com/rapidsai/cudf.git
-  branch: master
-
-cuml:
-  enabled: false
-  url: https://github.com/rapidsai/cuml.git
-  branch: master
-
-mmlspark:
-  enabled: false
-  url: https://github.com/Azure/mmlspark.git
-  branch: master
-  build:
-  - ./runme
-
-sparkrdma:
-  enabled: false
-  url: https://github.com/Mellanox/SparkRDMA.git
-  branch: master
-  build:
-  - ./build/mvn $__MVN_OPTS__ -DskipTests package -X 
-  clean:
-  - mvn clean 
-
 scikit_learn:
   enabled: false
   url: https://github.com/scikit-learn/scikit-learn.git
@@ -127,13 +41,4 @@ scikit_learn:
   - python3 ./setup.py build_ext 
   clean:
   - python3 ./setup.py clean 
-
-hibench:
-  enabled: false
-  url: https://github.com/intel-hadoop/HiBench.git
-  branch: master
-  build:
-  - mvn $__MVN_OPTS__ package -Dmaven.test.skip=true -X
-  clean:
-  - mvn clean
 
