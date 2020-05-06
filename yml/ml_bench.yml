@@ -38,18 +38,3 @@ mlperf_training:
   url: https://github.com/mlperf/training.git
   branch: master
 
-graphcore_examples:
-  enabled: true
-  url: https://github.com/graphcore/examples.git
-  branch: master
-
-deep500:
-  enabled: false
-  url: https://github.com/deep500/deep500.git
-  branch: master
-
-deepbench:
-  enabled: false
-  url: https://github.com/baidu-research/DeepBench.git
-  branch: master
-

@@ -15,12 +15,3 @@ qemu:
   - ./configure && make -j$__PROCS__
   clean: 
   - make distclean 
-
-libvirt:
-  enabled: false
-  url: https://github.com/libvirt/libvirt.git
-  branch: master
-  build:
-  - ./autogen.sh && ./configure && make -j$__PROCS__ 
-  clean:
-  - make distclean

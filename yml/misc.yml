@@ -17,16 +17,11 @@ veracrypt:
   - cd src && make distclean && cd ..
 
 youtubedl:
-  enabled: false
+  enabled: true
   url: https://github.com/rg3/youtube-dl.git
   branch: master
   build:
   - python3 ./setup.py install
-
-busybox:
-  enabled: false
-  url: https://git.busybox.net/busybox
-  branch: master
 
 tor:
   enabled: false
@@ -36,29 +31,6 @@ tor:
   - sh autogen.sh && ./configure --disable-asciidoc && make -j$__PROCS__ && make install
   clean:
   - make distclean
-
-projectq:
-  enabled: false
-  url: https://github.com/ProjectQ-Framework/ProjectQ.git
-  branch: master
-  build:
-  - python3 ./setup.py build_ext 
-  clean:
-  - python3 ./setup.py clean 
-
-pynn:
-  enabled: false
-  url: https://github.com/NeuralEnsemble/PyNN.git
-  branch: master
-
-tlaplus:
-  enabled: false
-  url: https://github.com/tlaplus/tlaplus.git
-  branch: master
-  build:
-  - mvn $__MVN_OPTS__ package -Dmaven.test.skip=true -X 
-  clean:
-  - mvn clean 
 
 sage:
   enabled: false
