@@ -1,10 +1,3 @@
-llvm:
-  enabled: false
-  url: https://github.com/llvm/llvm-project.git
-  branch: master
-  build:
-  - mkdir build && cd build && cmake -G Ninja ../llvm && make -j$__PROCS__ && cd ..
-
 gcc:
   enabled: false
   url: https://github.com/gcc-mirror/gcc.git

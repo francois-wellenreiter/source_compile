@@ -3,16 +3,6 @@ tensorflow_benchmarks:
   url: https://github.com/tensorflow/benchmarks.git
   branch: master
 
-mlperf_community:
-  enabled: false
-  url: https://github.com/mlperf/community.git
-  branch: master
-
-mlperf_inference_policies:
-  enabled: false
-  url: https://github.com/mlperf/inference_policies.git
-  branch: master
-
 mlperf_inference:
   enabled: true
   url: https://github.com/mlperf/inference.git
@@ -21,11 +11,6 @@ mlperf_inference:
 mlperf_inference_results_v0_5:
   enabled: true
   url: https://github.com/mlperf/inference_results_v0.5.git
-  branch: master
-
-mlperf_training_policies:
-  enabled: false
-  url: https://github.com/mlperf/training_policies.git
   branch: master
 
 mlperf_training_results_v0_6:

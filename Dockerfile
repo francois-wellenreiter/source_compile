@@ -12,16 +12,17 @@ RUN apt-get -y dist-upgrade
 
 RUN apt-get -y install htop iotop iftop sysstat
 
-RUN apt-get -y install libnss-wrapper locales
+RUN apt-get -y install locales
 RUN apt-get -y install tar bzip2 zip unzip ca-certificates wget curl
 RUN apt-get -y install software-properties-common apt-transport-https
 
 RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev
 RUN apt-get -y install libelf-dev bc libssl-dev libpixman-1-dev
-RUN apt-get -y install build-essential automake autoconf libtool cmake git bsdmainutils
+RUN apt-get -y install build-essential automake autoconf libtool cmake git bsdmainutils patch liblzma-dev
 
 RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev
 RUN apt-get -y install libmpfr-dev libmpc-dev libgmp-dev
+RUN apt-get -y install libglib2.0-dev
 RUN apt-get -y install xsltproc libnl-3-dev libevent-dev
 
 RUN apt-get -y install gtk-doc-tools libxml2-utils
@@ -39,6 +40,7 @@ RUN cd /tmp && \
   chmod +x bazel-2.0.0-installer-linux-x86_64.sh && \
   ./bazel-2.0.0-installer-linux-x86_64.sh && \
   rm -f bazel-2.0.0-installer-linux-x86_64.sh
+
 
 FROM base AS libc
 
