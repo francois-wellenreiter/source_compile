@@ -1,5 +1,5 @@
 
-FROM ${DOCKER_REGISTRY}ubuntu:20.04 AS base
+FROM ${DOCKER_REGISTRY}ubuntu:20.04 AS libc
 
 
 LABEL maintainer Francois WELLENREITER wellen@free.fr \
@@ -41,9 +41,6 @@ RUN cd /tmp && \
   ./bazel-2.0.0-installer-linux-x86_64.sh && \
   rm -f bazel-2.0.0-installer-linux-x86_64.sh
 
-
-FROM base AS libc
-
 RUN apt-get -y autoremove
 RUN apt-get autoclean
 RUN rm -rf /var/cache/apt /var/lib/apt
@@ -52,24 +49,4 @@ VOLUME ["/src"]
 WORKDIR /src
 
 
-
-FROM base AS cuda
-
-LABEL maintainer Francois WELLENREITER wellen@free.fr \
-      description="Optimized for CUDA compilation"
-
-ENV _COMPILE_FOR_CUDA_ 1
-
-RUN apt-key adv --fetch-keys https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/7fa2af80.pub && \
-  add-apt-repository "deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2004/x86_64/ /" && \
-  apt-get update && \
-  apt-get -y install cuda
-
-RUN apt-get -y autoremove
-RUN apt-get autoclean
-RUN rm -rf /var/cache/apt /var/lib/apt
-
-
-VOLUME ["/src"]
-WORKDIR /src
 
