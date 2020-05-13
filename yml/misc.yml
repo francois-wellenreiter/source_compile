@@ -1,11 +1,31 @@
+grafana:  
+  enabled: true
+  url: https://github.com/grafana/grafana.git
+  branch: master
+
+
+prometheus:
+  enabled: true
+  url: https://github.com/prometheus/prometheus.git
+  branch: master
+  build:
+  - make
+
+node_exporter:
+  enabled: true
+  url: https://github.com/prometheus/node_exporter.git
+  branch: master
+  build:
+  - make
+
 bitcoin:
   enabled: false
   url: https://github.com/bitcoin/bitcoin.git
   branch: master
-  clean:
-  - make distclean
   build:
   - ./autogen.sh && ./configure --with-incompatible-bdb --disable-wallet && make -j$__PROCS__
+  clean:
+  - make distclean
 
 veracrypt:
   enabled: false

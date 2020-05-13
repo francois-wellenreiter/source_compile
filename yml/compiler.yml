@@ -7,6 +7,15 @@ gcc:
   clean:
   - make distclean
 
+golang:
+  enabled: true
+  url: https://github.com/golang/go.git
+  branch: master
+  build:
+  - cd src && ./all.bash --no-clean && cd ..
+  clean:
+  - cd src && ./clean.sh && cd ..
+
 julia:
   enabled: false
   url: https://github.com/JuliaLang/julia.git
