@@ -3,7 +3,6 @@ grafana:
   url: https://github.com/grafana/grafana.git
   branch: master
 
-
 prometheus:
   enabled: true
   url: https://github.com/prometheus/prometheus.git
@@ -14,6 +13,13 @@ prometheus:
 node_exporter:
   enabled: true
   url: https://github.com/prometheus/node_exporter.git
+  branch: master
+  build:
+  - make
+
+gpu-monitoring-tools:
+  enabled: true
+  url: https://github.com/NVIDIA/gpu-monitoring-tools.git
   branch: master
   build:
   - make
