@@ -44,8 +44,7 @@ RUN cd /tmp && \
   rm -f bazel-2.0.0-installer-linux-x86_64.sh
 
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
-  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
-   $(lsb_release -cs) edge" && \ 
+  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu eoan edge" && \ 
   apt-get -y update && \
   apt-get -y install docker-ce
 
