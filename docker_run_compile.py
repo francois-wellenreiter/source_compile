@@ -45,11 +45,11 @@ def parent(args):
             os.path.join(os.path.dirname(os.path.abspath(__file__))): {
               'bind': CODE,
               'mode': 'rw',
-            }
+            },
             DOCK_SOCK: {
               'bind': DOCK_SOCK,
               'mode': 'rw',
-            },
+            }
           }
         ),
         detach = False,
