@@ -24,6 +24,13 @@ gpu-monitoring-tools:
   build:
   - make
 
+prometheus_slurm_exporter:
+  enabled: true
+  url: https://github.com/vpenso/prometheus-slurm-exporter.git
+  branch: master
+  build:
+  - make
+
 bitcoin:
   enabled: false
   url: https://github.com/bitcoin/bitcoin.git

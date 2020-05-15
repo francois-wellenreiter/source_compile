@@ -12,6 +12,7 @@ SRC="/src"
 CODE="/code"
 ROOT="/root"
 TMP="/tmp/root"
+DOCK_SOCK="/var/run/docker.sock"
 FORMAT = '%(asctime)-15s - %(message)s'
 NAME = "compile" + os.getcwd().replace('/', '_')
 
@@ -29,7 +30,7 @@ def parent(args):
         ],
         name = NAME,
         working_dir = SRC,
-        volumes = [ ROOT, SRC, CODE ],
+        volumes = [ ROOT, SRC, CODE, DOCK_SOCK ],
         host_config = cli.create_host_config(
           auto_remove = True,
           binds={
@@ -45,6 +46,10 @@ def parent(args):
               'bind': CODE,
               'mode': 'rw',
             }
+            DOCK_SOCK: {
+              'bind': DOCK_SOCK,
+              'mode': 'rw',
+            },
           }
         ),
         detach = False,
