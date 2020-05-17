@@ -29,7 +29,7 @@ RUN apt-get -y install gtk-doc-tools libxml2-utils
 RUN apt-get -y install qtbase5-dev qtbase5-dev-tools flake8
 
 RUN apt-get -y install python3-pip python3-git
-RUN apt-get -y install python3-numpy python3-scipy
+RUN apt-get -y install python3-numpy python3-scipy cython3
 RUN apt-get -y install golang-1.14 && \
   cd /usr/bin && rm -f go && ln -s ../lib/go-1.14/bin/go go
 
@@ -46,7 +46,7 @@ RUN cd /tmp && \
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
   add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu eoan edge" && \ 
   apt-get -y update && \
-  apt-get -y install docker-ce
+  apt-get -y install docker-ce-cli
 
 RUN apt-get -y autoremove
 RUN apt-get autoclean
