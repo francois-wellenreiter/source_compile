@@ -11,16 +11,13 @@ BASE_CMD=[ "python3", "/code/compile.py" ]
 SRC="/src"
 CODE="/code"
 ROOT="/root"
-TMP="/tmp/root"
+ROOT_VOLUME="compile_root"
 DOCK_SOCK="/var/run/docker.sock"
 FORMAT = '%(asctime)-15s - %(message)s'
 NAME = "compile" + os.getcwd().replace('/', '_')
 
 def parent(args):
     logging.warning("Running image : {}".format(args.image))
-
-    if not os.path.isdir(TMP):
-       os.mkdir(TMP)
 
     cli = docker.APIClient()
     cont = cli.create_container(image = args.image,
@@ -34,7 +31,7 @@ def parent(args):
         host_config = cli.create_host_config(
           auto_remove = True,
           binds={
-            TMP: {
+            ROOT_VOLUME: {
               'bind': ROOT,
               'mode': 'rw',
             },
