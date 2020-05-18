@@ -27,6 +27,7 @@ RUN apt-get -y install xsltproc libnl-3-dev libevent-dev
 
 RUN apt-get -y install gtk-doc-tools libxml2-utils
 RUN apt-get -y install qtbase5-dev qtbase5-dev-tools flake8
+RUN apt-get -y install pandoc
 
 RUN apt-get -y install python3-pip python3-git
 RUN apt-get -y install python3-numpy python3-scipy cython3
