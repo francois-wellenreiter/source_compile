@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-import os, sys, pwd
+import os, sys, pwd, grp
 import argparse
 import logging
 import docker
@@ -14,8 +14,8 @@ def parent(args):
     DOCK_GROUP="docker"
     SRC="/src"
     CODE="/code"
-    HOME="/home/" + pwd.getpwuid(os.getuid()).pw_name
     USER=pwd.getpwuid(os.getuid()).pw_name
+    HOME="/home/" + USER
     NAME = "compile" + os.getcwd().replace('/', '_')
 
     cli = docker.APIClient()
@@ -31,7 +31,7 @@ def parent(args):
             "USERNAME" : USER,
             "LOGNAME" : USER
         },
-        user = str(os.getuid()) + ":" + str(pwd.getpwnam(DOCK_GROUP)),
+        user = str(os.getuid()) + ":" + str(grp.getgrnam(DOCK_GROUP).gr_gid),
         working_dir = SRC,
         volumes = [ SRC, CODE, HOME, DOCK_SOCK ],
         host_config = cli.create_host_config(
