@@ -4,7 +4,7 @@ tensorflow_models:
   branch: master
 
 tensorflow:
-  enabled: false
+  enabled: true
   url: https://github.com/tensorflow/tensorflow.git
   branch: master
   build: 
@@ -16,7 +16,7 @@ tensorflow:
   - rm -f ./.bazelrc
 
 horovod:
-  enabled: false
+  enabled: true
   url: https://github.com/horovod/horovod.git
   branch: master
   build:
