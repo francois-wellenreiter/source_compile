@@ -16,16 +16,16 @@ FORMAT = '%(asctime)-15s - %(message)s'
 def parent(args):
     cli = docker.APIClient()
 
-    logging.warning("Building image : {}-{}".format(args.image, LIBC))
+    logging.warning("Building image : {}".format(args.image))
     log = cli.build(path = os.path.join(os.path.dirname(os.path.abspath(__file__))),
-        tag = args.image + "-" + LIBC,
+        tag = args.image,
         rm = True,
         dockerfile = DOCKERFILE,
         nocache = args.refresh,
         target = LIBC)
     for line in log:
         logging.debug("{}".format(line))
-    logging.warning("Built image : {}-{}".format(args.image, LIBC))
+    logging.warning("Built image : {}".format(args.image))
 
 
 def parse():

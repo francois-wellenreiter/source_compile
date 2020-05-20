@@ -11,6 +11,7 @@ def parent(args):
     logging.warning("Running image : {}".format(args.image))
 
     DOCK_SOCK="/var/run/docker.sock"
+    DOCK_GROUP="docker"
     SRC="/src"
     CODE="/code"
     HOME="/home/" + pwd.getpwuid(os.getuid()).pw_name
@@ -30,7 +31,7 @@ def parent(args):
             "USERNAME" : USER,
             "LOGNAME" : USER
         },
-        user = str(os.getuid()) + ":" + str(os.getgid()),
+        user = str(os.getuid()) + ":" + str(pwd.getpwnam(DOCK_GROUP)),
         working_dir = SRC,
         volumes = [ SRC, CODE, HOME, DOCK_SOCK ],
         host_config = cli.create_host_config(
@@ -68,7 +69,7 @@ stderr = True, follow = True, timestamps = False, tail = "all"):
 def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action = "store_true")
-    parser.add_argument("-i", "--image", action = "store", type = str, default = "compile:latest-libc")
+    parser.add_argument("-i", "--image", action = "store", type = str, default = "compile:latest")
     parser.add_argument("-c", "--command", action = "store", type = str, nargs='+', default = [ "python3", "/code/compile.py" ])
     parser.add_argument("-l", "--loglevel", action = "store", type = int, default = logging.WARNING)
     parser.add_argument("params", nargs = argparse.REMAINDER)

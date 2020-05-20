@@ -1,5 +1,5 @@
 
-FROM ${DOCKER_REGISTRY}ubuntu:20.04 AS libc
+FROM ${DOCKER_REGISTRY}ubuntu:20.10 AS libc
 
 
 LABEL maintainer Francois WELLENREITER wellen@free.fr \
@@ -39,15 +39,12 @@ RUN pip3 install --upgrade setuptools cmake cffi typing
 RUN pip3 install --upgrade pyyaml networkx future pytest pybind11 requests
 
 RUN cd /tmp && \
-  wget https://github.com/bazelbuild/bazel/releases/download/2.0.0/bazel-2.0.0-installer-linux-x86_64.sh && \
-  chmod +x bazel-2.0.0-installer-linux-x86_64.sh && \
-  ./bazel-2.0.0-installer-linux-x86_64.sh && \
-  rm -f bazel-2.0.0-installer-linux-x86_64.sh
+  wget https://github.com/bazelbuild/bazel/releases/download/3.0.0/bazel-3.0.0-installer-linux-x86_64.sh && \
+  chmod +x bazel-3.0.0-installer-linux-x86_64.sh && \
+  ./bazel-3.0.0-installer-linux-x86_64.sh && \
+  rm -f bazel-3.0.0-installer-linux-x86_64.sh
 
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
-  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu eoan edge" && \ 
-  apt-get -y update && \
-  apt-get -y install docker-ce-cli
+RUN apt-get -y install docker.io
 
 RUN apt-get -y autoremove
 RUN apt-get autoclean
