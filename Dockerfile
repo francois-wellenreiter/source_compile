@@ -37,6 +37,7 @@ RUN apt-get -y install golang-1.14 && \
 RUN pip3 install --upgrade scikit-build
 RUN pip3 install --upgrade setuptools cmake cffi typing
 RUN pip3 install --upgrade pyyaml networkx future pytest pybind11 requests
+RUN pip3 install --upgrade tensorflow
 
 RUN cd /tmp && \
   wget https://github.com/bazelbuild/bazel/releases/download/3.0.0/bazel-3.0.0-installer-linux-x86_64.sh && \
