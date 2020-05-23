@@ -29,7 +29,8 @@ RUN apt-get -y install gtk-doc-tools libxml2-utils
 RUN apt-get -y install qtbase5-dev qtbase5-dev-tools flake8
 RUN apt-get -y install pandoc
 
-RUN apt-get -y install python3-pip python3-git
+RUN apt-get -y install python
+RUN apt-get -y install python3-pip python3-git python3-six
 RUN apt-get -y install python3-numpy python3-scipy cython3
 RUN apt-get -y install golang-1.14 && \
   cd /usr/bin && rm -f go && ln -s ../lib/go-1.14/bin/go go
