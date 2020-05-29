@@ -3,7 +3,7 @@ gcc:
   url: https://github.com/gcc-mirror/gcc.git
   branch: master
   build:
-  - ./configure && make -j$__PROCS__
+  - ./configure && make -j$__PROCS__ && make install
   clean:
   - make distclean
 
@@ -21,7 +21,7 @@ julia:
   url: https://github.com/JuliaLang/julia.git
   branch: master
   build:
-  - make -j$__PROCS__ 
+  - make -j$__PROCS__ && make install
   clean:
   - make distclean
 
@@ -30,6 +30,6 @@ cpython:
   url: https://github.com/python/cpython.git
   branch: master
   build:
-  - ./configure --enable-optimizations && make -j$__PROCS__
+  - ./configure --enable-optimizations && make -j$__PROCS__ && make install
   clean:
   - make distclean

@@ -2,6 +2,8 @@ grafana:
   enabled: true
   url: https://github.com/grafana/grafana.git
   branch: master
+  build:
+  - make
 
 prometheus:
   enabled: true
@@ -36,7 +38,7 @@ bitcoin:
   url: https://github.com/bitcoin/bitcoin.git
   branch: master
   build:
-  - ./autogen.sh && ./configure --with-incompatible-bdb --disable-wallet && make -j$__PROCS__
+  - ./autogen.sh && ./configure --with-incompatible-bdb --disable-wallet && make -j$__PROCS__ && make install
   clean:
   - make distclean
 
@@ -45,7 +47,7 @@ veracrypt:
   url: https://github.com/veracrypt/VeraCrypt.git
   branch: master
   build:
-  - cd src && make -j$__PROCS__ && cd ..
+  - cd src && make -j$__PROCS__ && make install && cd ..
   clean:
   - cd src && make distclean && cd ..
 
@@ -70,6 +72,6 @@ sage:
   url: https://github.com/sagemath/sage.git
   branch: master
   build:
-  - ./configure && make -j$__PROCS__
+  - ./configure && make -j$__PROCS__&& make install
   clean:
   - make distclean 

@@ -10,8 +10,6 @@ USER root
 RUN apt-get update
 RUN apt-get -y dist-upgrade
 
-RUN apt-get -y install htop iotop iftop sysstat
-
 RUN apt-get -y install locales
 RUN apt-get -y install tar bzip2 zip unzip ca-certificates wget curl
 RUN apt-get -y install software-properties-common apt-transport-https
@@ -28,6 +26,9 @@ RUN apt-get -y install xsltproc libnl-3-dev libevent-dev
 RUN apt-get -y install gtk-doc-tools libxml2-utils
 RUN apt-get -y install qtbase5-dev qtbase5-dev-tools flake8
 RUN apt-get -y install pandoc
+
+RUN apt-get -y install htop iotop iftop sysstat
+RUN apt-get -y install cloc sloccount cscope
 
 RUN apt-get -y install python
 RUN apt-get -y install python3-pip python3-git python3-six

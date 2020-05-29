@@ -3,7 +3,7 @@ linux:
   url: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
   branch: master
   build:
-  - make defconfig && make -j$__PROCS__
+  - make defconfig && make -j$__PROCS__ && make install modules_install
   clean:
   - make mrproper
 
@@ -12,6 +12,6 @@ qemu:
   url: https://git.qemu.org/git/qemu.git
   branch: master
   build:
-  - ./configure && make -j$__PROCS__
+  - ./configure && make -j$__PROCS__ && make install
   clean: 
   - make distclean 

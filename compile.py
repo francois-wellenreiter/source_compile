@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 from functools import partial
+import subprocess
 import multiprocessing as mp
 import os, sys
 import argparse
@@ -124,19 +125,25 @@ def load_files(dir):
                         logging.info("{} - Error {} while loading {}".format(k, exc, f))
 
 
-def print_list(args):
-    sd = dict()
+def print_stats(args):
     for d in load_files(args.configuration):
-        sd.update(d)
+        for k, v in sorted(d.items()):
+            if ENABLED in v and v[ENABLED]:
+                print("+-> {}".format(k))
+                subprocess.call(["/usr/bin/cloc", "--git", k])
 
-    for k, v in sorted(sd.items()):
-        print("{}\t{}\t{}".format("+->" if ENABLED in v and v[ENABLED] else "|\t\t\t", k, v[URL]))
+    
+def print_list(args):
+    for d in load_files(args.configuration):
+        for k, v in sorted(d.items()):
+            print("{}\t{}\t{}".format("+->" if ENABLED in v and v[ENABLED] else "|\t\t\t", k, v[URL]))
 
 
 def parent(args):
-    target_dict = load_files(args.configuration)
     if args.list:
         print_list(args)
+    if args.stats:
+        print_stats(args)
     else:
         with mp.Pool(processes = args.parallelize) as pool:
             res = pool.map(partial(worker, args = args), load_files(args.configuration))
@@ -156,6 +163,7 @@ def parse():
     parser.add_argument("-p", "--procs", action = "store", type = int, default = 1)
     parser.add_argument("-P", "--parallelize", action = "store", type = int, default = 1)
     parser.add_argument("-L", "--list", action = "store_true")
+    parser.add_argument("-S", "--stats", action = "store_true")
     args = parser.parse_args()
 
     logger = mp.log_to_stderr()
