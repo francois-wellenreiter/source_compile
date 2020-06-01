@@ -130,7 +130,7 @@ def print_stats(args):
         for k, v in sorted(d.items()):
             if ENABLED in v and v[ENABLED]:
                 print("+-> {}".format(k))
-                subprocess.call(["/usr/bin/cloc", "--git", k])
+                subprocess.call(["/usr/bin/cloc", k])
 
     
 def print_list(args):
