@@ -2,21 +2,34 @@
 
 from functools import partial
 import subprocess
+import networkx
 import multiprocessing as mp
 import os, sys
 import argparse
 import yaml
 from git import Repo
 import logging
+import json
 
+# specific pattern
 ENABLED="enabled"
 URL="url"
 BRANCH="branch"
 CLEAN="clean"
 BUILD="build"
 
+# git specific pattern
 ORIGIN="origin"
 
+# cloc specific pattern
+SUM="SUM"
+HEADER="header"
+NFILES="nFiles"
+BLANK="blank"
+COMMENT="comment"
+CODE="code"
+
+# compilation specific pattern
 PROCS="__PROCS__"
 SBTOPTS="__SBT_OPTS__"
 MVNOPTS="__MVN_OPTS__"
@@ -129,20 +142,29 @@ def print_stats(args):
     for d in load_files(args.configuration):
         for k, v in sorted(d.items()):
             if ENABLED in v and v[ENABLED]:
-                print("+-> {}".format(k))
-                subprocess.call(["/usr/bin/cloc", k])
+                print("+--->\t{}".format(k))
+                cmd = subprocess.Popen(["/usr/bin/cloc", "--json", k],
+                    stdout = subprocess.PIPE)
 
-    
+                out,_ = cmd.communicate()
+                d = json.loads(out)
+
+                for k_, v_ in sorted(d.items()):
+                    if k_ != HEADER and k_ != SUM:
+                        print("|\t{} files -\t{} lines -\t{}".format(v_[NFILES], v_[CODE], k_))
+                print("|\t{} files -\t{} lines -\t{}".format(d[SUM][NFILES], d[SUM][CODE], SUM))
+
+
 def print_list(args):
     for d in load_files(args.configuration):
         for k, v in sorted(d.items()):
-            print("{}\t{}\t{}".format("+->" if ENABLED in v and v[ENABLED] else "|\t\t\t", k, v[URL]))
+            print("{}\t{}".format("+--->" if ENABLED in v and v[ENABLED] else "|", k))
 
 
 def parent(args):
     if args.list:
         print_list(args)
-    if args.stats:
+    elif args.stats:
         print_stats(args)
     else:
         with mp.Pool(processes = args.parallelize) as pool:
