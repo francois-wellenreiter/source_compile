@@ -1,15 +1,14 @@
 #!/usr/bin/python3
 
-from functools import partial
-import subprocess
-import networkx
-import multiprocessing as mp
-import os, sys
 import argparse
-import yaml
-from git import Repo
+from functools import partial
+import os, sys
+import subprocess
+import multiprocessing as mp
 import logging
-import json
+from git import Repo
+import yaml, json
+import networkx as nx
 
 # specific pattern
 ENABLED="enabled"
@@ -35,6 +34,33 @@ SBTOPTS="__SBT_OPTS__"
 MVNOPTS="__MVN_OPTS__"
 
 
+class Item():
+    graph = nx.Graph()
+
+    def __init__(self, name):
+        tmp = self.__class__.get(name, info)
+        if tmp is None:
+            self.name = name
+            self.info = info
+            self.__class__.graph.add_node(self)
+        else:
+            del(self)
+        return
+
+    @classmethod
+    def list(cls):
+        for n in cls.graph.nodes():
+            print("item {}".format(n.name))
+        return
+
+    @classmethod
+    def get(cls, name):
+        for n in cls.graph.nodes():
+            if n.name == name:
+                return n
+        return None
+
+
 def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""):
     if fn is None:
         logging.debug( '{} - Downloading : ( {} / {} ) {}\r'.format(key, cur_count, max_count, message))
@@ -46,7 +72,8 @@ def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""
 def clone(k, v, args):
     logging.info("{} - Cloning".format(k))
     try:
-        repo = Repo.clone_from(v[URL], os.path.join(args.directory, k), branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
+        repo = Repo.clone_from(v[URL], os.path.join(args.directory, k),
+            branch = v[BRANCH], progress = partial(progress, fn = Repo.clone_from, key = k))
     except Exception as err:
         logging.error("{} - Error when cloning {}".format(k, err))
         return
