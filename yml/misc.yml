@@ -3,75 +3,76 @@ grafana:
   url: https://github.com/grafana/grafana.git
   branch: master
   build:
-  - make
+    [ "make" ]
 
 prometheus:
   enabled: true
   url: https://github.com/prometheus/prometheus.git
   branch: master
   build:
-  - make
+    [ "make" ]
 
 node_exporter:
   enabled: true
   url: https://github.com/prometheus/node_exporter.git
   branch: master
   build:
-  - make
+    [ "make" ]
 
 gpu-monitoring-tools:
   enabled: true
   url: https://github.com/NVIDIA/gpu-monitoring-tools.git
   branch: master
   build:
-  - make
+    [ "make" ]
 
 prometheus_slurm_exporter:
   enabled: true
   url: https://github.com/vpenso/prometheus-slurm-exporter.git
   branch: master
   build:
-  - make
+    [ "make" ]
 
 bitcoin:
   enabled: false
   url: https://github.com/bitcoin/bitcoin.git
   branch: master
   build:
-  - ./autogen.sh && ./configure --with-incompatible-bdb --disable-wallet && make -j$__PROCS__ && make install
+    [ "./autogen.sh && ./configure --with-incompatible-bdb --disable-wallet && make -j$__PROCS__ && make install" ]
   clean:
-  - make distclean
+    [ "make distclean" ]
 
 veracrypt:
   enabled: false
   url: https://github.com/veracrypt/VeraCrypt.git
   branch: master
   build:
-  - cd src && make -j$__PROCS__ && make install && cd ..
+    [ "cd src && make -j$__PROCS__ && make install && cd .." ]
   clean:
-  - cd src && make distclean && cd ..
+    [ "cd src && make distclean && cd .." ]
 
 youtubedl:
   enabled: true
   url: https://github.com/rg3/youtube-dl.git
   branch: master
   build:
-  - python3 ./setup.py install
+    [ "python3 ./setup.py install" ]
 
 tor:
   enabled: false
   url: https://git.torproject.org/tor.git
   branch: master
   build:
-  - sh autogen.sh && ./configure --disable-asciidoc && make -j$__PROCS__ && make install
+    [ "sh autogen.sh && ./configure --disable-asciidoc && make -j$__PROCS__ && make install" ]
   clean:
-  - make distclean
+    [ "make distclean" ]
 
 sage:
   enabled: false
   url: https://github.com/sagemath/sage.git
   branch: master
   build:
-  - ./configure && make -j$__PROCS__&& make install
+    [ "./configure && make -j$__PROCS__&& make install" ]
   clean:
-  - make distclean 
+    [ "make distclean" ]
+

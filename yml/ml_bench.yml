@@ -1,5 +1,6 @@
 tensorflow_benchmarks:
   enabled: true
+  deps: [ tensorflow ]
   url: https://github.com/tensorflow/benchmarks.git
   branch: master
 

@@ -2,16 +2,16 @@ libfabric:
   enabled: false
   url: https://github.com/ofiwg/libfabric.git
   branch: master
-  build:
-  - ./autogen.sh && ./configure && make -j$__PROCS__ && make install
+  build: 
+    [ "./autogen.sh && ./configure && make -j$__PROCS__ && make install" ]
   clean:
-  - make distclean
+    [ "make distclean" ]
 
 ompi:
   enabled: true
   url: https://github.com/open-mpi/ompi.git
   branch: master
   build:
-  - ./autogen.pl && ./configure && make -j$__PROCS__ && make install
+    [ "./autogen.pl && ./configure && make -j$__PROCS__ && make install" ]
   clean:
-  - make distclean 
+    [ "make distclean" ]

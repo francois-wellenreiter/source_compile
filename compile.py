@@ -9,56 +9,33 @@ import logging
 from git import Repo
 import yaml, json
 import networkx as nx
+import matplotlib.pyplot as plt
 
 # specific pattern
+YML_EXT=".yml"
 ENABLED="enabled"
 URL="url"
 BRANCH="branch"
 CLEAN="clean"
 BUILD="build"
+DEPS="deps"
+INFO="info"
 
 # git specific pattern
 ORIGIN="origin"
 
 # cloc specific pattern
-SUM="SUM"
 HEADER="header"
 NFILES="nFiles"
 BLANK="blank"
 COMMENT="comment"
 CODE="code"
+SUM="SUM"
 
 # compilation specific pattern
 PROCS="__PROCS__"
 SBTOPTS="__SBT_OPTS__"
 MVNOPTS="__MVN_OPTS__"
-
-
-class Item():
-    graph = nx.Graph()
-
-    def __init__(self, name):
-        tmp = self.__class__.get(name, info)
-        if tmp is None:
-            self.name = name
-            self.info = info
-            self.__class__.graph.add_node(self)
-        else:
-            del(self)
-        return
-
-    @classmethod
-    def list(cls):
-        for n in cls.graph.nodes():
-            print("item {}".format(n.name))
-        return
-
-    @classmethod
-    def get(cls, name):
-        for n in cls.graph.nodes():
-            if n.name == name:
-                return n
-        return None
 
 
 def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""):
@@ -116,7 +93,6 @@ def update(k, v, args):
     logging.info("{} - Updated".format(k))
 
 
-
 def clean(k, v, args):
     logging.info("{} - Cleaning".format(k))
     os.chdir(os.path.join(args.directory, k))
@@ -153,49 +129,77 @@ def worker(data, args):
                 logging.info("{} - Managed".format(k))
 
 
+#######################################
+
+class Deps():
+
+    def __init__(self):
+        self.graph= nx.DiGraph()
+        return
+
+    def parse(self, d):
+        for k, v in d.items():
+            self.graph.add_node(k, **v)
+            if DEPS in v:
+                for dep in v[DEPS]:
+                    self.graph.add_node(dep)
+                    self.graph.add_edge(k, dep)
+
+    def items(self):
+        return self.graph.nodes(data = True)
+
+    def __iter__(self):
+        return self.graph.__iter__()
+
+    def next(self):
+        return self.graph.next()
+
 
 def load_files(dir):
+    deps = Deps()
     for dirpath, dnames, fnames in os.walk(dir):
         for f in fnames:
-            if f.endswith(".yml"):
+            if f.endswith(YML_EXT):
                 with open(os.path.join(dirpath, f), 'r') as h:
                     try:
-                        yield yaml.safe_load(h)
+                        deps.parse(yaml.safe_load(h))
                     except yaml.YAMLError as exc:
-                        logging.info("{} - Error {} while loading {}".format(k, exc, f))
+                        logging.info("Error {} while loading {}".format(exc, f))
+    return deps
 
 
-def print_stats(args):
-    for d in load_files(args.configuration):
-        for k, v in sorted(d.items()):
-            if ENABLED in v and v[ENABLED]:
-                print("+--->\t{}".format(k))
-                cmd = subprocess.Popen(["/usr/bin/cloc", "--json", k],
-                    stdout = subprocess.PIPE)
+def print_stats(deps):
+    for k, v in sorted(deps.items()):
+        if ENABLED in v and v[ENABLED]:
+            print("+--->\t{}".format(k))
+            cmd = subprocess.Popen(["/usr/bin/cloc", "--json", k],
+                stdout = subprocess.PIPE)
 
-                out,_ = cmd.communicate()
-                d = json.loads(out)
+            out,_ = cmd.communicate()
+            d = json.loads(out)
 
-                for k_, v_ in sorted(d.items()):
-                    if k_ != HEADER and k_ != SUM:
-                        print("|\t{} files -\t{} lines -\t{}".format(v_[NFILES], v_[CODE], k_))
-                print("|\t{} files -\t{} lines -\t{}".format(d[SUM][NFILES], d[SUM][CODE], SUM))
+            for k_, v_ in sorted(d.items()):
+                if k_ != HEADER and k_ != SUM:
+                    print("|\t{} files -\t{} lines -\t{}".format(v_[NFILES], v_[CODE], k_))
+            print("|\t{} files -\t{} lines -\t{}".format(d[SUM][NFILES], d[SUM][CODE], SUM))
+        else:
+            print("|\t{}".format(k))
 
 
-def print_list(args):
-    for d in load_files(args.configuration):
-        for k, v in sorted(d.items()):
-            print("{}\t{}".format("+--->" if ENABLED in v and v[ENABLED] else "|", k))
+def print_list(deps):
+    for k, v in sorted(deps.items()):
+        print("{}\t{}".format("+--->" if ENABLED in v and v[ENABLED] else "|", k))
 
 
 def parent(args):
+    deps = load_files(args.configuration)
     if args.list:
-        print_list(args)
+        print_list(deps)
     elif args.stats:
-        print_stats(args)
+        print_stats(deps)
     else:
         with mp.Pool(processes = args.parallelize) as pool:
-            res = pool.map(partial(worker, args = args), load_files(args.configuration))
+            res = pool.map(partial(worker, args = args), deps)
 
 
 def parse():

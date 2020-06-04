@@ -1,5 +1,6 @@
 tensorflow_models:
   enabled: true
+  deps: [ tensorflow ]
   url: https://github.com/tensorflow/models.git
   branch: master
 
@@ -8,46 +9,51 @@ tensorflow:
   url: https://github.com/tensorflow/tensorflow.git
   branch: master
   build: 
-  - PYTHON_BIN_PATH=`which python3` USE_DEFAULT_PYTHON_LIB_PATH=1 TF_NEED_MPI=0 TF_NEED_HDFS=1 TF_NEED_TENSORRT=0 TF_NEED_JEMALLOC=1 TF_NEED_OPENCL_SYCL=0 TF_NEED_COMPUTECPP=1 TF_NEED_OPENCL=0 TF_CUDA_CLANG=0 TF_DOWNLOAD_CLANG=0 TF_NEED_GCP=1 TF_NEED_AWS=1 TF_NEED_KAFKA=0 TF_ENABLE_XLA=1 TF_NEED_GDR=1 TF_NEED_VERBS=0 TF_NEED_CUDA=0 TF_NEED_ROCM=0 CC_OPT_FLAGS="-march=native" TF_SET_ANDROID_WORKSPACE=0 ./configure ; bazel build --config=v2 //tensorflow/tools/pip_package:build_pip_package
-  - bazel shutdown
+    [
+    "PYTHON_BIN_PATH=`which python3` USE_DEFAULT_PYTHON_LIB_PATH=1 TF_NEED_MPI=0 TF_NEED_HDFS=1 TF_NEED_TENSORRT=0 TF_NEED_JEMALLOC=1 TF_NEED_OPENCL_SYCL=0 TF_NEED_COMPUTECPP=1 TF_NEED_OPENCL=0 TF_CUDA_CLANG=0 TF_DOWNLOAD_CLANG=0 TF_NEED_GCP=1 TF_NEED_AWS=1 TF_NEED_KAFKA=0 TF_ENABLE_XLA=1 TF_NEED_GDR=1 TF_NEED_VERBS=0 TF_NEED_CUDA=0 TF_NEED_ROCM=0 CC_OPT_FLAGS='-march=native' TF_SET_ANDROID_WORKSPACE=0 ./configure",
+    "bazel build --config=v2 //tensorflow/tools/pip_package:build_pip_package",
+    "bazel shutdown"
+    ]
   clean:
-  - bazel clean
-  - bazel shutdown
-  - rm -f ./.bazelrc
+    [
+    "bazel clean",
+    "bazel shutdown",
+    "rm -f ./.bazelrc"
+    ]
 
 horovod:
   enabled: true
   deps:
-  - tensorflow
+    [ tensorflow ]
   url: https://github.com/horovod/horovod.git
   branch: master
   build:
-  - python3 ./setup.py build_ext  
+    [ "python3 ./setup.py build_ext" ]
   clean:
-  - python3 ./setup.py clean  
+    [ "python3 ./setup.py clean" ]
 
 pytorch:
   enabled: false
   url: https://github.com/pytorch/pytorch.git
   branch: master
   build:
-  - python3 ./setup.py build_ext
+    [ "python3 ./setup.py build_ext" ]
 
 mxnet:
   enabled: false
   url: https://github.com/apache/incubator-mxnet
   branch: master
   build:
-  - make -j$__PROCS__
+    [ "make -j$__PROCS__" ]
   clean:
-  - make clean 
+    [ "make clean" ]
 
 scikit_learn:
   enabled: true
   url: https://github.com/scikit-learn/scikit-learn.git
   branch: master
   build:
-  - python3 ./setup.py build_ext 
+    [ "python3 ./setup.py build_ext" ]
   clean:
-  - python3 ./setup.py clean 
+    [ "python3 ./setup.py clean" ]
 
