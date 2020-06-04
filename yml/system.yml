@@ -9,7 +9,7 @@ linux:
 
 qemu:
   enabled: true
-  deps: [ linux ]
+  deps: [ linux, gcc ]
   url: https://git.qemu.org/git/qemu.git
   branch: master
   build:

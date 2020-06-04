@@ -1,5 +1,6 @@
 grafana:  
   enabled: true
+  deps: [ golang ]
   url: https://github.com/grafana/grafana.git
   branch: master
   build:
@@ -7,6 +8,7 @@ grafana:
 
 prometheus:
   enabled: true
+  deps: [ golang ]
   url: https://github.com/prometheus/prometheus.git
   branch: master
   build:
@@ -14,6 +16,7 @@ prometheus:
 
 node_exporter:
   enabled: true
+  deps: [ golang ]
   url: https://github.com/prometheus/node_exporter.git
   branch: master
   build:
@@ -21,6 +24,7 @@ node_exporter:
 
 gpu-monitoring-tools:
   enabled: true
+  deps: [ golang ]
   url: https://github.com/NVIDIA/gpu-monitoring-tools.git
   branch: master
   build:
@@ -28,6 +32,7 @@ gpu-monitoring-tools:
 
 prometheus_slurm_exporter:
   enabled: true
+  deps: [ golang ]
   url: https://github.com/vpenso/prometheus-slurm-exporter.git
   branch: master
   build:
@@ -35,6 +40,7 @@ prometheus_slurm_exporter:
 
 bitcoin:
   enabled: false
+  deps: [ gcc ]
   url: https://github.com/bitcoin/bitcoin.git
   branch: master
   build:
@@ -44,6 +50,7 @@ bitcoin:
 
 veracrypt:
   enabled: false
+  deps: [ gcc ]
   url: https://github.com/veracrypt/VeraCrypt.git
   branch: master
   build:
@@ -53,6 +60,7 @@ veracrypt:
 
 youtubedl:
   enabled: true
+  deps: [ cpython ]
   url: https://github.com/rg3/youtube-dl.git
   branch: master
   build:
@@ -60,6 +68,7 @@ youtubedl:
 
 tor:
   enabled: false
+  deps: [ gcc ]
   url: https://git.torproject.org/tor.git
   branch: master
   build:
@@ -69,6 +78,7 @@ tor:
 
 sage:
   enabled: false
+  deps: [ gcc, cpython ]
   url: https://github.com/sagemath/sage.git
   branch: master
   build:

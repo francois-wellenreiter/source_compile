@@ -9,6 +9,7 @@ libfabric:
 
 ompi:
   enabled: true
+  deps : [ gcc ]
   url: https://github.com/open-mpi/ompi.git
   branch: master
   build:

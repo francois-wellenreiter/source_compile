@@ -9,7 +9,7 @@ gcc:
     [ "make distclean" ]
 
 golang:
-  enabled: false
+  enabled: true
   url: https://github.com/golang/go.git
   branch: master
   build:
@@ -27,7 +27,7 @@ julia:
     [ "make distclean" ]
 
 cpython:
-  enabled: false
+  enabled: true
   url: https://github.com/python/cpython.git
   branch: master
   build:

@@ -23,8 +23,7 @@ tensorflow:
 
 horovod:
   enabled: true
-  deps:
-    [ tensorflow ]
+  deps: [ tensorflow ]
   url: https://github.com/horovod/horovod.git
   branch: master
   build:
@@ -34,6 +33,7 @@ horovod:
 
 pytorch:
   enabled: false
+  deps: [ cpython, gcc ] 
   url: https://github.com/pytorch/pytorch.git
   branch: master
   build:
@@ -41,6 +41,7 @@ pytorch:
 
 mxnet:
   enabled: false
+  deps: [ cpython, gcc ] 
   url: https://github.com/apache/incubator-mxnet
   branch: master
   build:
@@ -49,7 +50,8 @@ mxnet:
     [ "make clean" ]
 
 scikit_learn:
-  enabled: true
+  enabled: false
+  deps: [ cpython, gcc ] 
   url: https://github.com/scikit-learn/scikit-learn.git
   branch: master
   build:
