@@ -90,7 +90,7 @@ def update(k, v, args):
         repo.submodule_update(recursive = True, init = True)
     except Exception as err:
         logging.debug("No submodules to update {} with {}".format(k, err))
-    logging.info("{} - Updated".format(k))
+    logging.info("Updated -\t{}".format(k))
 
 
 def clean(k, v, args):
