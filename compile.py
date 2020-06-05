@@ -9,7 +9,6 @@ import logging
 from git import Repo
 import yaml, json
 import networkx as nx
-import matplotlib.pyplot as plt
 
 # specific pattern
 YML_EXT=".yml"
@@ -113,104 +112,118 @@ def build(k, v, args):
     logging.info("Built -\t{}".format(k))
 
 
-def worker(data, args):
-    k, v = data
-    if args.target is None or k in args.target:
-        if v[ENABLED] or args.force:
-            logging.info("Managing -\t{}".format(k))
-            if not os.path.exists(os.path.join(args.directory, k)):
-                clone(k, v ,args)
-            if args.update:
-                update(k, v, args)
-            if args.clean:
-                clean(k, v, args)
-            if args.build:
-                build(k, v, args)
-            logging.info("Managed -\t{}".format(k))
+#######################################
+
+
+def worker(args, in_q, out_q):
+    while True:
+        k, v = in_q.get()
+        if k is None:
+            return
+
+        if args.target is None or k in args.target:
+            if v[ENABLED] or args.force:
+                logging.info("Managing -\t{}".format(k))
+                if not os.path.exists(os.path.join(args.directory, k)):
+                    clone(k, v ,args)
+                if args.update:
+                    update(k, v, args)
+                if args.clean:
+                    clean(k, v, args)
+                if args.build:
+                    build(k, v, args)
+                logging.info("Managed -\t{}".format(k))
+        out_q.put(k)
+
+
+def start_workers(args, deps):
+    on_hold = []
+    working = []
+    in_q = mp.Queue()
+    out_q = mp.Queue()
+
+    for num in range(args.parallelize):
+        mp.Process(target = worker, args = (args, in_q, out_q)).start()
+
+    while len(deps) > 0:
+        # get leaves of the graph and add them if they are not managed yet 
+        for k in deps.nodes():
+            if deps.out_degree(k) == 0 and k not in on_hold and k not in working:
+                on_hold += [k]
+
+        for k in on_hold:
+            in_q.put((k, deps.nodes[k]))
+            working += [k]
+            on_hold.remove(k)
+
+        k = out_q.get()
+        deps.remove_node(k)
+        working.remove(k)
+
+    for num in range(args.parallelize):
+        in_q.put((None, None))
 
 
 #######################################
 
-class Deps():
 
-    def __init__(self):
-        self.graph= nx.DiGraph()
-        return
+def fill_graph(deps, d):
+    for k, v in d.items():
+        deps.add_node(k, **v)
+        if DEPS in v:
+            for dep in v[DEPS]:
+                deps.add_node(dep)
+                deps.add_edge(k, dep)
 
-    def parse(self, d):
-        for k, v in d.items():
-            self.graph.add_node(k, **v)
-            if DEPS in v:
-                for dep in v[DEPS]:
-                    self.graph.add_node(dep)
-                    self.graph.add_edge(k, dep)
-
-        if not nx.is_directed_acyclic_graph(self.graph):
-            raise TypeError
-
-    def items(self):
-        return self.graph.nodes(data = True)
-
-    def is_full(self):
-        return self.graph.number_of_nodes() > 0
-
-    def tearoff_leaves(self):
-        leaves = []
-        for k, v in self.graph.nodes(data = True):
-            if self.graph.out_degree(k) == 0:
-                leaves += [ (k, v) ]
-        for k, _ in leaves:
-            self.graph.remove_node(k)
-        return leaves
+    if not nx.is_directed_acyclic_graph(deps):
+        raise TypeError
 
 
-def load_files(dir):
-    deps = Deps()
+def parse_files(dir):
+    deps = nx.DiGraph()
     for dirpath, dnames, fnames in os.walk(dir):
         for f in fnames:
             if f.endswith(YML_EXT):
                 with open(os.path.join(dirpath, f), 'r') as h:
                     try:
-                        deps.parse(yaml.safe_load(h))
+                        fill_graph(deps, yaml.safe_load(h))
                     except (TypeError, yaml.YAMLError) as exc:
                         logging.info("Error {} while loading {}".format(exc, f))
     return deps
 
 
-def print_stats(deps):
-    for k, v in sorted(deps.items()):
+def print_stats(args, deps):
+    for k, v in sorted(deps.nodes(data = True)):
         if ENABLED in v and v[ENABLED]:
-            print("+--->\t{}".format(k))
-            out, _ = subprocess.Popen(["/usr/bin/cloc", "--json", k],
-                stdout = subprocess.PIPE).communicate()
-            d = json.loads(out)
+            if os.path.exists(os.path.join(args.directory, k)):
+                print("+--->\t{}".format(k))
+                try:
+                    out, err = subprocess.Popen(["/usr/bin/cloc", "--json", k],
+                        stdout = subprocess.PIPE, stderr = subprocess.PIPE).communicate()
+                    d = json.loads(out)
+                except Exception as err:
+                    logging.error("Error when reading {} output with {}".format(k, err))
+                    return
 
-            for k_, v_ in sorted(d.items()):
-                if k_ != HEADER and k_ != SUM:
-                    print("|\t{} files -\t{} lines -\t{}".format(v_[NFILES], v_[CODE], k_))
-            print("|\t{} files -\t{} lines -\t{}".format(d[SUM][NFILES], d[SUM][CODE], SUM))
+                for k_, v_ in sorted(d.items()):
+                    if k_ != HEADER and k_ != SUM:
+                        print("|\t{} files -\t{} lines -\t{}".format(v_[NFILES], v_[CODE], k_))
+                print("|\t{} files -\t{} lines -\t{}".format(d[SUM][NFILES], d[SUM][CODE], SUM))
+            else:
+                print("+---/\t{}".format(k))
         else:
             print("|\t{}".format(k))
 
 
 def print_list(deps):
-    for k, v in sorted(deps.items()):
+    for k, v in sorted(deps.nodes(data = True)):
         print("{}\t{}".format("+--->" if ENABLED in v and v[ENABLED] else "|", k))
 
 
-def parent(args):
-    deps = load_files(args.configuration)
-    if args.list:
-        print_list(deps)
-    elif args.stats:
-        print_stats(deps)
-    else:
-        while deps.is_full():
-            with mp.Pool(processes = args.parallelize) as pool:
-                res = pool.map(partial(worker, args = args), deps.tearoff_leaves())
+#######################################
 
 
-def parse():
+def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action = "store_true")
     parser.add_argument("-l", "--loglevel", action = "store", type = int, default = logging.INFO)
@@ -247,10 +260,19 @@ def parse():
     return args
 
 
+#######################################
 
 
 def main():
-    parent(parse())
+    args = parse_args()
+    deps = parse_files(args.configuration)
+    if args.list:
+        print_list(deps)
+    elif args.stats:
+        print_stats(args, deps)
+    else:
+        start_workers(args, deps)
+
 
 if __name__ == "__main__":
     main()
