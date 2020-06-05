@@ -42,6 +42,7 @@ def progress(op_code, cur_count, max_count=None, message='', fn = None, key = ""
         logging.debug( 'Downloading -\t{} : ( {} / {} ) {}\r'.format(key, cur_count, max_count, message))
     else:
         logging.debug( 'Downloading -\t{} : {} - ( {} / {} ) {}\r'.format(key, fn.__name__, cur_count, max_count, message))
+    return
 
 
 
@@ -58,6 +59,7 @@ def clone(k, v, args):
     except Exception as err:
         logging.debug("No submodules {} to update {}".format(k, err))
     logging.info("Cloned -\t{}".format(k))
+    return
 
 
 
@@ -90,6 +92,7 @@ def update(k, v, args):
     except Exception as err:
         logging.debug("No submodules to update {} with {}".format(k, err))
     logging.info("Updated -\t{}".format(k))
+    return
 
 
 def clean(k, v, args):
@@ -100,6 +103,7 @@ def clean(k, v, args):
             logging.debug("Executing -\t {} - {}".format(k, cmd))
             os.system(cmd)
     logging.info("Cleaned -\t{}".format(k))
+    return
 
 
 def build(k, v, args):
@@ -110,6 +114,7 @@ def build(k, v, args):
             logging.debug("Executing -\t {} - {}".format(k, cmd))
             os.system(cmd)
     logging.info("Built -\t{}".format(k))
+    return
 
 
 #######################################
@@ -162,6 +167,7 @@ def start_workers(args, deps):
 
     for num in range(args.parallelize):
         in_q.put((None, None))
+    return
 
 
 #######################################
@@ -174,9 +180,9 @@ def fill_graph(deps, d):
             for dep in v[DEPS]:
                 deps.add_node(dep)
                 deps.add_edge(k, dep)
-
     if not nx.is_directed_acyclic_graph(deps):
         raise TypeError
+    return
 
 
 def parse_files(dir):
@@ -213,11 +219,13 @@ def print_stats(args, deps):
                 print("+---/\t{}".format(k))
         else:
             print("|\t{}".format(k))
+    return
 
 
 def print_list(deps):
     for k, v in sorted(deps.nodes(data = True)):
         print("{}\t{}".format("+--->" if ENABLED in v and v[ENABLED] else "|", k))
+    return
 
 
 #######################################
@@ -272,6 +280,7 @@ def main():
         print_stats(args, deps)
     else:
         start_workers(args, deps)
+    return
 
 
 if __name__ == "__main__":
