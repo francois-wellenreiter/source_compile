@@ -3,7 +3,7 @@ libfabric:
   url: https://github.com/ofiwg/libfabric.git
   branch: master
   build: 
-    [ "./autogen.sh && ./configure && make -j$__PROCS__ && make install" ]
+    [ "./autogen.sh && ./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
   clean:
     [ "make distclean" ]
 
@@ -13,6 +13,6 @@ ompi:
   url: https://github.com/open-mpi/ompi.git
   branch: master
   build:
-    [ "./autogen.pl && ./configure && make -j$__PROCS__ && make install" ]
+    [ "./autogen.pl && ./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
   clean:
     [ "make distclean" ]

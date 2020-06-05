@@ -44,7 +44,7 @@ bitcoin:
   url: https://github.com/bitcoin/bitcoin.git
   branch: master
   build:
-    [ "./autogen.sh && ./configure --with-incompatible-bdb --disable-wallet && make -j$__PROCS__ && make install" ]
+    [ "./autogen.sh && ./configure --prefix=/src/local --with-incompatible-bdb --disable-wallet && make -j$__PROCS__ && make install" ]
   clean:
     [ "make distclean" ]
 
@@ -72,7 +72,7 @@ tor:
   url: https://git.torproject.org/tor.git
   branch: master
   build:
-    [ "sh autogen.sh && ./configure --disable-asciidoc && make -j$__PROCS__ && make install" ]
+    [ "sh autogen.sh && ./configure --prefix=/src/local --disable-asciidoc && make -j$__PROCS__ && make install" ]
   clean:
     [ "make distclean" ]
 
@@ -82,7 +82,7 @@ sage:
   url: https://github.com/sagemath/sage.git
   branch: master
   build:
-    [ "./configure && make -j$__PROCS__&& make install" ]
+    [ "./configure --prefix=/src/local && make -j$__PROCS__&& make install" ]
   clean:
     [ "make distclean" ]
 

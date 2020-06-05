@@ -13,6 +13,6 @@ qemu:
   url: https://git.qemu.org/git/qemu.git
   branch: master
   build:
-    [ "./configure && make -j$__PROCS__ && make install" ]
+    [ "./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
   clean: 
     [ "make distclean" ]

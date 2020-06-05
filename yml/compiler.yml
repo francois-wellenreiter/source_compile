@@ -4,7 +4,7 @@ gcc:
   url: https://github.com/gcc-mirror/gcc.git
   branch: master
   build:
-    [ "./configure && make -j$__PROCS__ && make install" ]
+    [ "./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
   clean:
     [ "make distclean" ]
 
@@ -31,7 +31,7 @@ cpython:
   url: https://github.com/python/cpython.git
   branch: master
   build:
-    [ "./configure --enable-optimizations && make -j$__PROCS__ && make install" ]
+    [ "./configure --enable-optimizations --prefix=/src/local && make -j$__PROCS__ && make install" ]
   clean:
     [ "make distclean" ]
 
