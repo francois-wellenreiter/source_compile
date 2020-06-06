@@ -5,7 +5,7 @@ tensorflow_models:
   branch: master
 
 tensorflow:
-  enabled: true
+  enabled: false
   url: https://github.com/tensorflow/tensorflow.git
   branch: master
   build: 
@@ -22,7 +22,7 @@ tensorflow:
     ]
 
 horovod:
-  enabled: true
+  enabled: false
   deps: [ tensorflow ]
   url: https://github.com/horovod/horovod.git
   branch: master

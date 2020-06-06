@@ -59,7 +59,7 @@ veracrypt:
     [ "cd src && make distclean && cd .." ]
 
 youtubedl:
-  enabled: true
+  enabled: false
   deps: [ cpython ]
   url: https://github.com/rg3/youtube-dl.git
   branch: master

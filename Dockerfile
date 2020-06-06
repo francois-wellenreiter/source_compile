@@ -31,15 +31,15 @@ RUN apt-get -y install htop iotop iftop sysstat
 RUN apt-get -y install cloc sloccount cscope
 
 RUN apt-get -y install python
+RUN apt-get -y install python3 cython3
 RUN apt-get -y install python3-pip python3-git python3-six
-RUN apt-get -y install python3-numpy python3-scipy cython3
+RUN apt-get -y install python3-numpy python3-scipy python3-networkx
 RUN apt-get -y install golang-1.14 && \
   cd /usr/bin && rm -f go && ln -s ../lib/go-1.14/bin/go go
 
 RUN pip3 install --upgrade scikit-build
 RUN pip3 install --upgrade setuptools cmake cffi typing
-RUN pip3 install --upgrade pyyaml networkx future pytest pybind11 requests
-RUN pip3 install --upgrade tensorflow
+RUN pip3 install --upgrade pyyaml future pytest pybind11 requests
 
 RUN cd /tmp && \
   wget https://github.com/bazelbuild/bazel/releases/download/3.0.0/bazel-3.0.0-installer-linux-x86_64.sh && \

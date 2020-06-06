@@ -8,7 +8,7 @@ libfabric:
     [ "make distclean" ]
 
 ompi:
-  enabled: true
+  enabled: false
   deps : [ gcc ]
   url: https://github.com/open-mpi/ompi.git
   branch: master
