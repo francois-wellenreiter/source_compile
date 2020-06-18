@@ -1,5 +1,5 @@
 grafana:  
-  enabled: true
+  enabled: false
   deps: [ golang ]
   url: https://github.com/grafana/grafana.git
   branch: master
