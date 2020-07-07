@@ -1,30 +1,30 @@
-grafana:  
+grafana_grafana:  
   enabled: false
-  deps: [ golang ]
+  deps: [ golang_go ]
   url: https://github.com/grafana/grafana.git
   branch: master
   build:
     [ "make" ]
 
-prometheus:
+prometheus_prometheus:
   enabled: true
-  deps: [ golang ]
+  deps: [ golang_go ]
   url: https://github.com/prometheus/prometheus.git
   branch: master
   build:
     [ "make" ]
 
-node_exporter:
+prometheus_node_exporter:
   enabled: true
-  deps: [ golang ]
+  deps: [ golang_go ]
   url: https://github.com/prometheus/node_exporter.git
   branch: master
   build:
     [ "make" ]
 
-gpu-monitoring-tools:
+prometheus_gpu_monitoring_tools:
   enabled: true
-  deps: [ golang ]
+  deps: [ golang_go ]
   url: https://github.com/NVIDIA/gpu-monitoring-tools.git
   branch: master
   build:
@@ -32,15 +32,15 @@ gpu-monitoring-tools:
 
 prometheus_slurm_exporter:
   enabled: true
-  deps: [ golang ]
+  deps: [ golang_go ]
   url: https://github.com/vpenso/prometheus-slurm-exporter.git
   branch: master
   build:
     [ "make" ]
 
-bitcoin:
+bitcoin_bitcoin:
   enabled: false
-  deps: [ gcc ]
+  deps: [ gnu_gcc ]
   url: https://github.com/bitcoin/bitcoin.git
   branch: master
   build:
@@ -48,9 +48,9 @@ bitcoin:
   clean:
     [ "make distclean" ]
 
-veracrypt:
+veracrypt_veracrypt:
   enabled: false
-  deps: [ gcc ]
+  deps: [ gnu_gcc ]
   url: https://github.com/veracrypt/VeraCrypt.git
   branch: master
   build:
@@ -58,17 +58,17 @@ veracrypt:
   clean:
     [ "cd src && make distclean && cd .." ]
 
-youtubedl:
+rg3_youtubedl:
   enabled: false
-  deps: [ cpython ]
+  deps: [ python_cpython ]
   url: https://github.com/rg3/youtube-dl.git
   branch: master
   build:
     [ "python3 ./setup.py install" ]
 
-tor:
+torproject_tor:
   enabled: false
-  deps: [ gcc ]
+  deps: [ gnu_gcc ]
   url: https://git.torproject.org/tor.git
   branch: master
   build:
@@ -76,9 +76,9 @@ tor:
   clean:
     [ "make distclean" ]
 
-sage:
+sagemath_sage:
   enabled: false
-  deps: [ gcc, cpython ]
+  deps: [ gnu_gcc, python_cpython ]
   url: https://github.com/sagemath/sage.git
   branch: master
   build:

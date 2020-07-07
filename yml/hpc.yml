@@ -1,4 +1,4 @@
-libfabric:
+ofiwg_libfabric:
   enabled: false
   url: https://github.com/ofiwg/libfabric.git
   branch: master
@@ -7,9 +7,9 @@ libfabric:
   clean:
     [ "make distclean" ]
 
-ompi:
+ompi_ompi:
   enabled: false
-  deps : [ gcc ]
+  deps : [ gnu_gcc ]
   url: https://github.com/open-mpi/ompi.git
   branch: master
   build:

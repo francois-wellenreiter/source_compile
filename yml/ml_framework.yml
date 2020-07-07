@@ -1,10 +1,10 @@
 tensorflow_models:
   enabled: true
-  deps: [ tensorflow ]
+  deps: [ tensorflow_tensorflow ]
   url: https://github.com/tensorflow/models.git
   branch: master
 
-tensorflow:
+tensorflow_tensorflow:
   enabled: false
   url: https://github.com/tensorflow/tensorflow.git
   branch: master
@@ -21,9 +21,9 @@ tensorflow:
     "rm -f ./.bazelrc"
     ]
 
-horovod:
+horovod_horovod:
   enabled: false
-  deps: [ tensorflow ]
+  deps: [ tensorflow_tensorflow ]
   url: https://github.com/horovod/horovod.git
   branch: master
   build:
@@ -31,17 +31,17 @@ horovod:
   clean:
     [ "python3 ./setup.py clean" ]
 
-pytorch:
+pytorch_pytorch:
   enabled: false
-  deps: [ cpython, gcc ] 
+  deps: [ python_cpython, gnu_gcc ] 
   url: https://github.com/pytorch/pytorch.git
   branch: master
   build:
     [ "python3 ./setup.py build_ext" ]
 
-mxnet:
+mxnet_mxnet:
   enabled: false
-  deps: [ cpython, gcc ] 
+  deps: [ python_cpython, gnu_gcc ] 
   url: https://github.com/apache/incubator-mxnet
   branch: master
   build:
@@ -49,9 +49,9 @@ mxnet:
   clean:
     [ "make clean" ]
 
-scikit_learn:
+scikit_sklearn:
   enabled: false
-  deps: [ cpython, gcc ] 
+  deps: [ python_cpython, gnu_gcc ] 
   url: https://github.com/scikit-learn/scikit-learn.git
   branch: master
   build:

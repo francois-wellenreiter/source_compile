@@ -1,4 +1,4 @@
-gcc:
+gnu_gcc:
   enabled: false
   deps: [ linux ]
   url: https://github.com/gcc-mirror/gcc.git
@@ -8,7 +8,7 @@ gcc:
   clean:
     [ "make distclean" ]
 
-golang:
+golang_go:
   enabled: false
   url: https://github.com/golang/go.git
   branch: master
@@ -17,7 +17,7 @@ golang:
   clean:
     [ "cd src && ./clean.sh && cd .." ]
 
-julia:
+julialang_julia:
   enabled: false
   url: https://github.com/JuliaLang/julia.git
   branch: master
@@ -26,7 +26,7 @@ julia:
   clean:
     [ "make distclean" ]
 
-cpython:
+python_cpython:
   enabled: false
   url: https://github.com/python/cpython.git
   branch: master
