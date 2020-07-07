@@ -30,7 +30,6 @@ RUN apt-get -y install pandoc
 RUN apt-get -y install htop iotop iftop sysstat
 RUN apt-get -y install cloc sloccount cscope
 
-RUN apt-get -y install python
 RUN apt-get -y install python3 cython3
 RUN apt-get -y install python3-pip python3-git python3-six
 RUN apt-get -y install python3-numpy python3-scipy python3-networkx
