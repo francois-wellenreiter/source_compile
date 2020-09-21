@@ -52,8 +52,8 @@ RUN cd /tmp && \
   ./bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh && \
   rm -f bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh
 
-RUN git config pull.rebase false && \
-    git config pull.ff only
+RUN git config --global pull.rebase false && \
+    git config --global pull.ff only
 
 RUN apt-get -y autoremove
 RUN apt-get autoclean

@@ -138,6 +138,9 @@ def worker(args, in_q, out_q):
                 if args.build:
                     build(k, v, args)
                 logging.info("Managed -\t{}".format(k))
+            else:
+                logging.info("Managing -\t{}\t- DISABLED".format(k))
+
         out_q.put(k)
 
 
