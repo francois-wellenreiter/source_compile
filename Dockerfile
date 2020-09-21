@@ -22,7 +22,8 @@ RUN apt-get -y install tar bzip2 zip unzip ca-certificates wget curl \
 RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev \
   libelf-dev bc libssl-dev libpixman-1-dev \
   build-essential automake autoconf libtool cmake git bsdmainutils patch \
-  liblzma-dev libmpfr-dev libmpc-dev libgmp-dev libglib2.0-dev
+  liblzma-dev libmpfr-dev libmpc-dev libgmp-dev libglib2.0-dev \
+  openmpi-bin
 
 RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev \
   xsltproc libnl-3-dev libevent-dev \
@@ -38,8 +39,9 @@ RUN apt-get -y install python3 cython3 \
   python3-pip python3-git python3-six \
   python3-numpy python3-scipy python3-networkx
 
-RUN apt-get install -y golang-1.15 && \
-  cd /usr/bin && rm -f go && ln -s ../lib/go-1.15/bin/go go
+ARG GOLANG_VERSION=1.15
+RUN apt-get install -y golang-${GOLANG_VERSION} && \
+  cd /usr/bin && rm -f go && ln -s ../lib/go-${GOLANG_VERSION}/bin/go go
 
 RUN pip3 install --upgrade scikit-build \
   setuptools cmake cffi typing \

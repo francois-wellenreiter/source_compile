@@ -1,6 +1,6 @@
 
 tensorflow_tensorflow:
-  enabled: false
+  enabled: true
   url: https://github.com/tensorflow/tensorflow.git
   branch: master
   build: 
@@ -14,6 +14,17 @@ tensorflow_tensorflow:
     "bazel clean",
     "bazel shutdown",
     "rm -f ./.bazelrc"
+    ]
+
+tensorflow_networking:
+  enabled: true
+  url: https://github.com/tensorflow/networking.git
+  branch: master
+  build:
+    [
+    "TF_NEED_MPI=1 ./configure",
+    "bazel build -c opt //tensorflow_networking/mpi:all",
+    "bazel build -c opt //tensorflow_networking/mpi_collectives:all"
     ]
 
 horovod_horovod:
