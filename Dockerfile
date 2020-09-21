@@ -38,8 +38,8 @@ RUN apt-get -y install python3 cython3 \
   python3-pip python3-git python3-six \
   python3-numpy python3-scipy python3-networkx
 
-RUN apt-get install -y golang-1.14 && \
-  cd /usr/bin && rm -f go && ln -s ../lib/go-1.14/bin/go go
+RUN apt-get install -y golang-1.15 && \
+  cd /usr/bin && rm -f go && ln -s ../lib/go-1.15/bin/go go
 
 RUN pip3 install --upgrade scikit-build \
   setuptools cmake cffi typing \
