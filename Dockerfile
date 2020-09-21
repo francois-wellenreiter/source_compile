@@ -17,7 +17,7 @@ RUN apt-get update
 RUN apt-get -y dist-upgrade
 
 RUN apt-get -y install tar bzip2 zip unzip ca-certificates wget curl \
-  software-properties-common apt-transport-https
+  software-properties-common apt-transport-https locales
 
 RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev \
   libelf-dev bc libssl-dev libpixman-1-dev \
