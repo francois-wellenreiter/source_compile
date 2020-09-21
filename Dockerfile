@@ -23,7 +23,7 @@ RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev \
   libelf-dev bc libssl-dev libpixman-1-dev \
   build-essential automake autoconf libtool cmake git bsdmainutils patch \
   liblzma-dev libmpfr-dev libmpc-dev libgmp-dev libglib2.0-dev \
-  openmpi-bin
+  openmpi-bin libopenmpi-dev
 
 RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev \
   xsltproc libnl-3-dev libevent-dev \
