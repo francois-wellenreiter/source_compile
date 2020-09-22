@@ -60,7 +60,7 @@ ARG BAZEL_VERSION="3.5.0"
 
 RUN cd /tmp && \
   wget https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh && \
-  chmod +x bazel-3.1.0-installer-linux-x86_64.sh && \
+  chmod +x bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh && \
   ./bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh && \
   rm -f bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh
 
