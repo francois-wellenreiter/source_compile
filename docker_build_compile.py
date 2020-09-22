@@ -22,6 +22,7 @@ def parent(args):
         rm = True,
         dockerfile = DOCKERFILE,
         nocache = args.refresh,
+        pull = args.refresh,
         target = LIBC)
     for line in log:
         logging.debug("{}".format(line))
