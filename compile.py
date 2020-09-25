@@ -127,7 +127,7 @@ def worker(args, in_q, out_q):
             return
 
         if args.target is None or k in args.target:
-            if v[ENABLED] or args.force:
+            if (ENABLED in v and v[ENABLED]) or args.force:
                 logging.info("Managing -\t{}".format(k))
                 if not os.path.exists(os.path.join(args.directory, k)):
                     clone(k, v ,args)
