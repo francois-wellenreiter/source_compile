@@ -21,12 +21,6 @@ RUN apt-get -y dist-upgrade
 RUN apt-get -y install tar bzip2 zip unzip ca-certificates wget curl \
   software-properties-common apt-transport-https locales
 
-RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev \
-  libelf-dev bc libssl-dev libpixman-1-dev \
-  build-essential automake autoconf libtool cmake git bsdmainutils patch \
-  liblzma-dev libmpfr-dev libmpc-dev libgmp-dev libglib2.0-dev \
-  openmpi-bin libopenmpi-dev
-
 RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev \
   xsltproc libnl-3-dev libevent-dev \
   gtk-doc-tools libxml2-utils \
@@ -35,6 +29,17 @@ RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev \
 RUN apt-get -y install htop iotop iftop sysstat \
   cloc sloccount cscope
 
+
+# GCC ###########################################
+RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev \
+  libelf-dev bc libssl-dev libpixman-1-dev \
+  build-essential automake autoconf libtool cmake git bsdmainutils patch \
+  liblzma-dev libmpfr-dev libmpc-dev libgmp-dev libglib2.0-dev
+
+# OPENMPI ###########################################
+RUN apt-get -y install openmpi-bin libopenmpi-dev
+
+# DOCKER ###########################################
 RUN apt-get -y install docker.io
 
 # PYTHON ###########################################
@@ -43,7 +48,7 @@ ARG PYTHON_VERSION="3.9"
 RUN apt-get -y install python${PYTHON_VERSION}-dev \
   python3-pip python3-git python3-six \
   python3-numpy python3-scipy python3-networkx \
-  cython3 
+  cython3 pylint
 
 # GOLANG ###########################################
 ARG GOLANG_VERSION="1.15"
