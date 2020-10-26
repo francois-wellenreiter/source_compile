@@ -1,5 +1,5 @@
 linux_linux:
-  enabled: true
+  enabled: false
   url: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
   branch: master
   build:
@@ -8,7 +8,7 @@ linux_linux:
     [ "make mrproper" ]
 
 qemu_qemu:
-  enabled: true
+  enabled: false
   deps: [ linux_linux, gnu_gcc ]
   url: https://git.qemu.org/git/qemu.git
   branch: master
