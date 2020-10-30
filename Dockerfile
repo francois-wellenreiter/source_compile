@@ -48,6 +48,7 @@ ARG PYTHON_VERSION="3.9"
 RUN apt-get -y install python${PYTHON_VERSION}-dev \
   python3-pip python3-git python3-six \
   python3-numpy python3-scipy python3-networkx \
+  python-is-python3 \
   cython3 pylint
 
 # GOLANG ###########################################
@@ -61,7 +62,7 @@ RUN pip3 install --upgrade scikit-build \
   pyyaml future pytest pybind11 requests
 
 # BAZEL ###########################################
-ARG BAZEL_VERSION="3.5.0"
+ARG BAZEL_VERSION="3.1.0"
 
 RUN cd /tmp && \
   wget https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh && \
