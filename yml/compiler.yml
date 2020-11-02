@@ -35,3 +35,8 @@ python_cpython:
   clean:
     [ "make distclean" ]
 
+graphcore_poplibs:
+  enabled: true
+  url: https://github.com/graphcore/poplibs.git
+  branch: sdk-release-1.3
+

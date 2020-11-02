@@ -10,6 +10,12 @@ tensorflow_benchmarks:
   url: https://github.com/tensorflow/benchmarks.git
   branch: master
 
+graphcore_examples:
+  enabled: true
+  deps: [ graphcore_tensorflow ]
+  url: https://github.com/graphcore/examples.git
+  branch: master
+
 mlperf_inference:
   enabled: true
   deps: [ tensorflow_tensorflow, mxnet_mxnet, pytorch_pytorch ]
