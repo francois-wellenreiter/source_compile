@@ -7,7 +7,7 @@ grafana_grafana:
     [ "make" ]
 
 prometheus_prometheus:
-  enabled: true
+  enabled: false
   deps: [ golang_go ]
   url: https://github.com/prometheus/prometheus.git
   branch: master
@@ -15,7 +15,7 @@ prometheus_prometheus:
     [ "make" ]
 
 prometheus_node_exporter:
-  enabled: true
+  enabled: false
   deps: [ golang_go ]
   url: https://github.com/prometheus/node_exporter.git
   branch: master
@@ -23,7 +23,7 @@ prometheus_node_exporter:
     [ "make" ]
 
 prometheus_gpu_monitoring_tools:
-  enabled: true
+  enabled: false
   deps: [ golang_go ]
   url: https://github.com/NVIDIA/gpu-monitoring-tools.git
   branch: master
@@ -31,7 +31,7 @@ prometheus_gpu_monitoring_tools:
     [ "make" ]
 
 prometheus_slurm_exporter:
-  enabled: true
+  enabled: false
   deps: [ golang_go ]
   url: https://github.com/vpenso/prometheus-slurm-exporter.git
   branch: master
