@@ -66,10 +66,13 @@ def clone(k, v, args):
 def update(k, v, args):
     logging.info("Updating -\t{}".format(k))
     try:
+        print(k, v, args)
         repo = Repo(os.path.join(args.directory, k))
         origin = repo.remotes[ORIGIN]
+        head = repo.heads[v[BRANCH]]
+
         origin.fetch(progress = partial(progress, fn = origin.fetch, key = k))
-        repo.heads.master.set_tracking_branch(origin.refs.master)
+        head.checkout()
     except Exception as err:
         logging.error("Error no repository {} found {}".format(k, err))
         return
@@ -84,7 +87,7 @@ def update(k, v, args):
         except Exception as err:
             logging.error("Error when compressing git repository {} with {}".format(k, err))
     try:
-        repo.remotes.origin.pull(progress = partial(progress, fn = repo.remotes.origin.pull, key = k))
+        origin.pull(progress = partial(progress, fn = origin.pull, key = k))
     except Exception as err:
         logging.error("Error when pulling {} with {}".format(k, err))
     try:
