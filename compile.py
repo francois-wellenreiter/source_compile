@@ -22,6 +22,8 @@ INFO="info"
 
 # git specific pattern
 ORIGIN="origin"
+ORIGIN_S="origin/"
+REMOTE_REFS="refs/remote"
 
 # cloc specific pattern
 HEADER="header"
@@ -66,22 +68,18 @@ def clone(k, v, args):
 def update(k, v, args):
     logging.info("Updating -\t{}".format(k))
     try:
-        print(k, v, args)
         repo = Repo(os.path.join(args.directory, k))
         origin = repo.remotes[ORIGIN]
-        head = repo.heads[v[BRANCH]]
-
         origin.fetch(progress = partial(progress, fn = origin.fetch, key = k))
-        head.checkout()
+        r_branch = repo.refs[ORIGIN_S + v[BRANCH]]
+        l_branch = repo.heads[v[BRANCH]]
+        l_branch.set_tracking_branch(r_branch)
+        l_branch.checkout()
+        repo.head.reset(index=True, working_tree=True)
     except Exception as err:
         logging.error("Error no repository {} found {}".format(k, err))
         return
     if args.clean:
-        try:
-            repo.head.reset(index=True, working_tree=True)
-        except Exception as err:
-            logging.error("Error when resetting {} {}".format(k, err))
-
         try:
             repo.git.gc()
         except Exception as err:
