@@ -1,0 +1,71 @@
+
+ARG CUDA_VERSION="11.1-devel-ubuntu20.04"
+
+FROM ${DOCKER_REGISTRY}nvidia/cuda:${CUDA_VERSION} AS libc
+
+
+LABEL maintainer Francois WELLENREITER wellen@free.fr \
+      description="Optimized for compilation"
+
+ENV LANG="C.UTF-8"
+ENV LC_ALL="C.UTF-8"
+ENV LANGUAGE="C.UTF-8"
+ENV TZ="Europe/Paris"
+ENV DEBIAN_FRONTEND="noninteractive"
+
+USER root
+
+RUN apt-get update
+RUN apt-get -y dist-upgrade
+
+RUN apt-get -y install tar bzip2 zip unzip ca-certificates wget curl \
+  software-properties-common apt-transport-https locales
+
+RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev \
+  xsltproc libnl-3-dev libevent-dev \
+  gtk-doc-tools libxml2-utils \
+  qtbase5-dev qtbase5-dev-tools flake8 pandoc
+
+RUN apt-get -y install htop iotop iftop sysstat \
+  cloc sloccount cscope
+
+
+# GCC ###########################################
+RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev \
+  libelf-dev bc libssl-dev libpixman-1-dev \
+  build-essential automake autoconf libtool cmake git bsdmainutils patch \
+  liblzma-dev libmpfr-dev libmpc-dev libgmp-dev libglib2.0-dev
+
+# OPENMPI ###########################################
+RUN apt-get -y install openmpi-bin libopenmpi-dev
+
+# PYTHON ###########################################
+ARG PYTHON_VERSION="3.9"
+
+RUN apt-get -y install python${PYTHON_VERSION}-dev \
+  python3-pip python3-git python3-six \
+  python3-numpy python3-scipy python3-networkx \
+  python-is-python3 \
+  cython3 pylint
+
+# BAZEL ###########################################
+ARG BAZEL_VERSION="3.1.0"
+
+RUN cd /tmp && \
+  wget https://github.com/bazelbuild/bazel/releases/download/${BAZEL_VERSION}/bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh && \
+  chmod +x bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh && \
+  ./bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh && \
+  rm -f bazel-${BAZEL_VERSION}-installer-linux-x86_64.sh
+
+RUN git config --global pull.rebase false && \
+    git config --global pull.ff only
+
+RUN apt-get -y autoremove
+RUN apt-get autoclean
+RUN rm -rf /var/cache/apt /var/lib/apt
+
+VOLUME ["/src"]
+WORKDIR /src
+
+
+

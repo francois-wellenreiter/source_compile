@@ -1,44 +1,37 @@
 gnu_gcc:
-  enabled: true
   deps: [ linux_linux ]
   url: https://github.com/gcc-mirror/gcc.git
   branch: master
   build:
-    [ "./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
+    "cpu": [ "./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
   clean:
     [ "make distclean" ]
 
 golang_go:
-  enabled: true
   url: https://github.com/golang/go.git
   branch: master
   build:
-    [ "cd src && ./all.bash --no-clean && cd .." ]
+    "cpu": [ "cd src && ./all.bash --no-clean && cd .." ]
   clean:
     [ "cd src && ./clean.sh && cd .." ]
 
 julialang_julia:
-  enabled: false
   url: https://github.com/JuliaLang/julia.git
   branch: master
   build:
-    [ "make -j$__PROCS__ && make install" ]
+    "cpu": [ "make -j$__PROCS__ && make install" ]
   clean:
     [ "make distclean" ]
 
 python_cpython:
-  enabled: true
   url: https://github.com/python/cpython.git
   branch: master
   build:
-    [ "./configure --enable-optimizations --prefix=/src/local && make -j$__PROCS__ && make install" ]
+    "cpu": [ "./configure --enable-optimizations --prefix=/src/local && make -j$__PROCS__ && make install" ]
   clean:
     [ "make distclean" ]
 
 graphcore_poplibs:
-  enabled: false
   url: https://github.com/graphcore/poplibs.git
   branch: sdk-release-1.3
-
-
 

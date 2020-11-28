@@ -12,6 +12,7 @@ STREAM="stream"
 AUX="aux"
 ID="ID"
 FORMAT = '%(asctime)-15s - %(message)s'
+CPU="cpu"
 
 
 def setenv(buildargs = None):
@@ -54,18 +55,19 @@ def parent(args):
 
     buildargs = setenv()
 
-    logging.warning("Building image : {}".format(args.image))
+    logging.warning("Building image : {}".format(args.image + "-" +
+args.flavour))
     log = cli.build(path = os.path.join(os.path.dirname(os.path.abspath(__file__))),
-        tag = args.image,
+        tag = args.image + "-" + args.flavour,
         rm = True,
         buildargs = buildargs,
-        dockerfile = DOCKERFILE,
+        dockerfile = DOCKERFILE + "-" + args.flavour,
         nocache = args.refresh,
         pull = args.refresh,
         target = LIBC)
     for line in log:
         logging.debug("{}".format(line))
-    logging.warning("Built image : {}".format(args.image))
+    logging.warning("Built image : {}".format(args.image + "-" + args.flavour))
 
 
 def parse():
@@ -73,6 +75,8 @@ def parse():
     parser.add_argument("-v", "--verbose", action = "store_true")
     parser.add_argument("-l", "--loglevel", action = "store", type = int, default = logging.WARNING)
     parser.add_argument("-i", "--image", action = "store", type = str, default = IMAGE)
+    parser.add_argument("-f", "--flavour", action = "store", type = str,
+default = CPU)
     parser.add_argument("-R", "--refresh", action = "store_true", default = False)
     args = parser.parse_args()
 

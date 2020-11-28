@@ -6,6 +6,9 @@ import logging
 import docker
 from docker.types import LogConfig
 
+IMAGE="compile:latest"
+CPU="cpu"
+CMD=[ "python3", "/code/compile.py" ]
 
 
 def setenv(buildargs = None):
@@ -44,7 +47,7 @@ def setenv(buildargs = None):
 
 
 def parent(args):
-    logging.warning("Running image : {}".format(args.image))
+    logging.warning("Running image : {}".format(args.image + "-" + args.flavour))
 
     DOCK_SOCK="/var/run/docker.sock"
     DOCK_GROUP="docker"
@@ -64,9 +67,11 @@ def parent(args):
     env = setenv(env)
 
     cli = docker.APIClient()
-    cont = cli.create_container(image = args.image,
+    cont = cli.create_container(image = args.image + "-" + args.flavour,
         command = [
             *args.command,
+            "-f",
+            args.flavour,
             *args.params[1:]
         ],
         name = "compile" + os.getcwd().replace('/', '_'),
@@ -104,13 +109,17 @@ def parent(args):
 stderr = True, follow = True, timestamps = False, tail = "all"):
       logging.warning("{}".format(line))
 
-    logging.warning("Ran image : {}".format(args.image))
+    logging.warning("Ran image : {}".format(args.image + "-" + args.flavour))
 
 def parse():
     parser = argparse.ArgumentParser()
     parser.add_argument("-v", "--verbose", action = "store_true")
-    parser.add_argument("-i", "--image", action = "store", type = str, default = "compile:latest")
-    parser.add_argument("-c", "--command", action = "store", type = str, nargs='+', default = [ "python3", "/code/compile.py" ])
+    parser.add_argument("-i", "--image", action = "store", type = str, default
+= IMAGE)
+    parser.add_argument("-f", "--flavour", action = "store", type = str,
+default = CPU)
+    parser.add_argument("-c", "--command", action = "store", type = str,
+nargs='+', default = CMD)
     parser.add_argument("-l", "--loglevel", action = "store", type = int, default = logging.WARNING)
     parser.add_argument("params", nargs = argparse.REMAINDER)
     args = parser.parse_args()

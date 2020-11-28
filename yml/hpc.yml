@@ -1,18 +1,14 @@
 ofiwg_libfabric:
-  enabled: false
   url: https://github.com/ofiwg/libfabric.git
   branch: master
   build: 
-    [ "./autogen.sh && ./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
-  clean:
-    [ "make distclean" ]
+    "cpu": [ "./autogen.sh && ./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
+  clean: [ "make distclean" ]
 
 ompi_ompi:
-  enabled: false
   deps : [ gnu_gcc ]
   url: https://github.com/open-mpi/ompi.git
   branch: master
   build:
-    [ "./autogen.pl && ./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
-  clean:
-    [ "make distclean" ]
+    "cpu": [ "./autogen.pl && ./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
+  clean: [ "make distclean" ]

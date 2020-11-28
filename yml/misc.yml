@@ -1,88 +1,74 @@
 grafana_grafana:  
-  enabled: false
   deps: [ golang_go ]
   url: https://github.com/grafana/grafana.git
   branch: master
   build:
-    [ "make" ]
+    "cpu": [ "make" ]
 
 prometheus_prometheus:
-  enabled: false
   deps: [ golang_go ]
   url: https://github.com/prometheus/prometheus.git
   branch: master
   build:
-    [ "make" ]
+    "cpu": [ "make" ]
 
 prometheus_node_exporter:
-  enabled: false
   deps: [ golang_go ]
   url: https://github.com/prometheus/node_exporter.git
   branch: master
   build:
-    [ "make" ]
+    "cpu": [ "make" ]
 
 prometheus_gpu_monitoring_tools:
-  enabled: false
   deps: [ golang_go ]
   url: https://github.com/NVIDIA/gpu-monitoring-tools.git
   branch: master
   build:
-    [ "make" ]
+    "cpu": [ "make" ]
 
 prometheus_slurm_exporter:
-  enabled: false
   deps: [ golang_go ]
   url: https://github.com/vpenso/prometheus-slurm-exporter.git
   branch: master
   build:
-    [ "make" ]
+    "cpu": [ "make" ]
 
 bitcoin_bitcoin:
-  enabled: false
   deps: [ gnu_gcc ]
   url: https://github.com/bitcoin/bitcoin.git
   branch: master
   build:
-    [ "./autogen.sh && ./configure --prefix=/src/local --with-incompatible-bdb --disable-wallet && make -j$__PROCS__ && make install" ]
-  clean:
-    [ "make distclean" ]
+    "cpu": [ "./autogen.sh && ./configure --prefix=/src/local --with-incompatible-bdb --disable-wallet && make -j$__PROCS__ && make install" ]
+  clean: [ "make distclean" ]
 
 veracrypt_veracrypt:
-  enabled: false
   deps: [ gnu_gcc ]
   url: https://github.com/veracrypt/VeraCrypt.git
   branch: master
   build:
-    [ "cd src && make -j$__PROCS__ && make install && cd .." ]
-  clean:
-    [ "cd src && make distclean && cd .." ]
+    "cpu": [ "cd src && make -j$__PROCS__ && make install && cd .." ]
+  clean: [ "cd src && make distclean && cd .." ]
 
 rg3_youtubedl:
-  enabled: false
   deps: [ python_cpython ]
   url: https://github.com/rg3/youtube-dl.git
   branch: master
   build:
-    [ "python3 ./setup.py install" ]
+    "cpu": [ "python3 ./setup.py install" ]
 
 torproject_tor:
-  enabled: false
   deps: [ gnu_gcc ]
   url: https://git.torproject.org/tor.git
   branch: master
   build:
-    [ "sh autogen.sh && ./configure --prefix=/src/local --disable-asciidoc && make -j$__PROCS__ && make install" ]
-  clean:
-    [ "make distclean" ]
+    "cpu": [ "sh autogen.sh && ./configure --prefix=/src/local --disable-asciidoc && make -j$__PROCS__ && make install" ]
+  clean: [ "make distclean" ]
 
 sagemath_sage:
-  enabled: false
   deps: [ gnu_gcc, python_cpython ]
   url: https://github.com/sagemath/sage.git
   branch: master
   build:
-    [ "./configure --prefix=/src/local && make -j$__PROCS__&& make install" ]
-  clean:
-    [ "make distclean" ]
+    "cpu": [ "./configure --prefix=/src/local && make -j$__PROCS__&& make install" ]
+  clean: [ "make distclean" ]
 

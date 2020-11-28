@@ -1,18 +1,14 @@
 linux_linux:
-  enabled: true
   url: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git
   branch: master
   build:
-    [ "make defconfig && make -j$__PROCS__ && make install modules_install" ]
-  clean:
-    [ "make mrproper" ]
+    "cpu": [ "make defconfig && make -j$__PROCS__ && make install modules_install" ]
+  clean: [ "make mrproper" ]
 
 qemu_qemu:
-  enabled: true
   deps: [ linux_linux, gnu_gcc ]
   url: https://git.qemu.org/git/qemu.git
   branch: master
   build:
-    [ "./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
-  clean: 
-    [ "make distclean" ]
+    "cpu": [ "./configure --prefix=/src/local && make -j$__PROCS__ && make install" ]
+  clean: [ "make distclean" ]

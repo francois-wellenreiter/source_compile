@@ -19,6 +19,7 @@ CLEAN="clean"
 BUILD="build"
 DEPS="deps"
 INFO="info"
+CPU="cpu"
 
 # git specific pattern
 ORIGIN="origin"
@@ -111,9 +112,10 @@ def build(k, v, args):
     logging.info("Building -\t{}".format(k))
     os.chdir(os.path.join(args.directory, k))
     if BUILD in v:
-        for cmd in v[BUILD]:
-            logging.debug("Executing -\t {} - {}".format(k, cmd))
-            os.system(cmd)
+        if args.flavour in v[BUILD]:
+            for cmd in v[BUILD][args.flavour]:
+                logging.debug("Executing -\t {} - {}".format(k, cmd))
+                os.system(cmd)
     logging.info("Built -\t{}".format(k))
     return
 
@@ -242,12 +244,16 @@ def parse_args():
     parser.add_argument("-c", "--configuration", action = "store", type=str, default = os.path.join(os.path.dirname(os.path.abspath(__file__)), "yml"))
     parser.add_argument("-d", "--directory", action = "store", type=str, default = os.getcwd())
     parser.add_argument("-t", "--target", action = "store", type=str, nargs="+")
-    parser.add_argument("-f", "--force", action = "store_true")
-    parser.add_argument("-C", "--clean", action = "store_true")
-    parser.add_argument("-B", "--build", action = "store_true")
-    parser.add_argument("-U", "--update", action = "store_true")
-    parser.add_argument("-p", "--procs", action = "store", type = int, default = 1)
+    parser.add_argument("-F", "--force", action = "store_true")
     parser.add_argument("-P", "--parallelize", action = "store", type = int, default = 1)
+    parser.add_argument("-C", "--clean", action = "store_true")
+
+    parser.add_argument("-B", "--build", action = "store_true")
+    parser.add_argument("-f", "--flavour", action = "store", type=str, default = CPU)
+    parser.add_argument("-p", "--procs", action = "store", type = int, default = 1)
+
+    parser.add_argument("-U", "--update", action = "store_true")
+
     parser.add_argument("-L", "--list", action = "store_true")
     parser.add_argument("-S", "--stats", action = "store_true")
     args = parser.parse_args()
