@@ -29,7 +29,7 @@ tensorflow_networking:
     ]
 
 graphcore_tensorflow:
-  enabled: true
+  enabled: false
   url: https://github.com/graphcore/tensorflow.git
   branch: r2.1/sdk-release-1.3
   build:

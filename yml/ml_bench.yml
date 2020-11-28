@@ -5,37 +5,37 @@ tensorflow_models:
   branch: master
 
 tensorflow_benchmarks:
-  enabled: true
+  enabled: false
   deps: [ tensorflow_tensorflow, mxnet_mxnet, pytorch_pytorch ]
   url: https://github.com/tensorflow/benchmarks.git
   branch: master
 
 graphcore_examples:
-  enabled: true
+  enabled: false
   deps: [ graphcore_tensorflow ]
   url: https://github.com/graphcore/examples.git
   branch: master
 
 mlperf_inference:
-  enabled: true
+  enabled: false
   deps: [ tensorflow_tensorflow, mxnet_mxnet, pytorch_pytorch ]
   url: https://github.com/mlperf/inference.git
   branch: master
 
 mlperf_training:
-  enabled: true
+  enabled: false
   deps: [ tensorflow_tensorflow, mxnet_mxnet, pytorch_pytorch ]
   url: https://github.com/mlperf/training.git
   branch: master
 
 mlperf_inference_results_v0_7:
-  enabled: true
+  enabled: false
   deps: [ tensorflow_tensorflow, mxnet_mxnet, pytorch_pytorch ]
   url: https://github.com/mlperf/inference_results_v0.7.git
   branch: master
 
 mlperf_training_results_v0_7:
-  enabled: true
+  enabled: false
   deps: [ tensorflow_tensorflow, mxnet_mxnet, pytorch_pytorch ]
   url: https://github.com/mlperf/training_results_v0.7.git
   branch: master

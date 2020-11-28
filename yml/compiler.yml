@@ -1,5 +1,5 @@
 gnu_gcc:
-  enabled: false
+  enabled: true
   deps: [ linux_linux ]
   url: https://github.com/gcc-mirror/gcc.git
   branch: master
@@ -9,7 +9,7 @@ gnu_gcc:
     [ "make distclean" ]
 
 golang_go:
-  enabled: false
+  enabled: true
   url: https://github.com/golang/go.git
   branch: master
   build:
@@ -27,7 +27,7 @@ julialang_julia:
     [ "make distclean" ]
 
 python_cpython:
-  enabled: false
+  enabled: true
   url: https://github.com/python/cpython.git
   branch: master
   build:
@@ -36,7 +36,7 @@ python_cpython:
     [ "make distclean" ]
 
 graphcore_poplibs:
-  enabled: true
+  enabled: false
   url: https://github.com/graphcore/poplibs.git
   branch: sdk-release-1.3
 
