@@ -70,8 +70,6 @@ def parent(args):
     cont = cli.create_container(image = args.image + "-" + args.flavour,
         command = [
             *args.command,
-            "-f",
-            args.flavour,
             *args.params[1:]
         ],
         name = "compile" + os.getcwd().replace('/', '_'),
@@ -79,6 +77,7 @@ def parent(args):
         user = str(os.getuid()) + ":" + str(grp.getgrnam(DOCK_GROUP).gr_gid),
         working_dir = SRC,
         volumes = [ SRC, CODE, HOME, DOCK_SOCK ],
+        runtime = args.runtime,
         host_config = cli.create_host_config(
           auto_remove = True,
           binds={
@@ -90,7 +89,7 @@ def parent(args):
               'bind': CODE,
               'mode': 'rw',
             },
-            HOME: {
+            os.environ["HOME"]: {
               'bind': HOME,
               'mode': 'rw',
             },
@@ -120,6 +119,7 @@ def parse():
 default = CPU)
     parser.add_argument("-c", "--command", action = "store", type = str,
 nargs='+', default = CMD)
+    parser.add_argument("-r", "--runtime", action = "store", type = str, default = None)
     parser.add_argument("-l", "--loglevel", action = "store", type = int, default = logging.WARNING)
     parser.add_argument("params", nargs = argparse.REMAINDER)
     args = parser.parse_args()
