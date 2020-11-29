@@ -29,6 +29,8 @@ RUN apt-get -y install clang-tidy clang-format libboost-all-dev libboost-dev \
 RUN apt-get -y install htop iotop iftop sysstat \
   cloc sloccount cscope
 
+# CUDNN ###########################################
+RUN apt-get install -y libcudnn8
 
 # GCC ###########################################
 RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev \
