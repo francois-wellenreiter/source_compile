@@ -39,6 +39,9 @@ RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev \
 # OPENMPI ###########################################
 RUN apt-get -y install openmpi-bin libopenmpi-dev
 
+# INFINIBAND ###########################################
+RUN apt-get -y install ibutils infiniband-diags
+
 # DOCKER ###########################################
 RUN apt-get -y install docker.io
 
@@ -46,9 +49,10 @@ RUN apt-get -y install docker.io
 ARG PYTHON_VERSION="3.9"
 
 RUN apt-get -y install python${PYTHON_VERSION}-dev \
+  python-is-python3 \
   python3-pip python3-git python3-six \
   python3-numpy python3-scipy python3-networkx \
-  python-is-python3 \
+  python3-mpi4py \
   cython3 pylint
 
 # GOLANG ###########################################
