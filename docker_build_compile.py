@@ -6,7 +6,7 @@ import logging
 import docker
 
 IMAGE="compile:latest"
-LIBC="libc"
+BASE="base"
 DOCKERFILE="Dockerfile"
 STREAM="stream"
 AUX="aux"
@@ -64,7 +64,7 @@ args.flavour))
         dockerfile = DOCKERFILE + "-" + args.flavour,
         nocache = args.refresh,
         pull = args.refresh,
-        target = LIBC)
+        target = BASE)
     for line in log:
         logging.debug("{}".format(line))
     logging.warning("Built image : {}".format(args.image + "-" + args.flavour))

@@ -1,7 +1,7 @@
 
 ARG UBUNTU_VERSION="devel"
 
-FROM ${DOCKER_REGISTRY}ubuntu:${UBUNTU_VERSION} AS libc
+FROM ${DOCKER_REGISTRY}ubuntu:${UBUNTU_VERSION} AS base
 
 
 LABEL maintainer Francois WELLENREITER wellen@free.fr \
