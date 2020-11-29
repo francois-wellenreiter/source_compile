@@ -7,14 +7,14 @@ tensorflow_tensorflow:
     "cpu":
       [
       "PYTHON_BIN_PATH=`which python3` USE_DEFAULT_PYTHON_LIB_PATH=1 TF_NEED_MPI=0 TF_NEED_HDFS=1 TF_NEED_TENSORRT=0 TF_NEED_JEMALLOC=1 TF_NEED_OPENCL_SYCL=0 TF_NEED_COMPUTECPP=1 TF_NEED_OPENCL=0 TF_CUDA_CLANG=0 TF_DOWNLOAD_CLANG=0 TF_NEED_GCP=1 TF_NEED_AWS=1 TF_NEED_KAFKA=0 TF_ENABLE_XLA=1 TF_NEED_GDR=1 TF_NEED_VERBS=0 TF_NEED_CUDA=0 TF_NEED_ROCM=0 CC_OPT_FLAGS='-march=native' TF_SET_ANDROID_WORKSPACE=0 ./configure",
-      "bazel build --config=v2 //tensorflow/tools/pip_package:build_pip_package",
+      "bazel build --config=opt --config=avx_linux --config=v2 //tensorflow/tools/pip_package:build_pip_package",
       "./bazel-bin/tensorflow/tools/pip_package/build_pip_package ./tensorflow_pkg",
       "bazel shutdown"
       ]
     "cuda":
       [
       "PYTHON_BIN_PATH=`which python3` USE_DEFAULT_PYTHON_LIB_PATH=1 TF_NEED_MPI=0 TF_NEED_HDFS=1 TF_NEED_TENSORRT=0 TF_NEED_JEMALLOC=1 TF_NEED_OPENCL_SYCL=0 TF_NEED_COMPUTECPP=1 TF_NEED_OPENCL=0 TF_CUDA_CLANG=0 TF_DOWNLOAD_CLANG=0 TF_NEED_GCP=1 TF_NEED_AWS=1 TF_NEED_KAFKA=0 TF_ENABLE_XLA=1 TF_NEED_GDR=1 TF_NEED_VERBS=0 TF_NEED_CUDA=1 TF_NEED_ROCM=0 CC_OPT_FLAGS='-march=native' TF_SET_ANDROID_WORKSPACE=0 ./configure",
-      "bazel build --config=cuda //tensorflow/tools/pip_package:build_pip_package",
+      "bazel build --config=opt --config=avx_linux --config=v2 --config=cuda //tensorflow/tools/pip_package:build_pip_package",
       "./bazel-bin/tensorflow/tools/pip_package/build_pip_package ./tensorflow_pkg",
       "bazel shutdown"
       ]
