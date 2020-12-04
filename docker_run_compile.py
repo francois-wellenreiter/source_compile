@@ -74,7 +74,7 @@ def parent(args):
         ],
         name = "compile" + os.getcwd().replace('/', '_'),
         environment = env,
-        user = str(os.getuid()) + ":" + str(grp.getgrnam(DOCK_GROUP).gr_gid),
+        user = str(os.getuid()) + ":" + str(os.getgid()),
         working_dir = SRC,
         volumes = [ SRC, CODE, HOME, DOCK_SOCK ],
         runtime = args.runtime,
