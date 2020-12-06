@@ -42,7 +42,7 @@ RUN apt-get -y install pkg-config g++ zlib1g-dev bison flex libgnutls28-dev \
 RUN apt-get -y install openmpi-bin libopenmpi-dev
 
 # INFINIBAND ###########################################
-RUN apt-get -y install ibutils infiniband-diags
+RUN apt-get -y install ibutils infiniband-diags libibverbs-dev
 
 # PYTHON ###########################################
 ARG PYTHON_VERSION="3.9"
