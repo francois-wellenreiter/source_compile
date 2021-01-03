@@ -9,6 +9,7 @@ import logging
 from git import Repo
 import yaml, json
 import networkx as nx
+import matplotlib.pyplot as plt
 
 # specific pattern
 YML_EXT=".yml"
@@ -192,7 +193,7 @@ def fill_graph(deps, d):
 
 
 def parse_files(dir):
-    deps = nx.DiGraph()
+    deps = nx.DiGraph(directed = True)
     for dirpath, dnames, fnames in os.walk(dir):
         for f in fnames:
             if f.endswith(YML_EXT):
@@ -234,6 +235,19 @@ def print_list(deps):
     return
 
 
+def print_graph(deps):
+    options = {
+        'node_color': 'blue',
+        'node_size': 100,
+        'width': 1,
+        'arrowstyle': '-|>',
+        'arrowsize': 12,
+    }
+    nx.draw_networkx(deps, arrows = True, **options)
+    plt.show()
+    return
+
+
 #######################################
 
 
@@ -255,6 +269,7 @@ def parse_args():
     parser.add_argument("-U", "--update", action = "store_true")
 
     parser.add_argument("-L", "--list", action = "store_true")
+    parser.add_argument("-G", "--graph", action = "store_true")
     parser.add_argument("-S", "--stats", action = "store_true")
     args = parser.parse_args()
 
@@ -288,6 +303,8 @@ def main():
         print_list(deps)
     elif args.stats:
         print_stats(args, deps)
+    elif args.graph:
+        print_graph(deps)
     else:
         start_workers(args, deps)
     return
